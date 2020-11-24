@@ -12,7 +12,7 @@ This is a demo code with [Thermostat Device Model](https://github.com/Azure/iot-
 - Linux environment  
     - Ubuntu 18.04
     - Raspberry Pi with Raspbian 10 (Buster)
-    - Windows Subsystem for Linux (Tested with Ubuntu 18.04 LTS)
+    - Windows Subsystem for Linux (Tested with [Ubuntu 18.04 LTS](https://www.microsoft.com/store/productId/9n9tngvndl3q))
 
 - Tool chain  
 Follow the [instruction](#install-pre-requisite) below to install tools and libraries.
