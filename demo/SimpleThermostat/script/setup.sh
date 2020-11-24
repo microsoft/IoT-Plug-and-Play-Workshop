@@ -87,13 +87,14 @@ fi
 
 # Clone Azure IoT SDK C
 if [ ! -d "${DIR_SDK}" ]; then
+    cd "${DIR_PROJECT}"
     if [ $FLAG_VERBOSE = true ]; then
         git_param="--recursive"
     else
         git_param="--recursive --quiet"
     fi    
     LogInfo "Cloning Azure IoT SDK C to "${DIR_SDK}""
-    git clone https://github.com/Azure/azure-iot-sdk-c --recursive --quiet
+    git clone https://github.com/Azure/azure-iot-sdk-c ${git_param}
     [ $? -eq 0 ] || exit $? ]
 fi
 

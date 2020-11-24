@@ -10,7 +10,19 @@
 # Directories
 FILE_SCRIPT=$(realpath -s $0)
 DIR_PROJECT=$(dirname $(dirname $FILE_SCRIPT))
+DIR_SDK=${DIR_PROJECT}/azure-iot-sdk-c
 DIR_CMAKE=${DIR_PROJECT}/cmake
+
+# Clone Azure IoT SDK C
+if [ ! -d "${DIR_SDK}" ]; then
+    cd "${DIR_PROJECT}"
+    git clone https://github.com/Azure/azure-iot-sdk-c --recursive
+    [ $? -eq 0 ] || exit $? ]
+fi
+
+if [ ! -d "${DIR_CMAKE}" ]; then
+    mkdir "${DIR_CMAKE}"
+fi
 
 cd ${DIR_CMAKE}
 

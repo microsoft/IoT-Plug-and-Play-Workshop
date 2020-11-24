@@ -19,7 +19,8 @@ DIR_CMAKE=${DIR_PROJECT}/cmake
 export PNP_MODEL_ID='dtmi:com:example:Thermostat;1'
 
 # Set ID Scope for DPS
-export DPS_IDSCOPE='0ne000FFA42'
+# E.g. export DPS_IDSCOPE='0ne12345678'
+export DPS_IDSCOPE=''
 
 # Detemines type of DPS attestation
 # set DPS_X509 for X.509
