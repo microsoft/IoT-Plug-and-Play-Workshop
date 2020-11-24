@@ -107,11 +107,11 @@ HSM_CLIENT_HANDLE custom_hsm_create_x509()
     }
     else if ((hsm_info->certificate = malloc(fileSize + 1)) == NULL)
     {
-        printf("Error: failed to allocate buffer for certificate (%ld bytes)", fileSize + 1);
+        printf("Error: failed to allocate buffer for certificate (%zu bytes)", fileSize + 1);
     }
     else if ((readSize = fread(hsm_info->certificate, 1, fileSize, fp_certificate)) != fileSize)
     {
-        printf("Error: certificate read size not match.  read : %ld byes, expected : %ld bytes", readSize, fileSize);
+        printf("Error: certificate read size not match.  read : %zu byes, expected : %zu bytes", readSize, fileSize);
     }
     else if (fseek(fp_certificate, 0L, SEEK_SET) != 0)
     {
@@ -163,11 +163,11 @@ HSM_CLIENT_HANDLE custom_hsm_create_x509()
     }
     else if ((hsm_info->deviceKey = malloc(fileSize + 1)) == NULL)
     {
-        printf("Error: failed to allocate buffer for device key (%ld bytes)", fileSize + 1);
+        printf("Error: failed to allocate buffer for device key (%zu bytes)", fileSize + 1);
     }
     else if ((readSize = fread(hsm_info->deviceKey, 1, fileSize, fp_key)) != fileSize)
     {
-        printf("Error: deviceKey read size not match.  read : %ld byes, expected : %ld bytes", readSize, fileSize);
+        printf("Error: deviceKey read size not match.  read : %zu byes, expected : %zu bytes", readSize, fileSize);
     }
     else
     {
