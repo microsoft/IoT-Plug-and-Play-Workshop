@@ -10,44 +10,91 @@ This is a demo code with [Thermostat Device Model](https://github.com/Azure/iot-
 ### Requirements
 
 - Linux environment  
+    - Ubuntu 18.04
+    - Raspberry Pi with Raspbian 10 (Buster)
+    - Windows Subsystem for Linux (Tested with Ubuntu 18.04 LTS)
 
-    Ubuntu, Raspberry Pi or WSL
-
-- Toolchain
+- Tool chain  
+Follow the [instruction](#install-pre-requisite) below to install tools and libraries.
 
 ### Install pre-requisite
 
-1. Install required libraries  
+1. Install required tools and libraries with :  
 
     ```bash
-    sudo apt-get update
+    sudo apt-get update && \
     sudo apt-get install -y git cmake build-essential curl libcurl4-openssl-dev libssl-dev uuid-dev
     ```
 
-1. Clone this rep  
+1. Clone this repo  
 
     ```bash
     git clone https://github.com/microsoft/IoT-Plug-and-Play-Workshop.git && \
-    cd IoT-Plug-and-Play-Workshop/Demo/Certification/Simulator
+    cd IoT-Plug-and-Play-Workshop/demo/SimpleThermostat/script/
     ```
 
-1. Clone Azure IoT SDK C and generate self signed X.509 certificate with :  
+1. Run the setup script to :  
+
+    - Clone Azure IoT SDK C
+    - Generate self signed X.509 certificate
+    - Build SimpleThermostat simulator application  
 
     ```bash
-    ./prep.sh
+    ./setup.sh
     ```
+
+    > [!TIP]  
+    > setup.sh accepts following options  
+    >
+    > ```bash
+    > Usage: ./setup.sh [-c] [-r] [-v] [-h]
+    >  -c : (C)lean up environment.  Deletes Azure IoT SDK C and other folders and files
+    >  -r : (R)e-create new X509 certificates
+    >  -v : (V)erbose
+    >  -h : (H)elp menu
+    >```
 
 ## Create a new project for Azure Certified Device
 
-<https://certify.azure.com/>
-
+1. Browse to [Azure Certified Device Portal](https://certify.azure.com) <https://certify.azure.com/>
 1. Select **Connect & test**
-1. Select **X.509 certificate** for Authentication Method
-1. Select **./cmake/new-device.cert.pem** for X.509 certificate file
+1. Click **Run Tests >** button next to **IoT Plug and Play**
 
 ## Configuring Authentication Method
 
 You can select X.509 or Symmetric Keys to run the demo.
+
+### X.509 Certificate
+
+![X509](./media/Portal-X509.png)
+
+1. Browse to Azure Certified Device portal
+1. Create a new project
+1. Select `Connect + test`
+1. Click `Run tests` for IoT Plug and Play
+1. Upload `./cmake/new-device.cert.pem` to the portal, then click `Add Enrollment`
+1. Select the checkbox saying `Yes, my models are available in the public model repository.`
+1. Click `Add Enrollment`
+1. `set` DPS_IDSCOPE to the ID Scope provided by the portal
+1. `Set` DPS_X509 (or remove/comment out `unset DPS_X509`)
+
+    Example :
+
+    ```bash
+    # Set ID Scope for DPS
+    export DPS_IDSCOPE='0ne000FFA42'
+
+    # Detemines type of DPS attestation
+    # set DPS_X509 for X.509
+    # unset DPS_X509 for Symmetric Key
+    export DPS_X509=1
+    # unset DPS_X509
+
+    # for Symmetric Key Provisioning
+    # Get Device ID and Symmetric Key from the certification portal
+    export DPS_DEVICE_ID=''
+    export DPS_SYMMETRIC_KEY=''
+    ```
 
 ### Symmetric Key
 
@@ -65,7 +112,8 @@ You can select X.509 or Symmetric Keys to run the demo.
 1. `unset` DPS_X509
 1. `set` DPS_DEVICE_ID and DPS_SYMMETRIC_KEY
 
-    Example : 
+    Example :
+
     ```bash
     # Set ID Scope for DPS
     export DPS_IDSCOPE='0ne000FFA42'
@@ -82,37 +130,6 @@ You can select X.509 or Symmetric Keys to run the demo.
     export DPS_SYMMETRIC_KEY='dw88wVI0yd2E86cwN+PkczUNhDG4tGRPT2GwphsQJnE='
     ```
 
-### X.509 Certificate
-
-![X509](./media/Portal-X509.png)
-
-1. Browse to Azure Certified Device portal
-1. Create a new project
-1. Select `Connect + test`
-1. Click `Run tests` for IoT Plug and Play
-1. Upload `./cmake/new-device.cert.pem` to the portal, then click `Add Enrollment`
-1. Select the checkbox saying `Yes, my models are available in the public model repository.`
-1. Click `Add Enrollment`
-1. `set` DPS_IDSCOPE to the ID Scope provided by the portal
-1. `Set` DPS_X509 (or remove/comment out `unset DPS_X509`)
-
-    Example :
-    ```bash
-    # Set ID Scope for DPS
-    export DPS_IDSCOPE='0ne000FFA42'
-
-    # Detemines type of DPS attestation
-    # set DPS_X509 for X.509
-    # unset DPS_X509 for Symmetric Key
-    export DPS_X509=1
-    # unset DPS_X509
-
-    # for Symmetric Key Provisioning
-    # Get Device ID and Symmetric Key from the certification portal
-    export DPS_DEVICE_ID=''
-    export DPS_SYMMETRIC_KEY=''
-    ```
-
 ## Running the demo
 
 1. Run the app with  
@@ -120,6 +137,7 @@ You can select X.509 or Symmetric Keys to run the demo.
     ```bash
     ./run.sh
     ```
+
 1. Confirm the device is provisioned to IoT Hub
 
     Example :
