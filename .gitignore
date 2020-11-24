@@ -348,3 +348,6 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+demo/SimpleThermostat/cmake/azure-iot-sdk-c/
+demo/SimpleThermostat/cmake/certificate/
+demo/SimpleThermostat/cmake/cmake/
