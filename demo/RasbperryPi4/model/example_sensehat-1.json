@@ -1,0 +1,255 @@
+{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:com:example:sensehat;1",
+    "@type": "Interface",
+    "displayName": "SenseHat",
+    "description": "IoT Plug and Play device model for SenseHat",
+    "contents": [
+      {
+        "@type": [
+          "Telemetry",
+          "Temperature"
+        ],
+        "name": "temperature_hts221",
+        "displayName": "Temperature from HTS221",
+        "description": "Temperature in degrees celsius from HTS221",
+        "schema": "double",
+        "unit": "degreeCelsius"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "RelativeHumidity"
+        ],
+        "name": "humidity",
+        "displayName": "Humidity from HTS221",
+        "description": "Humidity in percent from HTS221",
+        "schema": "double",
+        "unit": "percent"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "Temperature"
+        ],
+        "name": "temperature_lps25h",
+        "displayName": "Temperature from LPS25H",
+        "description": "Temperature in degrees fahrenheit from LPS25H",
+        "schema": "double",
+        "unit": "degreeFahrenheit"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "Pressure"
+        ],
+        "name": "pressure",
+        "displayName": "Pressure from LPS25H",
+        "description": "Pressure in kilo pascal from LPS25H",
+        "schema": "double",
+        "unit": "kilopascal"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "Acceleration"
+        ],
+        "name": "lsm9ds1_accelerometer_x",
+        "displayName": "Accelerometer x from IMU",
+        "description": "Acceleration in Gs from LSM9DS1",
+        "schema": "double",
+        "unit": "gForce"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "Acceleration"
+        ],
+        "name": "lsm9ds1_accelerometer_y",
+        "displayName": "Accelerometer y from IMU",
+        "description": "Acceleration in Gs from LSM9DS1",
+        "schema": "double",
+        "unit": "gForce"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "Acceleration"
+        ],
+        "name": "lsm9ds1_accelerometer_z",
+        "displayName": "Accelerometer z from IMU",
+        "description": "Acceleration in Gs from LSM9DS1",
+        "schema": "double",
+        "unit": "gForce"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "AngularVelocity"
+        ],
+        "name": "lsm9ds1_gyroscope_x",
+        "displayName": "Gyroscope x from IMU",
+        "description": "Gyroscope data in radian per second from LSM9DS1",
+        "schema": "double",
+        "unit": "radianPerSecond"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "AngularVelocity"
+        ],
+        "name": "lsm9ds1_gyroscope_y",
+        "displayName": "Gyroscope y from IMU",
+        "description": "Gyroscope data in radian per second from LSM9DS1",
+        "schema": "double",
+        "unit": "radianPerSecond"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "AngularVelocity"
+        ],
+        "name": "lsm9ds1_gyroscope_z",
+        "displayName": "Gyroscope z from IMU",
+        "description": "Gyroscope data in radian per second from LSM9DS1",
+        "schema": "double",
+        "unit": "radianPerSecond"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "MagneticInduction"
+        ],
+        "name": "lsm9ds1_compass_x",
+        "displayName": "Compass x from LPS25H",
+        "description": "Compass data in microtesla from LSM9DS1",
+        "schema": "double",
+        "unit": "tesla"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "MagneticInduction"
+        ],
+        "name": "lsm9ds1_compass_y",
+        "displayName": "Compass y from LPS25H",
+        "description": "Compass data in microtesla from LSM9DS1",
+        "schema": "double",
+        "unit": "tesla"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "MagneticInduction"
+        ],
+        "name": "lsm9ds1_compass_z",
+        "displayName": "Compass z from LPS25H",
+        "description": "Compass data in microtesla from LSM9DS1",
+        "schema": "double",
+        "unit": "tesla"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "Angle"
+        ],
+        "name": "imu_yaw",
+        "displayName": "Orientation from IMU yaw",
+        "description": "Orientation in degree from Inertial Measurement Unit sensor (LSM9DS1)",
+        "unit": "degreeOfArc",
+        "schema": "double"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "Angle"
+        ],
+        "name": "imu_roll",
+        "displayName": "Orientation from IMU roll",
+        "description": "Orientation in degree from Inertial Measurement Unit sensor (LSM9DS1)",
+        "unit": "degreeOfArc",
+        "schema": "double"
+      },
+      {
+        "@type": [
+          "Telemetry",
+          "Angle"
+        ],
+        "name": "imu_pitch",
+        "displayName": "Orientation from IMU pitch",
+        "description": "Orientation in degree from Inertial Measurement Unit sensor (LSM9DS1)",
+        "unit": "degreeOfArc",
+        "schema": "double"
+      },
+      {
+        "@type": "Property",
+        "name": "manufacturer",
+        "displayName": "Manufactured by",
+        "schema": "string",
+        "description": "Manufacturer of the device",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "led_color",
+        "displayName": "SenseHat LED Color",
+        "description": "Change LED matrix color by update property",
+        "writable": true,
+        "schema": {
+          "@type": "Enum",
+          "valueSchema": "integer",
+          "enumValues": [
+            {
+              "name": "off",
+              "displayName": "Off",
+              "enumValue": 0
+            },
+            {
+              "name": "red",
+              "displayName": "Red",
+              "enumValue": 1
+            },
+            {
+              "name": "green",
+              "displayName": "Green",
+              "enumValue": 2
+            },
+            {
+              "name": "blue",
+              "displayName": "Blue",
+              "enumValue": 3
+            },
+            {
+              "name": "white",
+              "displayName": "White",
+              "enumValue": 4
+            },
+            {
+              "name": "yellow",
+              "displayName": "Yellow",
+              "enumValue": 5
+            },
+            {
+              "name": "magenta",
+              "displayName": "Magenta",
+              "enumValue": 6
+            },
+            {
+              "name": "cyan",
+              "displayName": "Cyan",
+              "enumValue": 7
+            }
+          ]
+        }
+      },
+      {
+        "@type": "Command",
+        "description": "This command will display text on the SenseHat LED matrix.",
+        "name": "show_text",
+        "request": {
+          "name": "text_here",
+          "schema": "string"
+        }
+      }
+    ]
+  }
