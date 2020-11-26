@@ -20,21 +20,6 @@ export PNP_MODEL_ID='dtmi:iotpnpadt:DigitalTwins:SenseHat;1'
 # Set IoT Hub Connection String
 export IOTHUB_CS=''
 
-# Set ID Scope for DPS
-# E.g. export DPS_IDSCOPE='0ne12345678'
-export DPS_IDSCOPE=''
-
-# Detemines type of DPS attestation
-# set DPS_X509 for X.509
-# unset DPS_X509 for Symmetric Key
-# export DPS_X509=1
-unset DPS_X509
-
-# for Symmetric Key Provisioning
-# Get Device ID and Symmetric Key from the certification portal
-export DPS_DEVICE_ID=''
-export DPS_SYMMETRIC_KEY=''
-
 cd ${DIR_CMAKE}
 ./RP4SenseHat
 
