@@ -351,3 +351,5 @@ MigrationBackup/
 demo/SimpleThermostat/azure-iot-sdk-c/
 demo/SimpleThermostat/certificate/
 demo/SimpleThermostat/cmake/
+demo/RasbperryPi4/C/azure-iot-sdk-c/
+demo/RasbperryPi4/C/cmake/
