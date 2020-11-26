@@ -123,6 +123,6 @@ IoT Hub and DPS are deployed and fully configured in the Open Platform as one of
 
 ## Next Steps
 
-- [Deep dive on X.509 Digital Signature](DigialSignature.md)
+- [Deep dive on X.509 Digital Signature](DigitalSignature.md)
 
 [Home](../README.md)
