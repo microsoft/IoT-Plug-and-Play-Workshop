@@ -29,6 +29,7 @@
     - ディレクトリ : (複数見える場合は、今回用いるサブスクリプションが含まれるもの)  
     - Azure サブスクリプション : (今回用いるもの)
     - 場所 : 日本  
+![IoTCentral 02](images/iotcentral-02.png)  
 以上を入力後、**作成** をクリックすると、アプリケーションがプロビジョニングされます  
 
 ## 2. Wio Terminal の Wi-Fi 接続を設定する
@@ -51,7 +52,7 @@
 5. Wi-Fi SSID と パスワードを入力します  
 *set_wifissid (設定したいSSID)*  
 *set_wifipwd (設定したいパスワード)*  
-![TeraTerm 03](images/teraterm-03.png)
+![TeraTerm 03](images/teraterm-03.png)  
 この後もう一度このターミナルを使いますので、開いたままにします
 
 ## 3. Azure IoT Central アプリケーションからデバイス接続用の情報を入手する
