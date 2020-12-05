@@ -67,7 +67,7 @@
 
 ## 4. Wio Terminal に Azure IoT Central 接続設定を書き込む  
 TeraTerm の画面に戻って Azure IoT Central の接続情報を書き込みます  
-*set_az_iotc (スコープID) (主キー) (デバイスID)* 
+*set_az_iotc (スコープID) (主キー) (デバイスID)*  
 ![TeraTerm 04](images/teraterm-04.png)
 > [!TIP]  
 > デバイスIDは一意である必要があります (例: *wio001nonpnp* など)  
