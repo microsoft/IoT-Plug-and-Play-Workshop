@@ -5,6 +5,10 @@
 - Wio Terminal + IoT PnP 無しで Azure IoT Central に接続する  
 - Wio Terminal + IoT PnP で Azure IoT Central に接続する  
 
+想定時間は30分から1時間です  
+
+***
+
 ## 必須
 - Azure サブスクリプション  
     もし Azure Subscription をお持ちでない場合には、無償で作成が可能です (1年間有効)  
@@ -14,6 +18,8 @@
     <https://www.microsoft.com/ja-jp/edge>
     - Tera Term (Wio Terminal とのシリアル接続時に利用します)  
     <https://ja.osdn.net/projects/ttssh2/>
+
+***
 
 ## 1. Azure IoT Central でアプリケーションを作成する
 1. 以下の URL をクリックして Azure IoT Central を開きます  
@@ -35,15 +41,15 @@
 ## 2. Wio Terminal の Wi-Fi 接続を設定する
 > [!NOTE]  
 > Wio Terminal ご購入直後は、まず Wi-Fi のファームウェア更新が必要です  
-> その具体的な手順については、以下の URL を参照してください
-> 
+> その具体的な手順については、以下の URL を参照してください  
+> <https://wiki.seeedstudio.com/Wio-Terminal-Network-Overview/#update-the-wireless-core-firmware>  
 > 今回は、出荷前に 2.0.3 JP を適用済みですので、手順スキップ可能です
 
 まず Wio Terminal を Configuration Mode (設定モード) で起動します  
 
-1. Wio Terminal の本体上部にある3つのボタンを押さえながら、PC に接続する  
+1. Wio Terminal の本体上部にある3つのボタンを押さえながら、PC に接続します  
 成功すると LCD に *In configuration mode* と表示されます  
-2. デバイスマネージャで Wio Terminal の COM ポートを確認する  
+2. デバイスマネージャで Wio Terminal の COM ポートを確認します  
 この画面の場合は *USB シリアルデバイス (COM7)* がそれです
 ![COM 01](images/com-01.png)
 3. Tera Term を実行し、**Serial** をクリック、先ほど確認した COM ポートを選択、**OK** をクリックします
@@ -64,12 +70,12 @@
 ![IoTCentral 04](images/iotcentral-04.png)
 
 > [!TIP]  
-> それぞれ値の右のボタンをクリックするとコピーされます
+> それぞれ値の右の青いボタンをクリックするとコピーされます
 
 ## 4. Wio Terminal に Azure IoT Central 接続設定を書き込む  
 TeraTerm の画面に戻って Azure IoT Central の接続情報を書き込みます  
 *set_az_iotc (スコープID) (主キー) (デバイスID)*  
-![TeraTerm 04](images/teraterm-04.png)
+![TeraTerm 04](images/teraterm-04.png)  
 > [!TIP]  
 > デバイスIDは一意である必要があります (例: *wio001nonpnp* など)  
 
@@ -78,7 +84,7 @@ TeraTerm の画面に戻って Azure IoT Central の接続情報を書き込み�
 ## 5. Wio Terminal に Non-PnP 版のアプリを書き込む  
 Wio Terminal を アプリケーション書き込みモード で起動します  
 
-1. Wio Terminal の本体左部にあるスライドスイッチを素早く2回下げる  
+1. Wio Terminal の本体左部にあるスライドスイッチを素早く2回下げます  
 成功すると、PC のエクスプローラに *Arduino* という名前のドライブが表示されます  
 ![Explorer 01](images/explorer-01.png)
 
@@ -96,12 +102,12 @@ Wio Terminal が Azure IoT Central 内の DPS を通じてデバイス登録さ�
 
 ## EXTRA-1. デバイステンプレートを作成して可視化する
 先ほどご覧いただいた動画にもあった通り、デバイステンプレートを手動にて作成いただければ、可視化等を行うことが出来ます  
-ご興味あればお試しください  
+ご興味あれば、お試しください  
 
 ![IoTCentral 07](images/iotcentral-07.png)
 
 ## 7. IoT PnP 版を別デバイスとして登録するための設定を書き込む
-1. Wio Terminal の本体上部にある3つのボタンを押さえながら、PC に接続する  
+1. Wio Terminal の本体上部にある3つのボタンを押さえながら、PC に接続します  
 2. TeraTerm で Azure IoT Central の接続情報を書き込みます  
 *set_az_iotc (スコープID) (主キー) (デバイスID)*  
 ![TeraTerm 05](images/teraterm-05.png)
@@ -113,7 +119,7 @@ Wio Terminal が Azure IoT Central 内の DPS を通じてデバイス登録さ�
 ## 8. Wio Terminal に IoT PnP 版のアプリを書き込む
 Wio Terminal を アプリケーション書き込みモード で起動します  
 
-1. Wio Terminal の本体左部にあるスライドスイッチを素早く2回下げる  
+1. Wio Terminal の本体左部にあるスライドスイッチを素早く2回下げます  
 成功すると、PC のエクスプローラに *Arduino* という名前のドライブが表示されます  
 
 2. *Arduino* ドライブに *PnP.bin* をドラッグ＆ドロップします  
@@ -131,16 +137,22 @@ Wio Terminal が Azure IoT Central 内の DPS を通じてデバイス登録さ�
 これが IoT Plug and Play と IoT Plug and Play に対応した Azure IoT Central が実現する世界です  
 
 ## EXTRA-2. 光センサーに追加対応した Wio Terminal + IoT PnP を試す  
-Seeed Japan 松岡様のご厚意で、Wio Terminal 内蔵の光センサーを有効にしたアプリケーションをご用意いただきました  
+Seeed Japan 松岡様のご厚意で、Wio Terminal 内蔵の光センサーを有効にしたアプリケーションをご用意いただきました(0.7 Release)  
 このアプリケーションは、光センサーが出力する内容に対応したデバイスモデルを参照します  
 デバイスに機能拡張を行う場合を想像し、ここまでの一連の手続きに沿って試してみてください  
 
 ![IoTCentral 11](images/iotcentral-11.png)  
 
+***  
+
 ## 参考URL :
 Azure Certified Device Catalog : 
 <https://devicecatalog.azure.com/>  
-Azure IoT Central : 
-<https://aka.ms/iotcentral>  
+Wio Terminal / Azure Certified Device Catalog :  
+<https://devicecatalog.azure.com/devices/8b9c5072-68fd-4fc3-8e5f-5b15e3a20bd9>  
 Seeed Wio Terminal : <https://www.seeedstudio.com/Wio-Terminal-p-4509.html>  
 SeeedJP / wioterminal-aziot-example : <https://github.com/SeeedJP/wioterminal-aziot-example/releases>  
+Azure IoT Central : 
+<https://aka.ms/iotcentral>  
+
+***
