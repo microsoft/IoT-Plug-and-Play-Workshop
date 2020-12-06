@@ -152,15 +152,26 @@ static void az_symkey_command(int argc, char** argv)
 
 static void az_iotc_command(int argc, char** argv)
 {
-    if (argc != 4) 
+    if (argc < 3) 
     {
-        Serial.printf("ERROR: Usage: %s <Id scope> <SAS key> <Device id>." DLM, argv[0]);
+        Serial.printf("ERROR: Usage: %s <Id scope> <SAS key> [Device id]." DLM, argv[0]);
         return;
     }
 
     Storage::IdScope = argv[1];
-    Storage::RegistrationId = argv[3];
-    Storage::SymmetricKey = ComputeDerivedSymmetricKey(argv[2], argv[3]);
+
+    if (argc == 4)
+    {
+        Storage::RegistrationId = argv[3];
+        Storage::SymmetricKey = ComputeDerivedSymmetricKey(argv[2],  argv[3]);
+    } else {
+        Storage::RegistrationId = "WIOTerminal-NonPnP";
+#ifdef PNPDEMO
+        Storage::SymmetricKey = ComputeDerivedSymmetricKey(argv[2], "WIOTerminal-PnP");
+#else
+        Storage::SymmetricKey = ComputeDerivedSymmetricKey(argv[2], "WIOTerminal-NonPnP");
+#endif
+    }
     Storage::Save();
 
     Serial.print("Set connection information of Azure IoT Central successfully." DLM);

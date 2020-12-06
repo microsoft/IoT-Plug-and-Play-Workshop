@@ -8,14 +8,14 @@ Based on Wio Terminal Azure IoT sample code by Seeed Corporation
 
 - Displays wallpaper
 - Additional compile flag to disable/enable IoT Plug and Play
-- Precompiled UF2 files in `bin` folder
+- Precompiled UF2 files in `uf2` folder
 
 ## Instruction
 
 1. Connect Wio Terminal to PC with USB Type C cable
 1. Boot Wio Terminal in the `bootloader` mode by sliding the power switch twice quickly
 1. An external drive named Arduino should appear in your PC
-1. Copy uf2 file from `bin` folder to the external drive
+1. Copy uf2 file from `uf2` folder to the external drive
 1. Start a terminal software such as Putty or Teraterm
 1. Hold 3 buttons and reboot Wio Terminal to enter `configuration` mode
 1. Open Serial Port in the terminal software with following settings  
