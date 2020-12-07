@@ -365,7 +365,17 @@ int processTelemetry(APP_CONTEXT* appContext)
 
     deviceClient = appContext->deviceClient;
 
-    g_currentTemperature = g_currentTemperature * 1.1;
+    double r = ((double) rand() / (RAND_MAX));
+
+    if (g_currentTemperature > 100)
+    {
+        g_currentTemperature += r - 0.5;
+    }
+    else
+    {
+        g_currentTemperature += -0.25 + (r * 1.5);
+    }
+    
 
     if (snprintf(temperatureStringBuffer, sizeof(temperatureStringBuffer), "{\"temperature\":%.02f}", g_currentTemperature) < 0)
     {
