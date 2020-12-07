@@ -7,7 +7,7 @@
 #include "iothub/callback.h"
 #include "iothub/iothub_op.h"
 
-#define DEFAULT_TEMPERATURE_VALUE 22
+#define DEFAULT_TEMPERATURE_VALUE 15
 
 static double g_currentTemperature = DEFAULT_TEMPERATURE_VALUE;
 static double g_minTemperature = DEFAULT_TEMPERATURE_VALUE;
@@ -364,6 +364,8 @@ int processTelemetry(APP_CONTEXT* appContext)
     char temperatureStringBuffer[32];
 
     deviceClient = appContext->deviceClient;
+
+    g_currentTemperature = g_currentTemperature * 1.1;
 
     if (snprintf(temperatureStringBuffer, sizeof(temperatureStringBuffer), "{\"temperature\":%.02f}", g_currentTemperature) < 0)
     {
