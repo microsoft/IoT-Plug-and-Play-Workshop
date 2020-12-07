@@ -7,8 +7,6 @@
 
 想定時間は30分から1時間です  
 
-***
-
 ## 必須
 - Azure サブスクリプション  
     もし Azure Subscription をお持ちでない場合には、無償で作成が可能です (1年間有効)  
@@ -19,7 +17,6 @@
     - Tera Term (Wio Terminal とのシリアル接続時に利用します)  
     <https://ja.osdn.net/projects/ttssh2/>
 
-***
 
 ## 1. Azure IoT Central でアプリケーションを作成する
 1. 以下の URL をクリックして Azure IoT Central を開きます  
@@ -143,8 +140,6 @@ Seeed Japan 松岡様のご厚意で、Wio Terminal 内蔵の光センサーを�
 
 ![IoTCentral 11](images/iotcentral-11.png)  
 
-***  
-
 ## 参考URL :
 Azure Certified Device Catalog : 
 <https://devicecatalog.azure.com/>  
@@ -155,4 +150,3 @@ SeeedJP / wioterminal-aziot-example : <https://github.com/SeeedJP/wioterminal-az
 Azure IoT Central : 
 <https://aka.ms/iotcentral>  
 
-***
