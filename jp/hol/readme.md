@@ -14,26 +14,25 @@ az provider register --namespace Microsoft.DigitalTwins
 ### (DAY 2 - 1h55min)
 ## PaaS - Azure Services の組み合わせで体験 で用いるソリューションのデプロイ  
 1. サンプル IoT ソリューション のデプロイ (30 min)
-    1. ARM テンプレート とは [!deck] 
+    1. ARM テンプレート とは  
     1. デプロイの流れ - サービスのデプロイと権限の設定は別で [!deck]
     1. [デプロイ 開始](./deployment/readme.md)
     1. アーキテクチャ 箇条書き(ただし複雑過ぎないこと) [!deck] > refer project 15 ?
-    > (require 3 deck)
+    > (require 2 deck)
 
 ## SaaS - Azure IoT Central で体験  
 1. [Azure IoT Central + Wio Terminal の展開](./wioterminal/readme.md)  (30min)  
-    1．PaaS vs SaaS - Azure IoT Central は PaaS の集合体 [!deck]
-    1. IoT PnP 対応/非対応の違い(デバイスモデル有り無し) [!deck] > refer device SDK?
+    1．PaaS vs SaaS - Azure IoT Central は PaaS の集合体
+    1. IoT PnP 対応/非対応の違い(デバイスモデル有り無し)  
     1. IoT Plug and Play 非対応 デバイスの接続  
     1. IoT Plug and Play 対応 デバイスの接続
-    > (require 2 deck)
 
 ## PaaS で体験
 1. サンプル IoT ソリューション トライアル (30min)  
-    1. Model Resolution ソリューションで PnP 対応するって ? (Service SDK) [!deck]  
-    1. Model Parser [!deck]
+    1. Model Resolution ソリューションで PnP 対応するって ? (Service SDK)  
+    1. Model Parser  
     1. IoT Plug and Play 対応デバイスの接続  (DPS) -> Wio + DPS な手順書 [!page]
-    > (require 2 decks 1page)
+    > (require 1 page)
 
     EXTRA. IoT Plug and Play 非対応  
 
