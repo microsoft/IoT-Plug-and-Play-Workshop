@@ -12,13 +12,13 @@ az provider register --namespace Microsoft.DigitalTwins
 ```
 
 ### (DAY 2 - 1h55min)
-## PaaS - Azure Services の組み合わせで体験、の下準備  
-1. [サンプル IoT ソリューション のデプロイ](./deployment/readme.md) (30 min)
+## PaaS - Azure Services の組み合わせで体験 で用いるソリューションのデプロイ  
+1. サンプル IoT ソリューション のデプロイ (30 min)
     1. ARM テンプレート とは [!deck] 
     1. デプロイの流れ - サービスのデプロイと権限の設定は別で [!deck]
-    1. デプロイ 開始
+    1. [デプロイ 開始](./deployment/readme.md)
     1. アーキテクチャ 箇条書き(ただし複雑過ぎないこと) [!deck] > refer project 15 ?
-    > (require 3pages)
+    > (require 3 deck)
 
 ## SaaS - Azure IoT Central で体験  
 1. [Azure IoT Central + Wio Terminal の展開](./wioterminal/readme.md)  (30min)  
@@ -46,14 +46,13 @@ az provider register --namespace Microsoft.DigitalTwins
 ### (DAY3 : 55min)
 ## PaaS で体験 (応用編)
 1. ADT と接続する
-1. ADT と繋ぐってどういうこと? [!deck] > アーキテクチャ図?
-1. ADT Explorer 環境構築 (10min) [!page]> node.js ありき
-1. ADT シナリオの確認 (10min) [!page]
-    - シミュレーター実行
-    - Azure Indoor Map 色変更を確認
+    1. ADT と繋ぐってどういうこと? [!deck] > アーキテクチャ図?
+    1. ADT Explorer 環境構築 (10min) [!page]> node.js ありき
+    1. ADT シナリオの確認 (10min) [!page]
+        - シミュレーター実行
+        - Azure Indoor Map 色変更を確認
 
     EXTRA. Wio + 光  
-
     > (require 1 deck 2 pages)
 
 お疲れ様でした!!  
