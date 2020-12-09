@@ -713,6 +713,33 @@
         "scope": "[resourceGroup().id]",
         "principalType": "ServicePrincipal"
       }
+    },
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2019-10-01-preview",
+      "name": "[variables('deployment-script-map')]",
+      "location": "westus2",
+      "kind": "AzurePowerShell",
+      "identity": {
+        "type": "userAssigned",
+        "userAssignedIdentities": {
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('UserIdentity'))]": {}
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Authorization/roleAssignments', variables('role-name-contributor'))]",
+        "[resourceId('Microsoft.Maps/accounts/privateAtlases', variables('map-name'), concat(variables('map-name'), '-Creator'))]",
+        "[resourceId('Microsoft.Web/Sites/sourcecontrols/', variables('webapp-web-name'),'web')]"
+      ],
+      "properties": {
+        "forceUpdateTag": "MAP",
+        "azPowerShellVersion": "5.0",
+        "timeout": "PT30M",
+        "arguments": "[concat('-mapSubscriptionKey ', listKeys(resourceId('Microsoft.Maps/accounts', variables('map-name')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' -resourceGroupName ', resourceGroup().name, ' -webAppName ', variables('webapp-web-name'), ' -functionsAppName ', variables('webapp-functions-name'))]",
+        "primaryScriptURI": "[variables('script-url-map')]",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
     }
   ],
   "outputs": {
