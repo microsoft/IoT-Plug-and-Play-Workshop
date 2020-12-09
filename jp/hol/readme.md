@@ -42,15 +42,15 @@ https://tortoisegit.org/
     - IoT PnP 対応/非対応の違い (デバイスモデル有り無し)  
     - IoT Plug and Play 非対応 デバイスの接続  
     - IoT Plug and Play 対応 デバイスの接続  
-    EXTRA. PnP 非対応デバイス向け、デバイステンプレートの作成  
+    *EXTRA. PnP 非対応デバイス向け、デバイステンプレートの作成*  
 
 ## PaaS - Azure Services で体験
 1. サンプル IoT ソリューション トライアル
     - Model Resolution (Service SDK) とは  
     - Model Parser とは
     - [(手順) IoT Plug and Play 対応デバイス (Wio Terminal) の接続](./wioterminal/sample.md) (30 min)  
-    EXTRA. IoT Plug and Play 非対応 デバイスの接続  
-    EXTRA. 光センサー対応版の接続  
+    *EXTRA. IoT Plug and Play 非対応 デバイスの接続*  
+    *EXTRA. 光センサー対応版の接続*  
 
 ## ADT デモ (DAY.2 のご紹介)  
 
@@ -63,10 +63,10 @@ https://tortoisegit.org/
 ## (DAY2 : 55 min) - **12/11 解放**  
 ## PaaS で体験 (応用編)
 1. Azure Digital Twins (ADT) と接続する
-    - ADT と繋ぐ?
+    - ADT と繋ぐ、とは?
     - [(手順) ADT Explorer 環境構築 (10min)](./adt/explorer.md)
     - [(手順) ADT シナリオの確認 (10min) - シミュレーターを実行、部屋の色が変わるのを確認](./adt/)  
-    EXTRA. Wio Terminal + 光センサー で確認  
+    *EXTRA. Wio Terminal + 光センサー で確認*  
 
 ***
 **お疲れ様でした!!**  
