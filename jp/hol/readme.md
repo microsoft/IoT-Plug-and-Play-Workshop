@@ -12,7 +12,7 @@ az provider register --namespace Microsoft.DigitalTwins
 ```
 
 ### (DAY 2 - 1h55min)
-## PaaS で体験 で用いるサンプルのデプロイ  
+## PaaS で体験 で用いるソリューションのデプロイ  
 1. サンプル IoT ソリューション のデプロイ
     - ARM テンプレート とは  
     - デプロイの流れ - サービスのデプロイと権限の設定
