@@ -34,12 +34,12 @@
     "webapp-web-name": "[concat('IoTPnPWS-Portal-', parameters('UniqueID'))]",
     "dps-name": "[concat('IoTPnPWS-DPS-', parameters('UniqueID'))]",
     "tsi-environment": "[concat('IoTPnPWS-TSI-', parameters('UniqueID'))]",
-    "tsi-location" : "eastasia",
+    "tsi-location": "eastasia",
     "tsi-event-source": "IoTPnPWS-TSI-EventHubs",
     "map-name": "[concat('IoTPnPWS-MAP-', parameters('UniqueID'))]",
     "deployment-script-map": "ConfigureMap",
     "adt-name": "[concat('IoTPnPWS-ADT-', parameters('UniqueID'))]",
-    "adt-location" : "westus2",
+    "adt-location": "westus2",
     "adt-event-grid-topic": "[concat('AdtEventTopic-', parameters('UniqueID'))]",
     "UserIdentity": "IoTPnPWS-Identity",
     "adtIdentity": "functionsidentity",
@@ -549,8 +549,7 @@
           "apiVersion": "2020-06-01",
           "name": "web",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/Sites', variables('webapp-web-name'))]",
-            "[resourceId('Microsoft.Web/Sites/sourcecontrols/', variables('webapp-functions-name'),'web')]"
+            "[resourceId('Microsoft.Web/Sites', variables('webapp-web-name'))]"
           ],
           "properties": {
             "repoUrl": "[variables('git-repo-url-webapp')]",
@@ -693,26 +692,6 @@
       "dependsOn": [
         "[resourceId('Microsoft.Maps/accounts', variables('map-name'))]"
       ]
-    },
-    {
-      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
-      "apiVersion": "2018-11-30",
-      "name": "[variables('UserIdentity')]",
-      "location": "westus2"
-    },
-    {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-04-01-preview",
-      "name": "[variables('role-name-contributor')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('UserIdentity'))]"
-      ],
-      "properties": {
-        "roleDefinitionId": "[variables('role-id-contributor')]",
-        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('UserIdentity')), '2018-11-30').principalId]",
-        "scope": "[resourceGroup().id]",
-        "principalType": "ServicePrincipal"
-      }
     }
   ],
   "outputs": {
@@ -730,7 +709,7 @@
     },
     "_Map_Data_Generate": {
       "type": "String",
-      "value": "[concat('wget -q ', variables('script-url-map'), '-o ./Indoormap.ps1;', 'pwsh ./Indoormap.ps1',' -mapSubscriptionKey ', listKeys(resourceId('Microsoft.Maps/accounts', variables('map-name')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' -resourceGroupName ', resourceGroup().name, ' -webAppName ', variables('webapp-web-name'), ' -functionsAppName ', variables('webapp-functions-name'))]"
+      "value": "[concat('Invoke-Webrequest -q ', variables('script-url-map'), ' -o ./Indoormap.ps1 && ', 'pwsh ./Indoormap.ps1',' -mapSubscriptionKey ', listKeys(resourceId('Microsoft.Maps/accounts', variables('map-name')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' -resourceGroupName ', resourceGroup().name, ' -webAppName ', variables('webapp-web-name'), ' -functionsAppName ', variables('webapp-functions-name'))]"
     },
     "_ADT_Host_Name": {
       "type": "String",
