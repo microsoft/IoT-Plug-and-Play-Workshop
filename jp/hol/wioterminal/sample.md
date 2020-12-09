@@ -8,11 +8,9 @@
 ## 必須  
 - Windows 10 搭載 PC  
     - WEB ブラウザ (Microsoft Edge など)  
-    <https://www.microsoft.com/ja-jp/edge>
+    <https://www.microsoft.com/ja-jp/edge>  
     - Tera Term (Wio Terminal とのシリアル接続時に利用します)  
-    <https://ja.osdn.net/projects/ttssh2/>
-
-
+    <https://ja.osdn.net/projects/ttssh2/>  
 
 ## 1. サンプル IoT ソリューションで DPS 関連の情報を取得する
 1. 画面左下の add enrollement をクリックします  
@@ -22,8 +20,7 @@
 この文字列をメモ帳等に控えます  
 ![Sample 02](images/sample-02-red.png)  
 
-1. ID Scope をコピーします  
-1. Copy Primary Key をクリックします  
+1. ID Scope をコピーし、Copy Primary Key をクリックします  
 ![Sample 03](images/sample-03-red.png)  
 
 ここまでの作業で接続に必要な情報を入手したことになります  
@@ -75,5 +72,22 @@ set_az_symkey (先ほどコピーした Primary Key)
 ![Sample 04](images/sample-04-red.png)  
 ![Sample 05](images/sample-05-red.png)  
 
+***
+
+## EXTRA-1. IoT Plug and Play 非対応 デバイスの接続  
+
+上記にて IoT Plug and Play 版をお試しいただきましたが、接続自体は IoT Plug and Play 非対応版も可能です  
+前回の Azure IoT Central と同じ流れにて、是非一度接続をお試しください  
+
+
+## EXTRA-2. 光センサー対応版の接続  
+
+Seeed Japan 松岡様のご厚意で、Wio Terminal 内蔵の光センサーを有効にしたアプリケーションをご用意いただきました( *uf2* フォルダ内の *PnP-0.7.uf2*)  
+このアプリケーションは、光センサーが出力する内容に対応した**バージョンアップした**デバイスモデルを参照します  
+デバイスに機能拡張を行う場合を想像し、ここまでの一連の手続きに沿って試してみてください  
+
+![Sample 06](images/sample-06-red.png)  
+
 [ワークショップ トップページに戻ります](../)  
 
+***
