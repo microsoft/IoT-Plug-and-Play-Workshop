@@ -18,7 +18,7 @@ https://docs.microsoft.com/ja-jp/cli/azure/install-azure-cli-windows?tabs=azure-
 https://dotnet.microsoft.com/download/dotnet-core/3.1
 
 **(推奨) 2日目開始までに以下のインストールを出来ましたらお願いします (Git 環境)**  
-Windows 環境に対して、何らかの方法で Git を利用出来る環境の準備を推奨します  
+> [!NOTE] Windows 環境に対して、何らかの方法で Git を利用出来る環境の準備を推奨します  
 
 - Git (CLI)    
 https://git-scm.com/  
