@@ -708,7 +708,7 @@
         "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('UserIdentity'))]"
       ],
       "properties": {
-        "role-id-contributor": "[variables('role-id-contributor')]",
+        "roleDefinitionId": "[variables('role-id-contributor')]",
         "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('UserIdentity')), '2018-11-30').principalId]",
         "scope": "[resourceGroup().id]",
         "principalType": "ServicePrincipal"
