@@ -56,6 +56,7 @@ Windows 10 環境を想定しています
     git clone https://github.com/microsoft/IoT-Plug-and-Play-Workshop.git && \
     cd IoT-Plug-and-Play-Workshop/demo/SimpleThermostat/script/
     ```  
+ 
 1. セットアップスクリプト (内容は以下の通り) を実行します  
     - Azure IoT C Device SDK をクローン  
     - セルフサインの X.509 証明書を生成  
