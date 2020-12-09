@@ -18,12 +18,13 @@ https://docs.microsoft.com/ja-jp/cli/azure/install-azure-cli-windows?tabs=azure-
 https://dotnet.microsoft.com/download/dotnet-core/3.1
 
 **(推奨) 2日目開始までに以下のインストールを出来ましたらお願いします (Git 環境)**  
+> [!NOTE] Windows 環境に対して、何らかの方法で Git を利用出来る環境の準備を推奨します  
 
 - Git (CLI)    
 https://git-scm.com/  
 - TortoiseGit (GUI)  
 https://tortoisegit.org/  
-Windows 環境に対して、何らかの方法で Git を利用出来る環境の準備を推奨します  
+
 
 ***  
 
@@ -36,12 +37,12 @@ Windows 環境に対して、何らかの方法で Git を利用出来る環境�
     - [(手順) ARM テンプレートを用いて デプロイ](./deployment/) (30 min)
 
 ## SaaS - Azure IoT Central で体験  
-1. [(手順) Azure IoT Central + Wio Terminal の展開](./wioterminal/) (45 min)  
+1. [(手順) Azure IoT Central + Wio Terminal の接続](./wioterminal/) (45 min)  
     - PaaS vs SaaS - Azure IoT Central は PaaS の集合体  
     - IoT PnP 対応/非対応の違い (デバイスモデル有り無し)  
     - IoT Plug and Play 非対応 デバイスの接続  
-        EXTRA. デバイステンプレートの作成
     - IoT Plug and Play 対応 デバイスの接続  
+    EXTRA. PnP 非対応デバイス向け、デバイステンプレートの作成  
 
 ## PaaS - Azure Services で体験
 1. サンプル IoT ソリューション トライアル
