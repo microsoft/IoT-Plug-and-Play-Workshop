@@ -1,4 +1,4 @@
-# IoT Plug and Play Partner Workshop ハンズオン (DAY-2/3)
+# IoT PnP Partner Workshop ハンズオン (DAY-2/3)
 
 このドキュメントでは、ハンズオンの具体的な手順を説明します  
 ハンズオンは以下のステップで進行します  
@@ -12,7 +12,7 @@ az provider register --namespace Microsoft.DigitalTwins
 ```
 
 ### (DAY 2 - 1h55min)
-## PaaS で体験 で用いるソリューションのデプロイ  
+## PaaS で体験 で用いるサンプルのデプロイ  
 1. サンプル IoT ソリューション のデプロイ
     - ARM テンプレート とは  
     - デプロイの流れ - サービスのデプロイと権限の設定
@@ -28,7 +28,7 @@ az provider register --namespace Microsoft.DigitalTwins
     - IoT Plug and Play 対応 デバイスの接続  
         EXTRA. 光センサー対応版の接続
 
-## PaaS で体験
+## PaaS - Azure Services で体験
 1. サンプル IoT ソリューション トライアル
     - Model Resolution (Service SDK) とは  
     - Model Parser とは
@@ -51,6 +51,7 @@ az provider register --namespace Microsoft.DigitalTwins
 
 ***
 **お疲れ様でした!!**  
-***
+
+
 
 
