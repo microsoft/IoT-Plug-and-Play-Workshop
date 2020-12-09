@@ -37,7 +37,7 @@ az provider register --namespace Microsoft.DigitalTwins
 
 "PaaS - Azure Services で体験" で用いるサンプル IoT ソリューションを Azure Resource Management (ARM) テンプレートを使用してデプロイします。
 
-[(手順) ARM テンプレートを用いて デプロイ](./deployment/) (30 min)
+[(手順) ARM テンプレートを用いてデプロイ](./deployment/) (30 min)
 
 - ARM テンプレートとは?
 - デプロイの流れ - サービスのデプロイと権限の設定
