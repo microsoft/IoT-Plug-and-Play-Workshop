@@ -4,7 +4,7 @@
 ハンズオンは以下のステップで進行します  
 
 ### (DAY 2 - PREP)
-**(重要) 事前にやっておいていただきたいこと]**  
+**(重要) 以下作業を開始前にお願いします (反映に5-10分かかります)**  
 以下のコマンドを **Cloud Shell** で実行し、サービスを登録してください  
 ```
 az provider register --namespace Microsoft.ContainerInstance  
@@ -15,9 +15,9 @@ az provider register --namespace Microsoft.DigitalTwins
 ## PaaS - Azure Services の組み合わせで体験 で用いるソリューションのデプロイ  
 1. サンプル IoT ソリューション のデプロイ (30 min)
     1. ARM テンプレート とは  
-    1. デプロイの流れ - サービスのデプロイと権限の設定は別で
+    1. デプロイの流れ - サービスのデプロイと権限の設定
+    1. アーキテクチャ
     1. [(手順) ARM テンプレートを用いて デプロイ](./deployment/)
-    1. アーキテクチャ 箇条書き(ただし複雑過ぎないこと) *[!deck]*  
 
 ## SaaS - Azure IoT Central で体験  
 1. [(手順) Azure IoT Central + Wio Terminal の展開](./wioterminal/) (45 min)  
@@ -30,7 +30,7 @@ az provider register --namespace Microsoft.DigitalTwins
 1. サンプル IoT ソリューション トライアル (30 min)  
     1. Model Resolution (Service SDK)  
     1. Model Parser  
-    1. [(手順) IoT Plug and Play 対応デバイス (Wio Terminal) の接続](./wioterminal)
+    1. [(手順) IoT Plug and Play 対応デバイス (Wio Terminal) の接続](./wioterminal/sample.md)
 
     EXTRA. IoT Plug and Play 非対応 デバイスの接続 
 
