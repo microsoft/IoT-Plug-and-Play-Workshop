@@ -12,27 +12,28 @@ az provider register --namespace Microsoft.DigitalTwins
 ```
 
 ### (DAY 2 - 1h55min)
-## PaaS - Azure Services の組み合わせで体験 で用いるソリューションのデプロイ  
+## PaaS で体験 で用いるソリューションのデプロイ  
 1. サンプル IoT ソリューション のデプロイ (30 min)
-    1. ARM テンプレート とは  
-    1. デプロイの流れ - サービスのデプロイと権限の設定
-    1. アーキテクチャ
-    1. [(手順) ARM テンプレートを用いて デプロイ](./deployment/)
+    - ARM テンプレート とは  
+    - デプロイの流れ - サービスのデプロイと権限の設定
+    - ソリューション アーキテクチャ
+    - [(手順) ARM テンプレートを用いて デプロイ](./deployment/)
 
 ## SaaS - Azure IoT Central で体験  
 1. [(手順) Azure IoT Central + Wio Terminal の展開](./wioterminal/) (45 min)  
-    1. PaaS vs SaaS - Azure IoT Central は PaaS の集合体  
-    1. IoT PnP 対応/非対応の違い (デバイスモデル有り無し)  
-    1. IoT Plug and Play 非対応 デバイスの接続  
-    1. IoT Plug and Play 対応 デバイスの接続
+    - PaaS vs SaaS - Azure IoT Central は PaaS の集合体  
+    - IoT PnP 対応/非対応の違い (デバイスモデル有り無し)  
+    - IoT Plug and Play 非対応 デバイスの接続  
+        EXTRA. デバイステンプレートの作成
+    - IoT Plug and Play 対応 デバイスの接続  
+        EXTRA. 光センサー対応版の接続
 
 ## PaaS で体験
 1. サンプル IoT ソリューション トライアル (30 min)  
-    1. Model Resolution (Service SDK)  
-    1. Model Parser  
-    1. [(手順) IoT Plug and Play 対応デバイス (Wio Terminal) の接続](./wioterminal/sample.md)
-
-    EXTRA. IoT Plug and Play 非対応 デバイスの接続 
+    - Model Resolution (Service SDK) とは  
+    - Model Parser とは
+    - [(手順) IoT Plug and Play 対応デバイス (Wio Terminal) の接続](./wioterminal/sample.md)  
+    EXTRA. IoT Plug and Play 非対応 デバイスの接続  
 
 1. ADT デモ (ワークショップ DAY.2) [!demo]
        
@@ -43,11 +44,13 @@ az provider register --namespace Microsoft.DigitalTwins
 ### (DAY3 : 55 min) - **12/11 解放**  
 ## PaaS で体験 (応用編)
 1. Azure Digital Twins と接続する
-    1. ADT と繋ぐってどういうこと? *[!deck]*
-    1. ADT Explorer 環境構築 (10min) *[!page]*
-    1. ADT シナリオの確認 (10min) *[!page]*
-        - シミュレーター 実行 して部屋の色が変わるのを確認
-
+    - ADT と繋ぐってどういうこと? *[!deck]*
+    - ADT Explorer 環境構築 (10min) *[!page]*
+    - ADT シナリオの確認 (10min) - シミュレーターを実行、部屋の色が変わるのを確認 *[!page]*  
     EXTRA. Wio Terminal + 光センサー で確認  
 
-お疲れ様でした!!  
+***
+**お疲れ様でした!!**  
+***
+
+
