@@ -26,8 +26,7 @@
       "type": "Microsoft.EventGrid/topics",
       "location": "[variables('adt-location')]",
       "apiVersion": "2018-01-01",
-      "dependsOn": [
-      ]
+      "dependsOn": []
     },
     {
       "type": "Microsoft.EventGrid/topics/providers/eventSubscriptions",
@@ -35,7 +34,7 @@
       "name": "[concat(variables('eventgrid-adt-topic-name'), '/Microsoft.EventGrid/', variables('eventgrid-adt-subscription-name'))]",
       "location": "[variables('adt-location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topic-name'))]",
+        "[resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topic-name'))]"
       ],
       "properties": {
         "destination": {
@@ -55,8 +54,7 @@
       "type": "Microsoft.DigitalTwins/digitalTwinsInstances/endpoints",
       "apiVersion": "2020-10-31",
       "name": "[concat(variables('adt-name'), '/ADTEventGridEP')]",
-      "dependsOn": [
-      ],
+      "dependsOn": [],
       "properties": {
         "endpointType": "EventGrid",
         "TopicEndpoint": "[reference(resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topic-name'))).endpoint]",
@@ -65,10 +63,5 @@
       }
     }
   ],
-  "outputs": {
-    "return": {
-      "type": "String",
-      "value": "[concat(variables('webapp-functions-url'), listKeys(resourceId('Microsoft.Web/sites/host/', variables('webapp-functions-name'), 'default'),'2016-08-01').systemkeys.eventgrid_extension)]"
-    }
-  }
+  "outputs": {}
 }

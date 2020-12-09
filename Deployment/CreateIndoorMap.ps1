@@ -234,41 +234,41 @@ $stateSet = '{
           "rules":[
              {
                 "range":{
-                   "exclusiveMaximum":66
+                   "exclusiveMaximum":47
                 },
                 "color":"#00204e"
              },
              {
                 "range":{
-                   "minimum":66,
-                   "exclusiveMaximum":70
+                   "minimum":39,
+                   "exclusiveMaximum":47
                 },
                 "color":"#0278da"
              },
              {
                 "range":{
-                   "minimum":70,
-                   "exclusiveMaximum":74
+                   "minimum":31,
+                   "exclusiveMaximum":39
                 },
                 "color":"#187d1d"
              },
              {
                 "range":{
-                   "minimum":74,
-                   "exclusiveMaximum":78
+                   "minimum":23,
+                   "exclusiveMaximum":31
                 },
                 "color":"#fef200"
              },
              {
                 "range":{
-                   "minimum":78,
-                   "exclusiveMaximum":82
+                   "minimum":15,
+                   "exclusiveMaximum":23
                 },
                 "color":"#fe8c01"
              },
              {
                 "range":{
-                   "minimum":82
+                   "minimum":15
                 },
                 "color":"#e71123"
              }
