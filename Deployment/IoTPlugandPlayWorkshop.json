@@ -5,7 +5,7 @@
     "UniqueID": {
       "type": "string",
       "metadata": {
-        "description": "Unique ID.  E.g. your name.  Must be Alphanumeric (a~z, 0~9), and 5~10 characters"
+        "description": "Unique ID.  E.g. your name.  Must be Alphanumeric (a~z, 0~9), and 5~12 characters"
       },
       "minLength": 5,
       "maxLength": 12
