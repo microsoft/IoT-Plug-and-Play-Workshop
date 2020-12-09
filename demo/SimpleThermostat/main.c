@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
             // process periodic tasks
             // e.g. sending telemetry
             processTelemetry(appContext);
-            ThreadAPI_Sleep(1000);
+            ThreadAPI_Sleep(3000);
         }
         else
         {
@@ -365,8 +365,17 @@ int processTelemetry(APP_CONTEXT* appContext)
 
     deviceClient = appContext->deviceClient;
 
-    g_currentTemperature = g_currentTemperature * 1.1;
+    double r = ((double) rand() / (RAND_MAX));
 
+    if (g_currentTemperature > 50)
+    {
+        g_currentTemperature = DEFAULT_TEMPERATURE_VALUE;
+    }
+    else
+    {
+        g_currentTemperature += -0.2 + (r * 1.2);
+    }
+    
     if (snprintf(temperatureStringBuffer, sizeof(temperatureStringBuffer), "{\"temperature\":%.02f}", g_currentTemperature) < 0)
     {
         LogError("snprintf of current temperature telemetry failed");
