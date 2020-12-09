@@ -3,7 +3,7 @@
 このドキュメントでは、ハンズオンで用いる サンプル IoT ソリューション のデプロイについて説明します  
 大きく分けて2つのステップがあります  
 
-1. Azure Resource Manager (ARM) テンプレートで 18 (!) 個の Azure サービスをデプロイし、設定する  
+1. Azure Resource Manager (ARM) テンプレートで 21 (!) 個の Azure サービスをデプロイし、設定する  
 1. 展開後にスクリプトを実行して、サービス間のアクセス許可を構成する
 
 ## 必須
@@ -43,7 +43,7 @@
 
     > [!TIP]  
     > 名前と命名規則の重複を避けるため、名前と数字の組み合わせを用いることを推奨します  
-    > 例: tahirai123  
+    > 例: tahirai12  
     ![Deployment 02](images/jp/deployment-02-red.png)  
 
 1. **確認および作成** をクリックします  
@@ -67,17 +67,25 @@
 > Bash または PowerShell のいずれか、作業方法に最適なシェルエクスペリエンスを柔軟に選択出来ます
 
 1. **出力** をクリックします  
-    3つの出力が確認出来ます  
+    5つの出力が確認出来ます  
     1. **Cloud Shell** へのリンク (*_Shell_Script_Url*)
     1. デプロイ後に実行するコマンド (*_Post_Deployment_Script*)
     1. WEB アプリケーション へのリンク (*_Web_Site_Address*)
+    1. Map データ作成コマンド (3日目に使います) (*_Map_Data_Generate*)
+    1. ADT Host 名 (3日目に使います) (*_ADT_Host_Name*)  
+
+    > [!NOTE]  
+    > 4.5. は後ほど使いますので、念のためメモ帳等にコピー＆ペーストください
+
     ![Deployment 06](images/jp/deployment-06.png)
 
 1. **Cloud Shell** を開きます  
     新しいブラウザタブ、またはウィンドウを開き、<https://shell.azure.com> に移動します
 
     > [!TIP]  
+    > 新しいタブ、またはウィンドウで開いた場合、ディレクトリの選択が必要な場合があります  
     > **Cloud Shell** を利用したことが無かった場合、ストレージを作成するよう指示されます
+    > ![Deployment 06](images/jp/deployment-06-storage.png)
 
 1. *Bash* Shell を利用していることを確認してください  
     もしそうでない場合には *Bash* に切り替えてください  
@@ -108,6 +116,8 @@
     DPS と会話して、個々の登録の作成、削除、及びプロビジョニング用の対称鍵を表示します  
 - Telemetry and Event  
     テレメトリーやイベントペイロードを表示します  
+    > [!NOTE]  
+    > 今回はハンズオンということで、不要なトラフィックによるトラブルを防ぐため、あえて手動更新にしています
 - Time Series Insights  
     接続されたデバイスが IoT Plug and Play に対応している場合、WEB アプリは Model ID を解決し、テレメトリーデータをライングラフとして表示します  
 - Azure Map  

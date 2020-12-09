@@ -1,9 +1,7 @@
-# Wio Terminal と Azure IoT Central で IoT PnP を体感する
+# IoT Plug and Play 対応デバイス (Wio Terminal) の接続
 このハンズオンラボでは、以下のことを体験します :
 
-- Azure IoT Central でアプリケーションを作成  
-- Wio Terminal + IoT PnP 無しで Azure IoT Central に接続する  
-- Wio Terminal + IoT PnP で Azure IoT Central に接続する  
+- Wio Terminal + IoT PnP を 
 
 想定時間は30分から1時間です  
 
