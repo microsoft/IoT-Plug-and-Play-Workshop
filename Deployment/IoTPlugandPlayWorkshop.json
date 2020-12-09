@@ -39,7 +39,6 @@
     "map-name": "[concat('IoTPnPWS-MAP-', parameters('UniqueID'))]",
     "adt-name": "[concat('IoTPnPWS-ADT-', parameters('UniqueID'))]",
     "adt-location": "westus2",
-    "adt-event-grid-topic": "[concat('ADT-EventGrid-Topic-', parameters('UniqueID'))]",
     "adtIdentity": "functionsidentity",
     "role-id-adt": "[resourceId('Microsoft.Authorization/roleDefinitions', 'bcd981a7-7f74-457b-83e1-cceb9e632ffe')]",
     "role-name-adt": "[guid(variables('adtIdentity'), variables('role-id-adt'))]",
@@ -642,34 +641,11 @@
       ]
     },
     {
-      "name": "[variables('adt-event-grid-topic')]",
-      "type": "Microsoft.EventGrid/topics",
-      "location": "[variables('adt-location')]",
-      "apiVersion": "2018-01-01",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', variables('webapp-functions-name'))]"
-      ]
-    },
-    {
       "type": "Microsoft.DigitalTwins/digitalTwinsInstances",
       "apiVersion": "2020-10-31",
       "name": "[variables('adt-name')]",
       "location": "[variables('adt-location')]",
       "properties": {}
-    },
-    {
-      "type": "Microsoft.DigitalTwins/digitalTwinsInstances/endpoints",
-      "apiVersion": "2020-10-31",
-      "name": "[concat(variables('adt-name'), '/ADTEventGridEP')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.DigitalTwins/digitalTwinsInstances', variables('adt-name'))]"
-      ],
-      "properties": {
-        "endpointType": "EventGrid",
-        "TopicEndpoint": "[reference(resourceId('Microsoft.EventGrid/topics', variables('adt-event-grid-topic'))).endpoint]",
-        "accessKey1": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('adt-event-grid-topic')), '2018-01-01').key1]",
-        "accessKey2": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('adt-event-grid-topic')), '2018-01-01').key2]"
-      }
     },
     {
       "type": "Microsoft.Maps/accounts",
