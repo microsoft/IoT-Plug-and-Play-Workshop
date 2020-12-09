@@ -35,7 +35,7 @@
       "name": "[concat(variables('eventgrid-adt-topic-name'), '/Microsoft.EventGrid/', variables('eventgrid-adt-subscription-name'))]",
       "location": "[variables('adt-location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topic-name'))]",
+        "[resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topic-name'))]"
       ],
       "properties": {
         "destination": {
@@ -66,9 +66,5 @@
     }
   ],
   "outputs": {
-    "return": {
-      "type": "String",
-      "value": "[concat(variables('webapp-functions-url'), listKeys(resourceId('Microsoft.Web/sites/host/', variables('webapp-functions-name'), 'default'),'2016-08-01').systemkeys.eventgrid_extension)]"
-    }
   }
 }
