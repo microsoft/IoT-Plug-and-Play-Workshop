@@ -124,3 +124,6 @@
     Azure Digital Twins 実装の確認として、インドアマップ を表示します  
 
 ![Deployment 15](images/Deployment-15.png)
+
+[トップページに戻ります](../)  
+
