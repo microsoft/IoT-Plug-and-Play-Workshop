@@ -26,8 +26,7 @@
       "type": "Microsoft.EventGrid/topics",
       "location": "[variables('adt-location')]",
       "apiVersion": "2018-01-01",
-      "dependsOn": [
-      ]
+      "dependsOn": []
     },
     {
       "type": "Microsoft.EventGrid/topics/providers/eventSubscriptions",
@@ -55,8 +54,7 @@
       "type": "Microsoft.DigitalTwins/digitalTwinsInstances/endpoints",
       "apiVersion": "2020-10-31",
       "name": "[concat(variables('adt-name'), '/ADTEventGridEP')]",
-      "dependsOn": [
-      ],
+      "dependsOn": [],
       "properties": {
         "endpointType": "EventGrid",
         "TopicEndpoint": "[reference(resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topic-name'))).endpoint]",
@@ -65,6 +63,5 @@
       }
     }
   ],
-  "outputs": {
-  }
+  "outputs": {}
 }
