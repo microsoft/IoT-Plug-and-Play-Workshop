@@ -16,11 +16,11 @@ az provider register --namespace Microsoft.DigitalTwins
 1. サンプル IoT ソリューション のデプロイ (30 min)
     1. ARM テンプレート とは  
     1. デプロイの流れ - サービスのデプロイと権限の設定は別で
-    1. [(手順) ARM テンプレートを用いて デプロイ](./deployment/readme.md)
+    1. [(手順) ARM テンプレートを用いて デプロイ](./deployment/)
     1. アーキテクチャ 箇条書き(ただし複雑過ぎないこと) *[!deck]*  
 
 ## SaaS - Azure IoT Central で体験  
-1. [(手順) Azure IoT Central + Wio Terminal の展開](./wioterminal/readme.md) (45 min)  
+1. [(手順) Azure IoT Central + Wio Terminal の展開](./wioterminal/) (45 min)  
     1. PaaS vs SaaS - Azure IoT Central は PaaS の集合体  
     1. IoT PnP 対応/非対応の違い (デバイスモデル有り無し)  
     1. IoT Plug and Play 非対応 デバイスの接続  
@@ -30,7 +30,7 @@ az provider register --namespace Microsoft.DigitalTwins
 1. サンプル IoT ソリューション トライアル (30 min)  
     1. Model Resolution (Service SDK)  
     1. Model Parser  
-    1. [(手順) IoT Plug and Play 対応デバイス (Wio Terminal) の接続](./wioterminal/sample.md)
+    1. [(手順) IoT Plug and Play 対応デバイス (Wio Terminal) の接続](./wioterminal)
 
     EXTRA. IoT Plug and Play 非対応 デバイスの接続 
 
@@ -38,7 +38,7 @@ az provider register --namespace Microsoft.DigitalTwins
        
 ### (DAY3 - PREP)  
 1. 以下のシミュレーターを使ってサンプルソリューションの動作を確認
-    - [(手順) IoT Plug and Play デバイス シミュレーター (温度計) の実行と接続](./simulator/readme.md)
+    - [(手順) IoT Plug and Play デバイス シミュレーター (温度計) の実行と接続](./simulator/)
 
 ### (DAY3 : 55 min) - **12/11 解放**  
 ## PaaS で体験 (応用編)

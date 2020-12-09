@@ -85,7 +85,7 @@ Wio Terminal を アプリケーション書き込みモード で起動しま�
 成功すると、PC のエクスプローラに *Arduino* という名前のドライブが表示されます  
 ![Explorer 01](images/explorer-01.png)
 
-2. *Arduino* ドライブに *uf2* 内の *NonPnP.uf2* をドラッグ＆ドロップします  
+2. *Arduino* ドライブに *uf2* フォルダ内の *NonPnP.uf2* をドラッグ＆ドロップします  
 書き込みに成功すると、Wio Terminal が自動的に再起動、アプリケーションが開始します  
 
 
@@ -119,7 +119,7 @@ Wio Terminal を アプリケーション書き込みモード で起動しま�
 1. Wio Terminal の本体左部にあるスライドスイッチを素早く2回下げます  
 成功すると、PC のエクスプローラに *Arduino* という名前のドライブが表示されます  
 
-2. *Arduino* ドライブに *uf2* 内の *PnP.uf2* をドラッグ＆ドロップします  
+2. *Arduino* ドライブに *uf2* フォルダ内の *PnP.uf2* をドラッグ＆ドロップします  
 書き込みに成功すると、Wio Terminal が自動的に再起動、アプリケーションが開始します
 
 ## 9. Azure IoT Central でデバイス登録を確認する
@@ -134,11 +134,13 @@ Wio Terminal が Azure IoT Central 内の DPS を通じてデバイス登録さ�
 これが IoT Plug and Play と IoT Plug and Play に対応した Azure IoT Central が実現する世界です  
 
 ## EXTRA-2. 光センサーに追加対応した Wio Terminal + IoT PnP を試す  
-Seeed Japan 松岡様のご厚意で、Wio Terminal 内蔵の光センサーを有効にしたアプリケーションをご用意いただきました( *uf2* 内の *wioterminal-azureiot-example* / 0.7 Release)  
+Seeed Japan 松岡様のご厚意で、Wio Terminal 内蔵の光センサーを有効にしたアプリケーションをご用意いただきました( *uf2* フォルダ内の *wioterminal-azureiot-example* / 0.7 Release)  
 このアプリケーションは、光センサーが出力する内容に対応したデバイスモデルを参照します  
 デバイスに機能拡張を行う場合を想像し、ここまでの一連の手続きに沿って試してみてください  
 
 ![IoTCentral 11](images/iotcentral-11.png)  
+
+[ワークショップ トップページに戻ります](../)  
 
 ## 参考URL :
 Azure Certified Device Catalog : 
