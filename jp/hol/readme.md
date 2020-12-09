@@ -13,11 +13,11 @@ az provider register --namespace Microsoft.DigitalTwins
 
 ### (DAY 2 - 1h55min)
 ## PaaS で体験 で用いるソリューションのデプロイ  
-1. サンプル IoT ソリューション のデプロイ (30 min)
+1. サンプル IoT ソリューション のデプロイ
     - ARM テンプレート とは  
     - デプロイの流れ - サービスのデプロイと権限の設定
     - ソリューション アーキテクチャ
-    - [(手順) ARM テンプレートを用いて デプロイ](./deployment/)
+    - [(手順) ARM テンプレートを用いて デプロイ](./deployment/) (30 min)
 
 ## SaaS - Azure IoT Central で体験  
 1. [(手順) Azure IoT Central + Wio Terminal の展開](./wioterminal/) (45 min)  
@@ -29,10 +29,10 @@ az provider register --namespace Microsoft.DigitalTwins
         EXTRA. 光センサー対応版の接続
 
 ## PaaS で体験
-1. サンプル IoT ソリューション トライアル (30 min)  
+1. サンプル IoT ソリューション トライアル
     - Model Resolution (Service SDK) とは  
     - Model Parser とは
-    - [(手順) IoT Plug and Play 対応デバイス (Wio Terminal) の接続](./wioterminal/sample.md)  
+    - [(手順) IoT Plug and Play 対応デバイス (Wio Terminal) の接続](./wioterminal/sample.md) (30 min)  
     EXTRA. IoT Plug and Play 非対応 デバイスの接続  
 
 1. ADT デモ (ワークショップ DAY.2) [!demo]
@@ -45,8 +45,8 @@ az provider register --namespace Microsoft.DigitalTwins
 ## PaaS で体験 (応用編)
 1. Azure Digital Twins と接続する
     - ADT と繋ぐってどういうこと? *[!deck]*
-    - ADT Explorer 環境構築 (10min) *[!page]*
-    - ADT シナリオの確認 (10min) - シミュレーターを実行、部屋の色が変わるのを確認 *[!page]*  
+    - (手順) ADT Explorer 環境構築 (10min) *[!page]*
+    - (手順) ADT シナリオの確認 (10min) - シミュレーターを実行、部屋の色が変わるのを確認 *[!page]*  
     EXTRA. Wio Terminal + 光センサー で確認  
 
 ***
