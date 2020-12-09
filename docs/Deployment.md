@@ -20,10 +20,7 @@ There are 2 major steps to deploy the sample IoT Solution.
 
 Click **Deploy to Azure** button below  
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fdaisukeiot%2FIoT-Plug-and-Play-Workshop-Deploy%2Fmain%2Fiotplugandplayworkshop.json" target="_blank"><img src="./media/deploy-to-azure.svg"/></a>
-
-ADT Version (For testing)  
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fdaisukeiot%2FIoT-Plug-and-Play-Workshop-Deploy%2Fmain%2Fiotplugandplayworkshop-adt.json" target="_blank"><img src="./media/deploy-to-azure.svg"/></a>
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FIoT-Plug-and-Play-Workshop%2Fmain%2FDeployment%2FIoTPlugandPlayWorkshop.json" target="_blank"><img src="./media/deploy-to-azure.svg"/></a>
 
 > [!TIP]  
 > Right click the button below and select **Open link in new tab** or **Open lin in new window**
