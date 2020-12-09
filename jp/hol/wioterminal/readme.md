@@ -138,7 +138,7 @@ Wio Terminal が Azure IoT Central 内の DPS を通じてデバイス登録さ�
 ![IoTCentral 10](images/iotcentral-10.png)  
 
 ## EXTRA-2. 光センサーに追加対応した Wio Terminal + IoT PnP を試す  
-Seeed Japan 松岡様のご厚意で、Wio Terminal 内蔵の光センサーを有効にしたアプリケーションをご用意いただきました( *uf2* フォルダ内の *wioterminal-azureiot-example* / 0.7 Release)  
+Seeed Japan 松岡様のご厚意で、Wio Terminal 内蔵の光センサーを有効にしたアプリケーションをご用意いただきました( *uf2* フォルダ内の *PnP-0.7.uf2*)  
 このアプリケーションは、光センサーが出力する内容に対応したデバイスモデルを参照します  
 デバイスに機能拡張を行う場合を想像し、ここまでの一連の手続きに沿って試してみてください  
 
