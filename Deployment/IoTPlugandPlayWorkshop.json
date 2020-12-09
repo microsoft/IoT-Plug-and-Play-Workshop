@@ -709,7 +709,7 @@
     },
     "_Map_Data_Generate": {
       "type": "String",
-      "value": "[concat('Invoke-Webrequest -q ', variables('script-url-map'), ' -o ./Indoormap.ps1 && ', 'pwsh ./Indoormap.ps1',' -mapSubscriptionKey ', listKeys(resourceId('Microsoft.Maps/accounts', variables('map-name')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' -resourceGroupName ', resourceGroup().name, ' -webAppName ', variables('webapp-web-name'), ' -functionsAppName ', variables('webapp-functions-name'))]"
+      "value": "[concat('Invoke-Webrequest ', variables('script-url-map'), ' -outfile ./Indoormap.ps1 ; ', './Indoormap.ps1 -mapSubscriptionKey ', listKeys(resourceId('Microsoft.Maps/accounts', variables('map-name')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' -resourceGroupName ', resourceGroup().name, ' -webAppName ', variables('webapp-web-name'), ' -functionsAppName ', variables('webapp-functions-name'))]"
     },
     "_ADT_Host_Name": {
       "type": "String",
