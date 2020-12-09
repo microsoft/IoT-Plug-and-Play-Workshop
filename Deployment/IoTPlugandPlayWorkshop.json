@@ -443,7 +443,7 @@
         "[resourceId('Microsoft.Web/Sites/sourcecontrols/', variables('webapp-web-name'),'web')]"
       ],
       "properties": {
-        "role-id-contributor": "[variables('role-id-adt')]",
+        "roleDefinitionId": "[variables('role-id-adt')]",
         "principalId": "[reference(resourceId('Microsoft.Web/sites', variables('webapp-functions-name')), '2020-06-01', 'Full').identity.principalId]",
         "scope": "[resourceGroup().id]",
         "principalType": "ServicePrincipal"
