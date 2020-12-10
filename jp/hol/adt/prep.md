@@ -1,4 +1,4 @@
-# ADT 環境、サンプル IoT ソリューション の準備
+# 準備編 : ADT 環境、サンプル IoT ソリューション の準備
 
 このページでは、PaaS で体験 (応用編) ハンズオンに向けた準備をご説明します
 
@@ -14,8 +14,9 @@
   az extension add --name azure-iot  
   ```  
 
-- Node.js のインストール
+- Node.js のインストール  
 <https://nodejs.org/ja/>  
+LTS版をインストールしてください (ADT Explorer で用います)  
 
 - ADT Explorer のダウンロード  
 <https://github.com/Azure-Samples/digital-twins-explorer/releases/download/235622/Azure_Digital_Twins__ADT__explorer.zip>  
@@ -61,9 +62,11 @@
     先ほどコピーした値を貼り付け、実行します  
     こちらは完了するのに10分強かかりますので、画面をそのままにして次のステップに進んでください  
 
+    ![PORTAL 02](images/jp/portal-02.png)  
+
 ## ステップ 3. ADT Explorer の設定  
 
-1. コマンドプロンプトを開き、Azure にログインします  
+1. PC で `コマンドプロンプト` を開き、Azure にログインします  
 
     ```bash
     az login
@@ -100,7 +103,7 @@
 10. 同じく `Azure Digital Twins 閲覧者 (プレビュー)` を選択し、選択で Azure ポータルにログインする際に用いたアカウント名を記入、表示されたアカウント をクリック、`保存` をクリックします  
 
     > [!NOTE]  
-    > 何故個別のアカウント追加が必要なのか?  
+    > 何故個別のアカウント追加が必要なのでしょうか？是非想像してみてください   
 
 11. ADT Explorer の画面に戻り、先ほどコピーした ADT URL を入力して `Save` をクリックします  
 
@@ -108,7 +111,35 @@
 
 ## ステップ 4. ADTClient の実行  
 
+ステップ 2. の最後で実行したスクリプトが終了していないか、`Cloud Shell` の確認してください
 
+1. ブラウザで Azure ポータルにログイン、サンプル IoT ソリューションを展開したリソースグループに移動します  
+2. `設定` から `デプロイ` を選択し、昨日行ったデプロイ名をクリックします  
+3. 左メニューの `出力` をクリックし、`_ADT_Host_Name` の値をコピーします  
+
+    ![PORTAL 01](images/jp/portal-01.png)  
+
+4. `Cloud Shell` で以下のコマンドを実行します  
+
+    ```bash
+    git clone https://github.com/microsoft/IoT-Plug-and-Play-Workshop.git  
+    cd  IoT-Plug-and-Play-Workshop/demo/ADTClient  
+    dotnet ./SampleClientApp.dll (_ADT_Host_Name)  
+    ```  
+
+5. `ADTClient` が起動してコマンド待ちになったら、`SetupBuildingScenario` と入力します  
+
+6. 処理が終わったのを確認したら、ステップ 3. の ADT Explorer の画面に戻ります  
+7. `Run Query` を実行すると `モデル` と `Contains` が作成されているのが確認出来ます  
+
+    ![ADT 01](images/jp/adt-01.png)  
 
 以上で準備は終了です  
 
+  > [!NOTE]  
+  > ADTClient はこの後の実践編でも使いますので、そのままにしておいてください  
+  > ただし20分でタイムアウトしますのでご注意ください   
+
+[ワークショップ トップページに戻ります](../)  
+
+***
