@@ -154,7 +154,6 @@ do {
 
 Start-Sleep -Seconds 5
 $resp = Invoke-RestMethod -method GET -uri "https://us.atlas.microsoft.com/wfs/datasets/03281239-439c-288b-9bb0-33a5cd53ba38/collections/unit/items?subscription-key=$mapSubscriptionKey&api-version=1.0"
-Write-Host $resp
 
 $bFound = $false
 $url = "https://us.atlas.microsoft.com/wfs/datasets/$dataSetId/collections/unit/items?api-version=1.0"
