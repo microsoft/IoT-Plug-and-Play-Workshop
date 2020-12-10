@@ -233,12 +233,12 @@ do {
     if ($resp.status -ne "Succeeded") {
         if ($Debug -eq $true) {
 
-            Write-Host "Conversion           : $($resp.status)"
+            Write-Host "Tileset              : $($resp.status)"
         }
         Start-Sleep -Seconds 3.0
     }
     else {
-        Write-Host "Conversion           : completed"
+        Write-Host "Tileset              : completed"
         $resLocation = [uri]$resp.resourceLocation
         $tileSetId = $resLocation.Segments[2]
         break;
@@ -320,7 +320,6 @@ if ($debug)
     Write-Host "Creating feature set"
 }
 $resp = Invoke-RestMethod -Uri "$url" -Method Post -ContentType 'application/json' -Body $stateSet
-Write-Host "Response Status      : $($resp.StatusCode)"
 
 $stateSetId = $resp.statesetId
 Write-Host "Stateset ID          : $($stateSetId)"
