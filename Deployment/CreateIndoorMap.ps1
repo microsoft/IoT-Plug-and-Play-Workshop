@@ -5,7 +5,7 @@ param([string] [Parameter(Mandatory=$true)] $mapSubscriptionKey,
 )
 
 $DeploymentScriptOutputs = @{}
-$Debug = $true
+$Debug = $false
 
 $progressPreference = 'silentlyContinue'
 $ErrorActionPreference = 'silentlyContinue'
