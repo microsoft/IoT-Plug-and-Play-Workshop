@@ -24,7 +24,9 @@
 まずは Azure IoT Central のアプリケーションインスタンスを作成します
 
 1. 以下の URL をクリックして Azure IoT Central を開きます  
-    <https://apps.azureiotcentral.com/>
+    <https://apps.azureiotcentral.com/>  
+    > [!TIP]  
+    > (この文章を参照し続けるため) ボタンを右クリックして **リンクを新しいタブで開く** または **リンクを新しいウィンドウで開く** とするのを推奨します
 
 1. 画面をスクロールさせ **カスタムアプリを作成する** をクリックします  
   
