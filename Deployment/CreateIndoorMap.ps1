@@ -24,7 +24,7 @@ Invoke-WebRequest -Uri $url -Method Get -OutFile ".\Drawing.zip"
 ##################################################
 # Step 2 : Upload Drawing data
 ##################################################
-$url = "https://atlas.microsoft.com/mapData/upload?api-version=1.0&dataFormat=zip&subscription-key=$($mapSubscriptionKey)"
+$url = "https://us.atlas.microsoft.com/mapData/upload?api-version=1.0&dataFormat=zip&subscription-key=$($mapSubscriptionKey)"
 $resp = Invoke-WebRequest -Uri $url -Method Post -ContentType 'application/octet-stream' -InFile ".\Drawing.zip"
 Write-Host "Response Status      : $($resp.StatusCode)"
 
