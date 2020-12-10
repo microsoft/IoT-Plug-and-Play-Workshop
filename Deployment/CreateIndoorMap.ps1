@@ -240,72 +240,37 @@ $stateSet = '{
              },
              {
                 "range":{
-                   "minimum":55,
-                   "exclusiveMaximum":60
-                },
-                "color":"#FF6619"
-             },
-             {
-                "range":{
                    "minimum":50,
-                   "exclusiveMaximum":55
-                },
-                "color":"#FFB319"
-             },
-             {
-                "range":{
-                   "minimum":45,
-                   "exclusiveMaximum":50
-                },
-                "color":"#FFFF19"
-             },
-             {
-                "range":{
-                   "minimum":40,
-                   "exclusiveMaximum":45
-                },
-                "color":"#B3FF19"
-             },
-             {
-                "range":{
-                   "minimum":35,
-                   "exclusiveMaximum":40
-                },
-                "color":"#40FF19"
-             },
-             {
-                "range":{
-                   "minimum":30,
-                   "exclusiveMaximum":35
+                   "exclusiveMaximum":60
                 },
                 "color":"#19FFD9"
              },
              {
                 "range":{
-                   "minimum":25,
-                   "exclusiveMaximum":30
+                   "minimum":40,
+                   "exclusiveMaximum":50
                 },
                 "color":"#1966FF"
              },
              {
                 "range":{
+                   "minimum":30,
+                   "exclusiveMaximum":40
+                },
+                "color":"#00E600"
+             },
+             {
+                "range":{
                    "minimum":20,
-                   "exclusiveMaximum":25
+                   "exclusiveMaximum":30
                 },
-                "color":"#8C19FF"
+                "color":"#33FFFF"
              },
              {
                 "range":{
-                   "minimum":15,
-                   "exclusiveMaximum":20
+                   "minimum":20
                 },
-                "color":"#FF19FF"
-             },
-             {
-                "range":{
-                   "minimum":15
-                },
-                "color":"#B3B3FF"
+                "color":"#CCF7FF"
              }
           ]
        }
