@@ -69,8 +69,8 @@ Wio Terminal を Configuration Mode (設定モード) で起動して、WiFi お
 1. Wi-Fi SSID と パスワードを入力します  
 
     ```bash
-    *set_wifissid (設定したいSSID)*  
-    *set_wifipwd (設定したいパスワード)*
+    set_wifissid (設定したいSSID)  
+    set_wifipwd (設定したいパスワード)  
     ```
 
     この後もう一度このターミナルを使いますので、開いたままにします  
@@ -109,6 +109,7 @@ set_az_iotc (スコープID) (主キー) (デバイスID)
 
 > [!TIPS]  
 > デバイスIDは一意である必要があります (例: *wio001nonpnp* など)  
+
 ![TeraTerm 04](images/teraterm-04.png)  
 
 書き込み後、TeraTerm を閉じます  
