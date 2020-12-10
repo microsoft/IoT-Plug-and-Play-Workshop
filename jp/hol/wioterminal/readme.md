@@ -196,11 +196,16 @@ IoT Plug and Play 対応デバイスとして Azure IoT Central に接続する�
 
 ## 参考資料
 
-- Azure Certified Device Catalog : <https://devicecatalog.azure.com/>  
-- Wio Terminal / Azure Certified Device Catalog :  <https://devicecatalog.azure.com/devices/8b9c5072-68fd-4fc3-8e5f-5b15e3a20bd9>  
-- Seeed Wio Terminal : <https://www.seeedstudio.com/Wio-Terminal-p-4509.html>  
-- Seeed Japan / wioterminal-aziot-example : <https://github.com/SeeedJP/wioterminal-aziot-example/releases>  
-- Azure IoT Central : <https://aka.ms/iotcentral>  
+- Azure Certified Device Catalog :  
+<https://devicecatalog.azure.com/>  
+- Wio Terminal / Azure Certified Device Catalog :  
+<https://devicecatalog.azure.com/devices/8b9c5072-68fd-4fc3-8e5f-5b15e3a20bd9>  
+- Seeed Wio Terminal :  
+<https://www.seeedstudio.com/Wio-Terminal-p-4509.html>  
+- Seeed Japan / wioterminal-aziot-example :  
+<https://github.com/SeeedJP/wioterminal-aziot-example/releases>  
+- Azure IoT Central :  
+<https://aka.ms/iotcentral>  
 
 ***
 
