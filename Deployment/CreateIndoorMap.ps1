@@ -148,6 +148,46 @@ do {
 } while ($true)
 
 Start-Sleep -Seconds 5
+$subscriptionKey = "rCm9jSC0mrj1gKJkQ2hh8EzKqztuPgUIXkLe2eftlpw"
+$resp = Invoke-RestMethod -method GET -uri "https://atlas.microsoft.com/wfs/datasets/03281239-439c-288b-9bb0-33a5cd53ba38/collections/unit/items?subscription-key=$subscriptionKey&api-version=1.0"
+Write-Host $resp
+
+$bFound = $false
+$url = "https://atlas.microsoft.com/wfs/datasets/$dataSetId/collections/unit/items?api-version=1.0"
+$unitId = ""
+
+do {
+
+    $resp = Invoke-RestMethod -method GET -uri "$url&subscription-key=$mapSubscriptionKey"
+    $url = ""
+    Foreach ($feature in $resp.features)
+    {
+        if ($feature.type -eq "Feature")
+        {
+            if ($feature.properties.name -eq "141")
+            {
+                $unitId = $feature.id;
+                $bFound = $true
+                break;
+            }
+        }
+    }
+
+    if ($bFound -eq $false)
+    {
+        Foreach ($link in $resp.links)
+        {
+            if ($link.rel -eq "next")
+            {
+                $url = $link.href;
+                break;
+            }
+        }
+    }    
+
+} while ($url -and ($bFound -eq $false))
+
+
 ##################################################
 # Step 5 : Create a tileset
 ##################################################
@@ -240,72 +280,37 @@ $stateSet = '{
              },
              {
                 "range":{
-                   "minimum":55,
-                   "exclusiveMaximum":60
-                },
-                "color":"#FF6619"
-             },
-             {
-                "range":{
                    "minimum":50,
-                   "exclusiveMaximum":55
-                },
-                "color":"#FFB319"
-             },
-             {
-                "range":{
-                   "minimum":45,
-                   "exclusiveMaximum":50
-                },
-                "color":"#FFFF19"
-             },
-             {
-                "range":{
-                   "minimum":40,
-                   "exclusiveMaximum":45
-                },
-                "color":"#B3FF19"
-             },
-             {
-                "range":{
-                   "minimum":35,
-                   "exclusiveMaximum":40
-                },
-                "color":"#40FF19"
-             },
-             {
-                "range":{
-                   "minimum":30,
-                   "exclusiveMaximum":35
+                   "exclusiveMaximum":60
                 },
                 "color":"#19FFD9"
              },
              {
                 "range":{
-                   "minimum":25,
-                   "exclusiveMaximum":30
+                   "minimum":40,
+                   "exclusiveMaximum":50
                 },
                 "color":"#1966FF"
              },
              {
                 "range":{
+                   "minimum":30,
+                   "exclusiveMaximum":40
+                },
+                "color":"#00E600"
+             },
+             {
+                "range":{
                    "minimum":20,
-                   "exclusiveMaximum":25
+                   "exclusiveMaximum":30
                 },
-                "color":"#8C19FF"
+                "color":"#33FFFF"
              },
              {
                 "range":{
-                   "minimum":15,
-                   "exclusiveMaximum":20
+                   "minimum":20
                 },
-                "color":"#FF19FF"
-             },
-             {
-                "range":{
-                   "minimum":15
-                },
-                "color":"#B3B3FF"
+                "color":"#CCF7FF"
              }
           ]
        }
@@ -362,5 +367,6 @@ ForEach ($item in $functionAppSettings) {
     $newFunctionAppSettings[$item.Name] = $item.Value
 }
 
+$newFunctionAppSettings['UnitId'] = $unitId
 $newFunctionAppSettings['StatesetId'] = $stateSetId
 Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $functionsAppName  -AppSettings $newFunctionAppSettings
