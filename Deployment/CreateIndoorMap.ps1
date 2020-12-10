@@ -48,7 +48,7 @@ do {
 } while ($true)
 
 # Check status
-$url = "https://atlas.microsoft.com/mapData/metadata/$($udid)?api-version=1.0&subscription-key=$($mapSubscriptionKey)"
+$url = "https://us.atlas.microsoft.com/mapData/metadata/$($udid)?api-version=1.0&subscription-key=$($mapSubscriptionKey)"
 if ($debug)
 {
     Write-Host "Calling RESTful API at $($url)"
@@ -66,7 +66,7 @@ $udid = $resp.udid
 # Step 3 : Convert a Drawing package
 ##################################################
 Start-Sleep -Seconds 5
-$url = "https://atlas.microsoft.com/conversion/convert?subscription-key=$($mapSubscriptionKey)&api-version=1.0&udid=$($udid)&inputType=DWG"
+$url = "https://us.atlas.microsoft.com/conversion/convert?subscription-key=$($mapSubscriptionKey)&api-version=1.0&udid=$($udid)&inputType=DWG"
 if ($debug)
 {
     Write-Host "Calling RESTful API at $($url)"
@@ -98,7 +98,7 @@ do {
 # Step 4 : Create a dataset
 ##################################################
 Start-Sleep -Seconds 5
-$url = "https://atlas.microsoft.com/dataset/create?api-version=1.0&conversionID=$($conversionId)&type=facility&subscription-key=$($mapSubscriptionKey)"
+$url = "https://us.atlas.microsoft.com/dataset/create?api-version=1.0&conversionID=$($conversionId)&type=facility&subscription-key=$($mapSubscriptionKey)"
 if ($debug)
 {
     Write-Host "Calling RESTful API at $($url)"
@@ -149,11 +149,11 @@ do {
 
 Start-Sleep -Seconds 5
 $subscriptionKey = "rCm9jSC0mrj1gKJkQ2hh8EzKqztuPgUIXkLe2eftlpw"
-$resp = Invoke-RestMethod -method GET -uri "https://atlas.microsoft.com/wfs/datasets/03281239-439c-288b-9bb0-33a5cd53ba38/collections/unit/items?subscription-key=$subscriptionKey&api-version=1.0"
+$resp = Invoke-RestMethod -method GET -uri "https://us.atlas.microsoft.com/wfs/datasets/03281239-439c-288b-9bb0-33a5cd53ba38/collections/unit/items?subscription-key=$subscriptionKey&api-version=1.0"
 Write-Host $resp
 
 $bFound = $false
-$url = "https://atlas.microsoft.com/wfs/datasets/$dataSetId/collections/unit/items?api-version=1.0"
+$url = "https://us.atlas.microsoft.com/wfs/datasets/$dataSetId/collections/unit/items?api-version=1.0"
 $unitId = ""
 
 do {
@@ -191,7 +191,7 @@ do {
 ##################################################
 # Step 5 : Create a tileset
 ##################################################
-$url = "https://atlas.microsoft.com/tileset/create/vector?api-version=1.0&datasetID=$($dataSetId)&subscription-key=$($mapSubscriptionKey)"
+$url = "https://us.atlas.microsoft.com/tileset/create/vector?api-version=1.0&datasetID=$($dataSetId)&subscription-key=$($mapSubscriptionKey)"
 if ($debug)
 {
     Write-Host "Calling RESTful API at $($url)"
@@ -244,10 +244,10 @@ if ($Debug -eq $true) {
     #
     # Query Dataset
     #
-    $url = "https://atlas.microsoft.com/wfs/datasets/$($dataSetId)/collections?subscription-key=$($mapSubscriptionKey)&api-version=1.0"
+    $url = "https://us.atlas.microsoft.com/wfs/datasets/$($dataSetId)/collections?subscription-key=$($mapSubscriptionKey)&api-version=1.0"
     Write-Host "Calling RESTful API at $($url)"
     $resp = Invoke-RestMethod -Uri $url -Method Get
-    $url = "https://atlas.microsoft.com/wfs/datasets/$($dataSetId)/collections/unit/items?subscription-key=$($mapSubscriptionKey)&api-version=1.0"
+    $url = "https://us.atlas.microsoft.com/wfs/datasets/$($dataSetId)/collections/unit/items?subscription-key=$($mapSubscriptionKey)&api-version=1.0"
 }
 
 Write-Host "Tileset ID           : $($tileSetId)"
@@ -307,7 +307,7 @@ $stateSet = '{
     ]
  }'
 
-$url = "https://atlas.microsoft.com/featureState/stateset?api-version=1.0&datasetId=$($dataSetId)&subscription-key=$($mapSubscriptionKey)"
+$url = "https://us.atlas.microsoft.com/featureState/stateset?api-version=1.0&datasetId=$($dataSetId)&subscription-key=$($mapSubscriptionKey)"
 if ($debug)
 {
     Write-Host "Calling RESTful API at $($url)"
@@ -323,12 +323,12 @@ Write-Host "Stateset ID          : $($stateSetId)"
 ##################################################
 # Step 7 : Delete Map Data
 ##################################################
-$url = "https://atlas.microsoft.com/mapData?subscription-key=$($mapSubscriptionKey)&api-version=1.0"
+$url = "https://us.atlas.microsoft.com/mapData?subscription-key=$($mapSubscriptionKey)&api-version=1.0"
 $mapData = Invoke-RestMethod -Uri $url -Method Get
 
 foreach ($mapDataItem in $mapData.mapDataList) {
     #Write-Host "Deleting $($mapDataItem.udid)"
-    $url = "https://atlas.microsoft.com/mapData/$($mapDataItem.udid)?subscription-key=$($mapSubscriptionKey)&api-version=1.0"
+    $url = "https://us.atlas.microsoft.com/mapData/$($mapDataItem.udid)?subscription-key=$($mapSubscriptionKey)&api-version=1.0"
     Invoke-RestMethod -Uri $url -Method Delete
 }
 
