@@ -5,34 +5,36 @@ param([string] [Parameter(Mandatory=$true)] $mapSubscriptionKey,
 )
 
 $DeploymentScriptOutputs = @{}
-$Debug = $false
+$Debug = $true
 
 $progressPreference = 'silentlyContinue'
 $ErrorActionPreference = 'silentlyContinue'
 $WarningPreference = "SilentlyContinue"
 
-Install-Module -Name AzureAD -SkipPublisherCheck -Force -AcceptLicense -AllowClobber
-Install-Module -Name Az.TimeSeriesInsights -SkipPublisherCheck -Force -AcceptLicense -AllowClobber
-Install-Module -Name Az.Websites -SkipPublisherCheck -Force -AcceptLicense -AllowClobber
+# Install-Module -Name AzureAD -SkipPublisherCheck -Force -AcceptLicense -AllowClobber
+# Install-Module -Name Az.TimeSeriesInsights -SkipPublisherCheck -Force -AcceptLicense -AllowClobber
+# Install-Module -Name Az.Websites -SkipPublisherCheck -Force -AcceptLicense -AllowClobber
 
 ##################################################
 # Step 1 : Download sample Drawing data
 ##################################################
 $url = "https://github.com/daisukeiot/IoT-Plug-and-Play-Workshop-Deploy/raw/main/MapData/Drawing.zip"
-Invoke-WebRequest -Uri $url -Method Get -OutFile ".\Drawing.zip"
+Invoke-WebRequest -Uri "$url" -Method Get -OutFile ".\Drawing.zip"
 
 ##################################################
 # Step 2 : Upload Drawing data
 ##################################################
 $url = "https://us.atlas.microsoft.com/mapData/upload?api-version=1.0&dataFormat=zip&subscription-key=$($mapSubscriptionKey)"
-$resp = Invoke-WebRequest -Uri $url -Method Post -ContentType 'application/octet-stream' -InFile ".\Drawing.zip"
+Write-Host "Uploading $($url)"
+Write-Host "Invoke-WebRequest -Uri "$url" -Method Post -ContentType 'application/octet-stream' -InFile '.\Drawing.zip'"
+$resp = Invoke-WebRequest -Uri "$url" -Method Post -ContentType 'application/octet-stream' -InFile '.\Drawing.zip'
 Write-Host "Response Status      : $($resp.StatusCode)"
 
 # Make sure the drawing was uploaded.
 $url = "$($resp.Headers.Location)&subscription-key=$($mapSubscriptionKey)" 
 
 do {
-    $resp = Invoke-RestMethod -Uri $url -Method Get
+    $resp = Invoke-RestMethod -Uri "$url" -Method Get
     if ($resp.status -ne "Succeeded") {
         if ($Debug -eq $true) {
             Write-Host "Upload : $($resp.status)"
@@ -53,7 +55,7 @@ if ($debug)
 {
     Write-Host "Calling RESTful API at $($url)"
 }
-$resp = Invoke-RestMethod -Uri $url -Method Get
+$resp = Invoke-RestMethod -Uri "$url" -Method Get
 
 # double check status
 if ($resp.uploadStatus -ne "Completed") {
@@ -73,13 +75,14 @@ if ($debug)
 } else {
     Write-Host "Start map data conversion"
 }
-$resp = Invoke-WebRequest -Uri $url -Method Post
+$resp = Invoke-WebRequest -Uri "$url" -Method Post
 Write-Host "Response Status      : $($resp.StatusCode)"
 
 # url to check operation status
 $url = "$($resp.Headers.Location)&subscription-key=$($mapSubscriptionKey)" 
+$url = $url.Replace("https://atlas", "https://us.atlas")
 do {
-    $resp = Invoke-RestMethod -Uri $url -Method Get
+    $resp = Invoke-RestMethod -Uri "$url" -Method Get
     if ($resp.status -ne "Succeeded") {
         if ($Debug -eq $true) {
             Write-Host "Conversion           : $($resp.status)"
@@ -111,7 +114,7 @@ if ($debug)
 do {
     try
     {
-        $resp = Invoke-WebRequest -Uri $url -Method Post 
+        $resp = Invoke-WebRequest -Uri "$url" -Method Post 
         if (($resp.StatusCode -eq 200) -or ($resp.StatusCode -eq 202))
         {
             break;
@@ -131,8 +134,10 @@ Write-Host "Response Status      : $($resp.StatusCode)"
 
 # url to check operation status
 $url = "$($resp.Headers.Location)&subscription-key=$($mapSubscriptionKey)" 
+$url = $url.Replace("https://atlas", "https://us.atlas")
+
 do {
-    $resp = Invoke-RestMethod -Uri $url -Method Get
+    $resp = Invoke-RestMethod -Uri "$url" -Method Get
     if ($resp.status -ne "Succeeded") {
         if ($Debug -eq $true) {
             Write-Host "Dataset              : $($resp.status)"
@@ -204,7 +209,7 @@ if ($debug)
 do {
     try
     {
-        $resp = Invoke-WebRequest -Uri $url -Method Post 
+        $resp = Invoke-WebRequest -Uri "$url" -Method Post 
         if (($resp.StatusCode -eq 200) -or ($resp.StatusCode -eq 202))
         {
             break;
@@ -223,8 +228,10 @@ Write-Host "Response Status      : $($resp.StatusCode)"
 
 # url to check operation status
 $url = "$($resp.Headers.Location)&subscription-key=$($mapSubscriptionKey)" 
+$url = $url.Replace("https://atlas", "https://us.atlas")
+
 do {
-    $resp = Invoke-RestMethod -Uri $url -Method Get
+    $resp = Invoke-RestMethod -Uri "$url" -Method Get
     if ($resp.status -ne "Succeeded") {
         if ($Debug -eq $true) {
 
@@ -246,7 +253,7 @@ if ($Debug -eq $true) {
     #
     $url = "https://us.atlas.microsoft.com/wfs/datasets/$($dataSetId)/collections?subscription-key=$($mapSubscriptionKey)&api-version=1.0"
     Write-Host "Calling RESTful API at $($url)"
-    $resp = Invoke-RestMethod -Uri $url -Method Get
+    $resp = Invoke-RestMethod -Uri "$url" -Method Get
     $url = "https://us.atlas.microsoft.com/wfs/datasets/$($dataSetId)/collections/unit/items?subscription-key=$($mapSubscriptionKey)&api-version=1.0"
 }
 
@@ -314,7 +321,7 @@ if ($debug)
 } else {
     Write-Host "Creating feature set"
 }
-$resp = Invoke-RestMethod -Uri $url -Method Post -ContentType 'application/json' -Body $stateSet
+$resp = Invoke-RestMethod -Uri "$url" -Method Post -ContentType 'application/json' -Body $stateSet
 Write-Host "Response Status      : $($resp.StatusCode)"
 
 $stateSetId = $resp.statesetId
@@ -324,12 +331,12 @@ Write-Host "Stateset ID          : $($stateSetId)"
 # Step 7 : Delete Map Data
 ##################################################
 $url = "https://us.atlas.microsoft.com/mapData?subscription-key=$($mapSubscriptionKey)&api-version=1.0"
-$mapData = Invoke-RestMethod -Uri $url -Method Get
+$mapData = Invoke-RestMethod -Uri "$url" -Method Get
 
 foreach ($mapDataItem in $mapData.mapDataList) {
     #Write-Host "Deleting $($mapDataItem.udid)"
     $url = "https://us.atlas.microsoft.com/mapData/$($mapDataItem.udid)?subscription-key=$($mapSubscriptionKey)&api-version=1.0"
-    Invoke-RestMethod -Uri $url -Method Delete
+    Invoke-RestMethod -Uri "$url" -Method Delete
 }
 
 ##################################################
