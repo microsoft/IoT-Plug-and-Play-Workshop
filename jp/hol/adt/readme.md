@@ -99,9 +99,9 @@ IoT Plug and Play デバイスとして動作する温度計シミュレータ�
     
     ```
 
-    ソリューション側ではデータを受け取っていることが各インできます
+    ソリューション側ではデータを受け取っていることが確認できます
 
-    ![Solution 00](images/jp/solution-00.png)
+    ![Solution 00](images/jp/Solution-00.png)
 
 ## ステップ 2. ADT Twin 状況を監視
 
