@@ -148,6 +148,46 @@ do {
 } while ($true)
 
 Start-Sleep -Seconds 5
+$subscriptionKey = "rCm9jSC0mrj1gKJkQ2hh8EzKqztuPgUIXkLe2eftlpw"
+$resp = Invoke-RestMethod -method GET -uri "https://atlas.microsoft.com/wfs/datasets/03281239-439c-288b-9bb0-33a5cd53ba38/collections/unit/items?subscription-key=$subscriptionKey&api-version=1.0"
+Write-Host $resp
+
+$bFound = $false
+$url = "https://atlas.microsoft.com/wfs/datasets/$dataSetId/collections/unit/items?api-version=1.0"
+$unitId = ""
+
+do {
+
+    $resp = Invoke-RestMethod -method GET -uri "$url&subscription-key=$mapSubscriptionKey"
+    $url = ""
+    Foreach ($feature in $resp.features)
+    {
+        if ($feature.type -eq "Feature")
+        {
+            if ($feature.properties.name -eq "141")
+            {
+                $unitId = $feature.id;
+                $bFound = $true
+                break;
+            }
+        }
+    }
+
+    if ($bFound -eq $false)
+    {
+        Foreach ($link in $resp.links)
+        {
+            if ($link.rel -eq "next")
+            {
+                $url = $link.href;
+                break;
+            }
+        }
+    }    
+
+} while ($url -and ($bFound -eq $false))
+
+
 ##################################################
 # Step 5 : Create a tileset
 ##################################################
@@ -327,5 +367,6 @@ ForEach ($item in $functionAppSettings) {
     $newFunctionAppSettings[$item.Name] = $item.Value
 }
 
+$newFunctionAppSettings['UnitId'] = $unitId
 $newFunctionAppSettings['StatesetId'] = $stateSetId
 Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $functionsAppName  -AppSettings $newFunctionAppSettings
