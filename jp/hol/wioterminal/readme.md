@@ -21,7 +21,7 @@
 
 ## ステップ 2: Azure IoT Central でアプリケーションを作成する
 
-まずは Azure IoT Central のアプリケーションインスタンスを作成します。
+まずは Azure IoT Central のアプリケーションインスタンスを作成します
 
 1. 以下の URL をクリックして Azure IoT Central を開きます  
     <https://apps.azureiotcentral.com/>
@@ -44,7 +44,7 @@
 
 ## ステップ 3: Wio Terminal の Wi-Fi 接続を設定する  
 
-Wio Terminal を Configuration Mode (設定モード) で起動して、WiFi および Azure IoT Central への接続情報を設定します。 
+Wio Terminal を Configuration Mode (設定モード) で起動して、WiFi および Azure IoT Central への接続情報を設定します  
 
 > [!NOTE]  
 > Wio Terminal ご購入直後は、まず Wi-Fi のファームウェア更新が必要です  
@@ -79,7 +79,7 @@ Wio Terminal を Configuration Mode (設定モード) で起動して、WiFi お
 
 ## ステップ 4: Azure IoT Central アプリケーションからデバイス接続情報を入手する
 
-デバイスを Azure IoT Central に接続するための認証情報（キー）を入手し、Wio Terminal に設定します。
+デバイスを Azure IoT Central に接続するための認証情報（キー）を入手し、Wio Terminal に設定します  
 
 1. 左メニューの **管理** - **デバイス接続** をクリックします  
 
@@ -146,7 +146,7 @@ Wio Terminal が Azure IoT Central 内の DPS を通じてデバイス登録さ�
 
 ## ステップ 8: IoT Plug and Play 対応デバイスとして接続
 
-IoT Plug and Play 対応デバイスとして Azure IoT Central に接続するために以下の２つの作業を行います。
+IoT Plug and Play 対応デバイスとして Azure IoT Central に接続するために以下の２つの作業を行います  
 
 - 別デバイスとして接続するために、Wio Terminal の設定を変更する
 - IoT Plug and Play 対応ファームウェアに更新する

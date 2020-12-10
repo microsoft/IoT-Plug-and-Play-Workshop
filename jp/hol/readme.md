@@ -35,7 +35,7 @@ az provider register --namespace Microsoft.DigitalTwins
 
 ### サンプルソリューションのデプロイ  
 
-"PaaS - Azure Services で体験" で用いるサンプル IoT ソリューションを Azure Resource Management (ARM) テンプレートを使用してデプロイします。
+"PaaS - Azure Services で体験" で用いるサンプル IoT ソリューションを Azure Resource Management (ARM) テンプレートを使用してデプロイします  
 
 [(手順) ARM テンプレートを用いてデプロイ](./deployment/) (30 min)
 
@@ -45,8 +45,8 @@ az provider register --namespace Microsoft.DigitalTwins
 
 ### SaaS - Azure IoT Central で体験  
 
-IoT Plug and Play をサポートした SaaS : Azure IoT Central を使用して IoT Plug and Play 対応・非対応デバイスを接続した際のユーザーエクスペリエンスを体験します。
-IoT Plug and Play を使ってデバイスがソリューションに供給するメタデータ = Device Model を活用した例の一つ。
+IoT Plug and Play をサポートした SaaS : Azure IoT Central を使用して IoT Plug and Play 対応・非対応デバイスを接続した際のユーザーエクスペリエンスを体験します  
+IoT Plug and Play を使ってデバイスがソリューションに供給するメタデータ = Device Model を活用した例の一つ  
 
 [(手順) Azure IoT Central + Wio Terminal の接続](./wioterminal/) (45 min)  
 
@@ -58,7 +58,7 @@ IoT Plug and Play を使ってデバイスがソリューションに供給す�
 
 ### PaaS - Azure Platform Services で体験
 
-PaaS ベースのソリューションを使用してテクニカルディープダイブ。ソリューション側の仕組みを見てみます。
+PaaS ベースのソリューションを使用してテクニカルディープダイブ。ソリューション側の仕組みを見てみます  
 
 [(手順) IoT Plug and Play 対応デバイス (Wio Terminal) の接続](./wioterminal/sample.md) (30 min)
 
@@ -71,7 +71,7 @@ PaaS ベースのソリューションを使用してテクニカルディープ
 
 ### (宿題) : シミュレーターを使ってソリューションの動作を確認  
 
-DAY.2 で使用するシミュレーターデバイスの動作確認をしてください。
+DAY.2 で使用するシミュレーターデバイスの動作確認をしてください  
 
 [(手順) IoT Plug and Play デバイス シミュレーター (温度計) の実行と接続](./simulator/)  
 
