@@ -153,7 +153,9 @@ do {
 } while ($true)
 
 Start-Sleep -Seconds 5
-$resp = Invoke-RestMethod -method GET -uri "https://us.atlas.microsoft.com/wfs/datasets/03281239-439c-288b-9bb0-33a5cd53ba38/collections/unit/items?subscription-key=$mapSubscriptionKey&api-version=1.0"
+$resp = Invoke-RestMethod -method GET -uri "https://us.atlas.microsoft.com/wfs/datasets/$dataSetId/collections/unit/items?subscription-key=$mapSubscriptionKey&api-version=1.0"
+Write-Host "Resp $resp"
+Write-Host "Searching Feature : Dataset ID $dataSetId"
 
 $bFound = $false
 $url = "https://us.atlas.microsoft.com/wfs/datasets/$dataSetId/collections/unit/items?api-version=1.0"
@@ -161,14 +163,20 @@ $unitId = ""
 
 do {
 
+    Write-Host "Searching at $url"
     $resp = Invoke-RestMethod -method GET -uri "$url&subscription-key=$mapSubscriptionKey"
     $url = ""
     Foreach ($feature in $resp.features)
     {
         if ($feature.type -eq "Feature")
         {
+            if ($debug)
+            {
+                Write-Host "Feature : $($feature.properties.name) ID : $($feature.id)"
+            }
             if ($feature.properties.name -eq "141")
             {
+                Write-Host "***************** Found!!!****************"
                 $unitId = $feature.id;
                 $bFound = $true
                 break;
@@ -183,12 +191,13 @@ do {
             if ($link.rel -eq "next")
             {
                 $url = $link.href;
+                $url = $url.Replace("https://atlas", "https://us.atlas")
                 break;
             }
         }
     }    
 
-} while ($url -and ($bFound -eq $false))
+} while (($url -ne "") -and ($bFound -eq $false))
 
 
 ##################################################
