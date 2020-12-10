@@ -98,7 +98,7 @@ WEB ブラウザで `Azure Portal` に移動します
 WEB ブラウザの `サンプル IoT ソリューション` の画面に戻ります  
 画面上のインドアマップ、特に Room 141 にご注目ください...  
 
-  ![Sample 04](images/sample-04.png)  
+  ![Sample 04](images/jp/sample-04.png)  
 
 何かが起きるのを確認されましたら、実践編の作業は完了です  
 
