@@ -21,10 +21,12 @@
 
 ## ステップ 2: Azure IoT Central でアプリケーションを作成する
 
-まずは Azure IoT Central のアプリケーションインスタンスを作成します。
+まずは Azure IoT Central のアプリケーションインスタンスを作成します
 
 1. 以下の URL をクリックして Azure IoT Central を開きます  
-    <https://apps.azureiotcentral.com/>
+    <https://apps.azureiotcentral.com/>  
+    > [!TIP]  
+    > (この文章を参照し続けるため) ボタンを右クリックして **リンクを新しいタブで開く** または **リンクを新しいウィンドウで開く** とするのを推奨します
 
 1. 画面をスクロールさせ **カスタムアプリを作成する** をクリックします  
   
@@ -44,7 +46,7 @@
 
 ## ステップ 3: Wio Terminal の Wi-Fi 接続を設定する  
 
-Wio Terminal を Configuration Mode (設定モード) で起動して、WiFi および Azure IoT Central への接続情報を設定します。 
+Wio Terminal を Configuration Mode (設定モード) で起動して、WiFi および Azure IoT Central への接続情報を設定します  
 
 > [!NOTE]  
 > Wio Terminal ご購入直後は、まず Wi-Fi のファームウェア更新が必要です  
@@ -69,8 +71,8 @@ Wio Terminal を Configuration Mode (設定モード) で起動して、WiFi お
 1. Wi-Fi SSID と パスワードを入力します  
 
     ```bash
-    *set_wifissid (設定したいSSID)*  
-    *set_wifipwd (設定したいパスワード)*
+    set_wifissid (設定したいSSID)  
+    set_wifipwd (設定したいパスワード)  
     ```
 
     この後もう一度このターミナルを使いますので、開いたままにします  
@@ -79,7 +81,7 @@ Wio Terminal を Configuration Mode (設定モード) で起動して、WiFi お
 
 ## ステップ 4: Azure IoT Central アプリケーションからデバイス接続情報を入手する
 
-デバイスを Azure IoT Central に接続するための認証情報（キー）を入手し、Wio Terminal に設定します。
+デバイスを Azure IoT Central に接続するための認証情報（キー）を入手し、Wio Terminal に設定します  
 
 1. 左メニューの **管理** - **デバイス接続** をクリックします  
 
@@ -104,11 +106,12 @@ Wio Terminal を Configuration Mode (設定モード) で起動して、WiFi お
 TeraTerm の画面に戻って Azure IoT Central の接続情報を書き込みます
 
 ```bash
-*set_az_iotc (スコープID) (主キー) (デバイスID)*
+set_az_iotc (スコープID) (主キー) (デバイスID)
 ```
 
 > [!TIPS]  
 > デバイスIDは一意である必要があります (例: *wio001nonpnp* など)  
+
 ![TeraTerm 04](images/teraterm-04.png)  
 
 書き込み後、TeraTerm を閉じます  
@@ -145,7 +148,7 @@ Wio Terminal が Azure IoT Central 内の DPS を通じてデバイス登録さ�
 
 ## ステップ 8: IoT Plug and Play 対応デバイスとして接続
 
-IoT Plug and Play 対応デバイスとして Azure IoT Central に接続するために以下の２つの作業を行います。
+IoT Plug and Play 対応デバイスとして Azure IoT Central に接続するために以下の２つの作業を行います  
 
 - 別デバイスとして接続するために、Wio Terminal の設定を変更する
 - IoT Plug and Play 対応ファームウェアに更新する
@@ -156,7 +159,7 @@ IoT Plug and Play 対応デバイスとして Azure IoT Central に接続する�
 1. TeraTerm で Azure IoT Central の接続情報を書き込みます  
 
     ```bash
-    *set_az_iotc (スコープID) (主キー) (デバイスID)* 
+    set_az_iotc (スコープID) (主キー) (デバイスID)
     ```
 
     書き込み後、TeraTerm を閉じます  
@@ -195,11 +198,16 @@ IoT Plug and Play 対応デバイスとして Azure IoT Central に接続する�
 
 ## 参考資料
 
-- Azure Certified Device Catalog : <https://devicecatalog.azure.com/>  
-- Wio Terminal / Azure Certified Device Catalog :  <https://devicecatalog.azure.com/devices/8b9c5072-68fd-4fc3-8e5f-5b15e3a20bd9>  
-- Seeed Wio Terminal : <https://www.seeedstudio.com/Wio-Terminal-p-4509.html>  
-- Seeed Japan / wioterminal-aziot-example : <https://github.com/SeeedJP/wioterminal-aziot-example/releases>  
-- Azure IoT Central : <https://aka.ms/iotcentral>  
+- Azure Certified Device Catalog :  
+<https://devicecatalog.azure.com/>  
+- Wio Terminal / Azure Certified Device Catalog :  
+<https://devicecatalog.azure.com/devices/8b9c5072-68fd-4fc3-8e5f-5b15e3a20bd9>  
+- Seeed Wio Terminal :  
+<https://www.seeedstudio.com/Wio-Terminal-p-4509.html>  
+- Seeed Japan / wioterminal-aziot-example :  
+<https://github.com/SeeedJP/wioterminal-aziot-example/releases>  
+- Azure IoT Central :  
+<https://aka.ms/iotcentral>  
 
 ***
 
