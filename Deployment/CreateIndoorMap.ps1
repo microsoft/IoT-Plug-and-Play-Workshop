@@ -313,7 +313,8 @@ $stateSet = '{
              },
              {
                 "range":{
-                   "minimum":20
+                   "minimum":00
+                   "exclusiveMaximum":20
                 },
                 "color":"#CCF7FF"
              }
