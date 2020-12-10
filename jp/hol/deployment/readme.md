@@ -97,8 +97,8 @@ Time Series Insights のデータアクセス権限の設定をまとめたス�
 
     > [!TIP]  
     > 新しいタブ、またはウィンドウで開いた場合、ディレクトリの選択が必要な場合があります  
-    > **Cloud Shell** を利用したことが無かった場合、ストレージを作成するよう指示されます
-    > ![Deployment 06](images/jp/deployment-06-storage.png)
+    > **Cloud Shell** を利用したことが無かった場合、ストレージを作成するよう指示されます  
+    ![Deployment 06](images/jp/deployment-06-storage.png)
 
 1. *Bash* Shell を利用していることを確認してください  
 

@@ -104,7 +104,7 @@ Wio Terminal を Configuration Mode (設定モード) で起動して、WiFi お
 TeraTerm の画面に戻って Azure IoT Central の接続情報を書き込みます
 
 ```bash
-*set_az_iotc (スコープID) (主キー) (デバイスID)*
+set_az_iotc (スコープID) (主キー) (デバイスID)
 ```
 
 > [!TIPS]  
@@ -156,7 +156,7 @@ IoT Plug and Play 対応デバイスとして Azure IoT Central に接続する�
 1. TeraTerm で Azure IoT Central の接続情報を書き込みます  
 
     ```bash
-    *set_az_iotc (スコープID) (主キー) (デバイスID)* 
+    set_az_iotc (スコープID) (主キー) (デバイスID)
     ```
 
     書き込み後、TeraTerm を閉じます  
