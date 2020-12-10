@@ -273,7 +273,7 @@ Start-Sleep -Seconds 5.0
 $stateSet = '{
     "styles":[
        {
-          "keyname":"temperature",
+          "keyname":"Temperature",
           "type":"number",
           "rules":[
              {
