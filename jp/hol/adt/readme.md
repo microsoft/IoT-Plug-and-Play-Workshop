@@ -116,6 +116,12 @@ IoT Plug and Play デバイスとして動作する温度計シミュレータ�
 > dotnet ./SampleClientApp.dll (_ADT_Host_Name)  
 > ```
 
+モデルとノードを作成します
+
+```bash
+SetupBuildingScenario
+```
+
 以下のコマンドを入力して、ツインノードの `Temperature` プロパティーを定期的にモニターします
 
 ```bash
