@@ -273,13 +273,12 @@ Start-Sleep -Seconds 5.0
 $stateSet = '{
     "styles":[
        {
-          "keyname":"temperature",
+          "keyname":"Temperature",
           "type":"number",
           "rules":[
              {
                 "range":{
-                    "minimum":60,
-                    "exclusiveMaximum":70
+                   "exclusiveMaximum":60
                 },
                 "color":"#FF1919"
              },
