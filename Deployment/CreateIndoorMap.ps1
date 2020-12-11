@@ -11,9 +11,9 @@ $progressPreference = 'silentlyContinue'
 $ErrorActionPreference = 'silentlyContinue'
 $WarningPreference = "SilentlyContinue"
 
-# Install-Module -Name AzureAD -SkipPublisherCheck -Force -AcceptLicense -AllowClobber
-# Install-Module -Name Az.TimeSeriesInsights -SkipPublisherCheck -Force -AcceptLicense -AllowClobber
-# Install-Module -Name Az.Websites -SkipPublisherCheck -Force -AcceptLicense -AllowClobber
+Install-Module -Name AzureAD -SkipPublisherCheck -Force -AcceptLicense -AllowClobber
+Install-Module -Name Az.TimeSeriesInsights -SkipPublisherCheck -Force -AcceptLicense -AllowClobber
+Install-Module -Name Az.Websites -SkipPublisherCheck -Force -AcceptLicense -AllowClobber
 
 ##################################################
 # Step 1 : Download sample Drawing data
@@ -273,7 +273,7 @@ Start-Sleep -Seconds 5.0
 $stateSet = '{
     "styles":[
        {
-          "keyname":"Temperature",
+          "keyname":"temperature",
           "type":"number",
           "rules":[
              {
