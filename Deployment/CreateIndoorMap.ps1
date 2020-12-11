@@ -5,7 +5,7 @@ param([string] [Parameter(Mandatory=$true)] $mapSubscriptionKey,
 )
 
 $DeploymentScriptOutputs = @{}
-$Debug = $false
+$Debug = $true
 
 $progressPreference = 'silentlyContinue'
 $ErrorActionPreference = 'silentlyContinue'
@@ -320,7 +320,7 @@ $stateSet = '{
        }
     ]
  }'
- 
+
 $url = "https://us.atlas.microsoft.com/featureState/stateset?api-version=1.0&datasetId=$($dataSetId)&subscription-key=$($mapSubscriptionKey)"
 if ($debug)
 {
