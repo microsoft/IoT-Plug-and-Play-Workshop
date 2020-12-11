@@ -278,30 +278,9 @@ $stateSet = '{
           "rules":[
              {
                 "range":{
-                   "exclusiveMaximum":60
+                   "exclusiveMaximum":20
                 },
-                "color":"#FF1919"
-             },
-             {
-                "range":{
-                   "minimum":50,
-                   "exclusiveMaximum":60
-                },
-                "color":"#19FFD9"
-             },
-             {
-                "range":{
-                   "minimum":40,
-                   "exclusiveMaximum":50
-                },
-                "color":"#1966FF"
-             },
-             {
-                "range":{
-                   "minimum":30,
-                   "exclusiveMaximum":40
-                },
-                "color":"#00E600"
+                "color":"#CCF7FF"
              },
              {
                 "range":{
@@ -312,15 +291,36 @@ $stateSet = '{
              },
              {
                 "range":{
-                   "minimum":20
+                   "minimum":30,
+                   "exclusiveMaximum":40
                 },
-                "color":"#CCF7FF"
+                "color":"#00E600"
+             },
+             {
+                "range":{
+                   "minimum":40,
+                   "exclusiveMaximum":50
+                },
+                "color":"#1966FF"
+             },
+             {
+                "range":{
+                   "minimum":50,
+                   "exclusiveMaximum":60
+                },
+                "color":"#19FFD9"
+             },
+             {
+                "range":{
+                   "minimum":60
+                },
+                "color":"#FF1919"
              }
           ]
        }
     ]
  }'
-
+ 
 $url = "https://us.atlas.microsoft.com/featureState/stateset?api-version=1.0&datasetId=$($dataSetId)&subscription-key=$($mapSubscriptionKey)"
 if ($debug)
 {
