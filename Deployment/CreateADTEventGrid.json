@@ -13,7 +13,7 @@
   },
   "variables": {
     "webapp-functions-name": "[concat('IoTPnPWS-Functions-', parameters('UniqueID'))]",
-    "webapp-functions-eventgrid": "AdtEventGrid_Processor",
+    "webapp-functions-eventgrid": "DigitalTwin_EventGrid_Processor",
     "webapp-functions-url": "[concat('https://', variables('webapp-functions-name'),'.azurewebsites.net/runtime/webhooks/eventgrid?functionName=', variables('webapp-functions-eventgrid'),'&code=')]",
     "eventgrid-adt-topic-name": "[concat('ADT-EventGrid-Topic-', parameters('UniqueID'))]",
     "eventgrid-adt-subscription-name": "[concat('ADT-EventGrid-Subscription-', parameters('UniqueID'))]",

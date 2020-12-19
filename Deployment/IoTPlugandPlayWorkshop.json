@@ -16,7 +16,7 @@
     "script-url-tsi": "https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/main/Deployment/ConfigureTSI.sh",
     "git-repo-url-webapp": "https://github.com/daisukeiot/IoTPnP-WS-WebApp.git",
     "git-repo-branch-webapp": "main",
-    "git-repo-url-functions": "https://github.com/daisukeiot/IoTPnP-WS-Functions.git",
+    "git-repo-url-functions": "https://github.com/daisukeiot/IoT-Plug-and-Play-Workshop-Functions.git",
     "git-repo-branch-functions": "main",
     "iothub-name": "[concat('IoTPnPWS-Hub-', parameters('UniqueID'))]",
     "hub-cg-eventhubs": "[concat('IoTPnPWS-Hub-', parameters('UniqueID'), '/events/eventhubs-cg')]",
