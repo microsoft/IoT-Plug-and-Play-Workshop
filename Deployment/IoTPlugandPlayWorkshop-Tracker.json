@@ -71,7 +71,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Authorization/roleAssignments', variables('role-name-adt'))]",
-        "[resourceId('Microsoft.EventGrid/systemTopics/IoTHubSystemTopic', variables('hub-eventgrid-system-topic'), '/DeviceManagementEventSubscription')]"
+        "[resourceId('Microsoft.EventGrid/systemTopics/', variables('hub-eventgrid-system-topic'), '/DeviceManagementEventSubscription')]"
       ],
       "kind": "AzureCLI",
       "properties": {
