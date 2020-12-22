@@ -70,7 +70,8 @@
       "name": "webAppDeployed",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Authorization/roleAssignments', variables('role-name-adt'))]"
+        "[resourceId('Microsoft.Authorization/roleAssignments', variables('role-name-adt'))]",
+        "[resourceId('Microsoft.EventGrid/systemTopics/IoTHubSystemTopic', variables('hub-eventgrid-system-topic'), '/DeviceManagementEventSubscription')]"
       ],
       "kind": "AzureCLI",
       "properties": {
