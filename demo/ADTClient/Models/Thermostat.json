@@ -1,7 +1,7 @@
 {
   "@id": "dtmi:com:example:Thermostat;1",
   "@type": "Interface",
-  "displayName": "Thermostat interface model",
+  "displayName": "Thermostat Model",
   "@context": "dtmi:dtdl:context;2",
   "contents": [
     {

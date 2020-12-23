@@ -152,52 +152,52 @@ do {
     }
 } while ($true)
 
-Start-Sleep -Seconds 5
-$resp = Invoke-RestMethod -method GET -uri "https://us.atlas.microsoft.com/wfs/datasets/$dataSetId/collections/unit/items?subscription-key=$mapSubscriptionKey&api-version=1.0"
-Write-Host "Resp $resp"
-Write-Host "Searching Feature : Dataset ID $dataSetId"
+# Start-Sleep -Seconds 5
+# $resp = Invoke-RestMethod -method GET -uri "https://us.atlas.microsoft.com/wfs/datasets/$dataSetId/collections/unit/items?subscription-key=$mapSubscriptionKey&api-version=1.0"
+# Write-Host "Resp $resp"
+# Write-Host "Searching Feature : Dataset ID $dataSetId"
 
-$bFound = $false
-$url = "https://us.atlas.microsoft.com/wfs/datasets/$dataSetId/collections/unit/items?api-version=1.0"
-$unitId = ""
+# $bFound = $false
+# $url = "https://us.atlas.microsoft.com/wfs/datasets/$dataSetId/collections/unit/items?api-version=1.0"
+# $unitId = ""
 
-do {
+# do {
 
-    Write-Host "Searching at $url"
-    $resp = Invoke-RestMethod -method GET -uri "$url&subscription-key=$mapSubscriptionKey"
-    $url = ""
-    Foreach ($feature in $resp.features)
-    {
-        if ($feature.type -eq "Feature")
-        {
-            if ($debug)
-            {
-                Write-Host "Feature : $($feature.properties.name) ID : $($feature.id)"
-            }
-            if ($feature.properties.name -eq "141")
-            {
-                Write-Host "***************** Found!!!****************"
-                $unitId = $feature.id;
-                $bFound = $true
-                break;
-            }
-        }
-    }
+#     Write-Host "Searching at $url"
+#     $resp = Invoke-RestMethod -method GET -uri "$url&subscription-key=$mapSubscriptionKey"
+#     $url = ""
+#     Foreach ($feature in $resp.features)
+#     {
+#         if ($feature.type -eq "Feature")
+#         {
+#             if ($debug)
+#             {
+#                 Write-Host "Feature : $($feature.properties.name) ID : $($feature.id)"
+#             }
+#             if ($feature.properties.name -eq "141")
+#             {
+#                 Write-Host "***************** Found!!!****************"
+#                 $unitId = $feature.id;
+#                 $bFound = $true
+#                 break;
+#             }
+#         }
+#     }
 
-    if ($bFound -eq $false)
-    {
-        Foreach ($link in $resp.links)
-        {
-            if ($link.rel -eq "next")
-            {
-                $url = $link.href;
-                $url = $url.Replace("https://atlas", "https://us.atlas")
-                break;
-            }
-        }
-    }    
+#     if ($bFound -eq $false)
+#     {
+#         Foreach ($link in $resp.links)
+#         {
+#             if ($link.rel -eq "next")
+#             {
+#                 $url = $link.href;
+#                 $url = $url.Replace("https://atlas", "https://us.atlas")
+#                 break;
+#             }
+#         }
+#     }    
 
-} while (($url -ne "") -and ($bFound -eq $false))
+# } while (($url -ne "") -and ($bFound -eq $false))
 
 
 ##################################################
@@ -372,4 +372,6 @@ ForEach ($item in $functionAppSettings) {
 
 $newFunctionAppSettings['UnitId'] = $unitId
 $newFunctionAppSettings['StatesetId'] = $stateSetId
+$newFunctionAppSettings['DatasetId'] = $dataSetId
+
 Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $functionsAppName  -AppSettings $newFunctionAppSettings
