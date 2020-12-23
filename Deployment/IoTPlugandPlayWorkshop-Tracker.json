@@ -12,12 +12,12 @@
     }
   },
   "variables": {
-    "script-url-map": "https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/main/Deployment/CreateIndoorMap.ps1",
+    "script-url-map": "https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/daisuke-wip/Deployment/CreateIndoorMap.ps1",
     "script-url-tsi": "https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/daisuke-wip/Deployment/ConfigureTSI-Tracker.sh",
     "git-repo-url-webapp": "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-WebApp.git",
     "git-repo-branch-webapp": "main",
     "git-repo-url-functions": "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-Functions.git",
-    "git-repo-branch-functions": "main",
+    "git-repo-branch-functions": "daisuken-wip",
     "iothub-name": "[concat('IoTPnPWS-Hub-', parameters('UniqueID'))]",
     "hub-cg-eventhubs": "[concat('IoTPnPWS-Hub-', parameters('UniqueID'), '/events/eventhubs-cg')]",
     "hub-eventgrid-system-topic": "IoTHubSystemTopic",
