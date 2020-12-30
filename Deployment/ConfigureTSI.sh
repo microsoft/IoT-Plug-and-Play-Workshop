@@ -5,7 +5,6 @@ az extension add --name timeseriesinsights --yes
 uniqueId=$1
 resGroup=$2
 trackerUrl=$3
-
 webAppName="IoTPnPWS-Portal-${uniqueId}"
 tsiName="IoTPnPWS-TSI-${uniqueId}"
 
