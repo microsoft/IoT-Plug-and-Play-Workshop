@@ -14,9 +14,9 @@
   "variables": {
     "script-url-map": "https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/main/Deployment/CreateIndoorMap.ps1",
     "script-url-tsi": "https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/main/Deployment/ConfigureTSI.sh",
-    "git-repo-url-webapp": "https://github.com/daisukeiot/IoTPnP-WS-WebApp.git",
+    "git-repo-url-webapp": "https://github.com/microsoft/IoTPnP-WS-WebApp.git",
     "git-repo-branch-webapp": "main",
-    "git-repo-url-functions": "https://github.com/daisukeiot/IoTPnP-WS-Functions.git",
+    "git-repo-url-functions": "https://github.com/microsoft/IoTPnP-WS-Functions.git",
     "git-repo-branch-functions": "WIP",
     "iothub-name": "[concat('IoTPnPWS-Hub-', parameters('UniqueID'))]",
     "hub-cg-eventhubs": "[concat('IoTPnPWS-Hub-', parameters('UniqueID'), '/events/eventhubs-cg')]",

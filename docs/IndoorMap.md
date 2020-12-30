@@ -42,7 +42,7 @@ yourname@Azure:~$ wget -q https://raw.githubusercontent.com/microsoft/IoT-Plug-a
 Web App Name   : IoTPnPWS-Portal-demo01
 Functions Name : IoTPnPWS-Functions-demo01
 Tracker        : Progress Marker 5
-Data download  : Start downloading from https://github.com/daisukeiot/IoT-Plug-and-Play-Workshop-Deploy/raw/main/MapData/Drawing.zip
+Data download  : Start downloading from https://github.com/microsoft/IoT-Plug-and-Play-Workshop-Deploy/raw/main/MapData/Drawing.zip
 Data Upload    : URL=https://us.atlas.microsoft.com/mapData/upload?api-version=1.0&dataFormat=zip&subscription-key=w2j75MW6nGHUanazxYDW3pnz8xDFAgwdv151PeBd4gc
 Data Upload    : Request Success [202]
 Data Upload    : Location https://us.atlas.microsoft.com/mapData/operations/1bb22d75-265a-4b35-8c7d-5edc40b9c7bc?api-version=1.0
