@@ -24,6 +24,8 @@ You can find the above steps in [CreateIndoorMap.sh](../Deployment/CreateIndoorM
 
 Take the command from the deployment output `_Map_Data_Generate` and run it in `Cloud Shell`
 
+![IndoorMap 01](media/IndoorMap-01.png)
+
 e.g.
 
 ```bash
@@ -58,4 +60,4 @@ Tracker        : Progress Marker 6
 
 After the script completes, the sample solutions displays indoor map
 
-![IndoorMap](media/IndoorMap.png)
+![IndoorMap 02](media/IndoorMap-02.png)
