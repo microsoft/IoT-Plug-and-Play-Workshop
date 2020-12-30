@@ -276,7 +276,7 @@ while true; do
     continue
   elif [ "$REST_STATUS" = "Succeeded" ]; then
     printf ".\n"
-    echo "$REST_RESPONSE"
+    # echo "$REST_RESPONSE"
     OPERATION_ID=`echo $REST_RESPONSE | jq -r .operationId`
     RESOURCE_LOCATION=`echo $REST_RESPONSE | jq -r .resourceLocation`
     arrayUrl=(${RESOURCE_LOCATION//\// })
@@ -340,7 +340,7 @@ while true; do
     continue
   elif [ "$REST_STATUS" = "Succeeded" ]; then
     printf ".\n"
-    echo "$REST_RESPONSE"
+    # echo "$REST_RESPONSE"
     OPERATION_ID=`echo $REST_RESPONSE | jq -r .operationId`
     RESOURCE_LOCATION=`echo $REST_RESPONSE | jq -r .resourceLocation`
     arrayUrl=(${RESOURCE_LOCATION//\// })
