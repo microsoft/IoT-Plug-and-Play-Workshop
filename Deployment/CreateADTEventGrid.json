@@ -12,35 +12,81 @@
     }
   },
   "variables": {
-    "webapp-functions-name": "[concat('IoTPnPWS-Functions-', parameters('UniqueID'))]",
-    "webapp-functions-eventgrid": "DigitalTwin_EventGrid_Processor",
-    "webapp-functions-url": "[concat('https://', variables('webapp-functions-name'),'.azurewebsites.net/runtime/webhooks/eventgrid?functionName=', variables('webapp-functions-eventgrid'),'&code=')]",
-    "eventgrid-adt-topic-name": "[concat('ADT-EventGrid-Topic-', parameters('UniqueID'))]",
-    "eventgrid-adt-subscription-name": "[concat('ADT-EventGrid-Subscription-', parameters('UniqueID'))]",
-    "adt-location": "westus2",
-    "adt-name": "[concat('IoTPnPWS-ADT-', parameters('UniqueID'))]"
+    "webapp-functions-name" : "[concat('IoTPnPWS-Functions-', parameters('UniqueID'))]",
+    "webapp-functions-url": "[concat('https://', variables('webapp-functions-name'),'.azurewebsites.net/runtime/webhooks/eventgrid?functionName=', 'DigitalTwin_EventGrid_Processor&code=')]",
+    "eventgrid-adt-topicName": "[concat('ADT-EventGrid-Topic-', parameters('UniqueID'))]",
+    "eventgrid-adt-subscriptionName" : "[concat('ADT-EventGrid-Subscription-', parameters('UniqueID'))]",
+    "eventgrid-adt":
+    {
+      "subscriptionNameFull": "[concat(variables('eventgrid-adt-topicName'), '/Microsoft.EventGrid/', variables('eventgrid-adt-subscriptionName'))]",
+      "resourceId": "[resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-subscriptionName'))]"
+    },
+    "adt" : {
+      "name":"[concat('IoTPnPWS-ADT-', parameters('UniqueID'))]",
+      "location": "westus2"
+    },
+    "trackerUrl" : "https://iot-plug-and-play-workshop-tracker.azurewebsites.net/api/HOLProgressTracker",
+    "trackerUrlFull" : "[concat(variables('trackerUrl'), '?resGroup=', resourceGroup().name, '&uniqueId=', parameters('UniqueID'))]"
   },
   "resources": [
     {
-      "name": "[variables('eventgrid-adt-topic-name')]",
+      "condition" : "[not(empty(variables('trackerUrlFull')))]",
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "AdtEventGridStart",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [],
+      "kind": "AzureCLI",
+      "properties": {
+        "forceUpdateTag": "startDeploy",
+        "AzCliVersion": "2.0.80",
+        "timeout": "PT5M",
+        "arguments": "[concat(variables('trackerUrlFull'), '&progressMarker=7')]",
+        "scriptContent": "curl -X GET \"$1\"",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    },
+    {
+      "condition" : "[not(empty(variables('trackerUrlFull')))]",
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "AdtEventGridEnd",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('eventgrid-adt-subscriptionName')]"
+      ],
+      "kind": "AzureCLI",
+      "properties": {
+        "forceUpdateTag": "webAppDeployed",
+        "AzCliVersion": "2.0.80",
+        "timeout": "PT5M",
+        "arguments": "[concat(variables('trackerUrlFull'), '&progressMarker=8')]",
+        "scriptContent": "curl -X GET \"$1\"",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    },
+    {
+      "name": "[variables('eventgrid-adt-topicName')]",
       "type": "Microsoft.EventGrid/topics",
-      "location": "[variables('adt-location')]",
+      "location": "[variables('adt').location]",
       "apiVersion": "2018-01-01",
       "dependsOn": []
     },
     {
       "type": "Microsoft.EventGrid/topics/providers/eventSubscriptions",
       "apiVersion": "2018-01-01",
-      "name": "[concat(variables('eventgrid-adt-topic-name'), '/Microsoft.EventGrid/', variables('eventgrid-adt-subscription-name'))]",
-      "location": "[variables('adt-location')]",
+      "name": "[variables('eventgrid-adt').subscriptionNameFull]",
+      "location": "[variables('adt').location]",
       "dependsOn": [
-        "[resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topic-name'))]"
+        "[resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topicName'))]"
       ],
       "properties": {
         "destination": {
           "endpointType": "WebHook",
           "properties": {
-            "endpointUrl": "[concat(variables('webapp-functions-url'), listKeys(resourceId('Microsoft.Web/sites/host/', variables('webapp-functions-name'), 'default'),'2016-08-01').systemkeys.eventgrid_extension)]"
+            "endpointUrl": "[concat(variables('webapp-functions-Url'), listKeys(resourceId('Microsoft.Web/sites/host/', variables('webapp-functions-Name'), 'default'),'2016-08-01').systemkeys.eventgrid_extension)]"
           }
         },
         "filter": {
@@ -53,13 +99,13 @@
     {
       "type": "Microsoft.DigitalTwins/digitalTwinsInstances/endpoints",
       "apiVersion": "2020-10-31",
-      "name": "[concat(variables('adt-name'), '/ADTEventGridEP')]",
+      "name": "[concat(variables('adt').name, '/ADTEventGridEP')]",
       "dependsOn": [],
       "properties": {
         "endpointType": "EventGrid",
-        "TopicEndpoint": "[reference(resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topic-name'))).endpoint]",
-        "accessKey1": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topic-name')), '2018-01-01').key1]",
-        "accessKey2": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topic-name')), '2018-01-01').key2]"
+        "TopicEndpoint": "[reference(resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topicName'))).endpoint]",
+        "accessKey1": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topicName')), '2018-01-01').key1]",
+        "accessKey2": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('eventgrid-adt-topicName')), '2018-01-01').key2]"
       }
     }
   ],
