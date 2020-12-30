@@ -1,12 +1,22 @@
 {
   "@id": "dtmi:com:example:Room;1",
   "@type": "Interface",
-  "displayName": "Room interface model",
+  "displayName": "Room Model",
   "@context": "dtmi:dtdl:context;2",
   "contents": [
     {
       "@type": "Property",
       "name": "DisplayName",
+      "schema": "string"
+    },
+    {
+      "@type": "Property",
+      "name": "RoomNumber",
+      "schema": "string"
+    },
+    {
+      "@type": "Property",
+      "name": "UnitId",
       "schema": "string"
     },
     {
