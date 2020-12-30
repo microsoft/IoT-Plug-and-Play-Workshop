@@ -4,8 +4,13 @@ az extension add --name timeseriesinsights --yes
 
 uniqueId=$1
 resGroup=$2
+trackerUrl=$3
+
 webAppName="IoTPnPWS-Portal-${uniqueId}"
 tsiName="IoTPnPWS-TSI-${uniqueId}"
+
+trackerFullUrl="${trackerUrl}?resGroup=${resGroup}&uniqueId=${uniqueId}&progressMarker=3"
+curl -X GET $trackerFullUrl
 
 echo "Web App Name : ${webAppName}"
 echo "TSI Env Name : ${tsiName}"
@@ -31,3 +36,6 @@ az webapp config appsettings set --name $webAppName --resource-group $resGroup -
 az webapp config appsettings set --name $webAppName --resource-group $resGroup --settings Azure__TimeSeriesInsights__tsiSecret=$servicePrincipalSecret
 az webapp config appsettings set --name $webAppName --resource-group $resGroup --settings Azure__TimeSeriesInsights__clientId=$servicePrincipalAppId
 az timeseriesinsights access-policy create -g $resGroup --environment-name $tsiName -n "TSI-SP" --principal-object-id $servicePrincipalObjectId --roles Reader
+
+trackerFullUrl="${trackerUrl}?resGroup=${resGroup}&uniqueId=${uniqueId}&progressMarker=4"
+curl -X GET $trackerFullUrl
