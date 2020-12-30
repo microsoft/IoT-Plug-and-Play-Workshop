@@ -734,7 +734,7 @@
     },
     "_Map_Data_Generate": {
       "type": "String",
-      "value": "[concat('wget -q ', variables('script-url-map'), ' -O ./Indoormap.sh && chmod +x ./Indoormap.sh; ', './Indoormap.sh ', listKeys(resourceId('Microsoft.Maps/accounts', variables('mapName')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' ', resourceGroup().name, ' ', parameters('UniqueID'), ' ', variables('trackerUrl'))]"
+      "value": "[concat('wget -q ', variables('script-url-map'), ' -O ./Indoormap.sh && chmod +x ./Indoormap.sh && ', './Indoormap.sh ', listKeys(resourceId('Microsoft.Maps/accounts', variables('mapName')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' ', resourceGroup().name, ' ', parameters('UniqueID'), ' ', variables('trackerUrl'))]"
     },
     "_ADT_Host_Name": {
       "type": "String",
