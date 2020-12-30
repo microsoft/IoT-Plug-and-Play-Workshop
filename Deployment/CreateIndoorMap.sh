@@ -17,7 +17,6 @@ webAppName="IoTPnPWS-Portal-${uniqueId:?}"
 
 echo "Web App Name   : ${webAppName}"
 echo "Functions Name : ${functionsName}"
-echo "TSI Env Name   : ${tsiName}"
 
 parse_header() {
   local -n header=$1 # Nameref argument
@@ -60,7 +59,7 @@ parse_header() {
 
 # Send Tracker
 if [ ! -z ${trackerUrl} ];then
-  echo "Calling tracker...."
+  echo "Tracker        : Progress Marker 5"
   trackerFullUrl="${trackerUrl}?resGroup=${resGroup}&uniqueId=${uniqueId}&progressMarker=5"
   curl -X GET $trackerFullUrl
 fi
@@ -282,8 +281,8 @@ while true; do
     RESOURCE_LOCATION=`echo $REST_RESPONSE | jq -r .resourceLocation`
     arrayUrl=(${RESOURCE_LOCATION//\// })
     arrayUrl=(${arrayUrl[@]//[=?]/ })
-    echo "Array Count ${#arrayUrl[@]}"
-    echo "${arrayUrl[@]}"
+    # echo "Array Count ${#arrayUrl[@]}"
+    # echo "${arrayUrl[@]}"
     DATASET_ID=${arrayUrl[3]}
     # # #IFS='/' read -r -a array <<< "$RESOURCE_LOCATION"
     # # #UDID=${array[5]}
@@ -377,7 +376,6 @@ STATESET_ID=`echo $REST_RESPONSE | jq -r .statesetId`
 
 echo "${PHASE_HEADER}: Stateset ID ${STATESET_ID}"
 
-
 ##################################################
 # Step 7 : Delete Maps Data
 ##################################################
@@ -390,7 +388,7 @@ for row in $(echo "${LIST_RESP}" | jq -r '.mapDataList[] | @base64'); do
   _jq() {
       echo ${row} | base64 --decode | jq -r ${1}
   }
-  echo $(_jq '.udid') $(_jq '.location')
+  # echo $(_jq '.udid') $(_jq '.location')
   url="$(_jq '.location')&subscription-key=${mapSubscriptionKey}"
   echo "${PHASE_HEADER}: Deleting UDID=${UDID}"
   curl -s -X DELETE  "${url}"
@@ -419,6 +417,7 @@ echo "${PHASE_HEADER}: Functions Stateset= ${temp}"
 
 # Send Tracker
 if [ ! -z ${trackerUrl} ];then
+  echo "Tracker        : Progress Marker 6"
   trackerFullUrl="${trackerUrl}?resGroup=${resGroup}&uniqueId=${uniqueId}&progressMarker=6"
   curl -X GET $trackerFullUrl
 fi
