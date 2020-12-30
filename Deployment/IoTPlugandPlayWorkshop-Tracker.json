@@ -56,7 +56,7 @@
     "adtRoleName": "[guid(variables('adt').identity, variables('adt').roleId)]",
     "trackerUrl" : "https://iot-plug-and-play-workshop-tracker.azurewebsites.net/api/HOLProgressTracker",
     "trackerUrlFull" : "[concat(variables('trackerUrl'), '?resGroup=', resourceGroup().name, '&uniqueId=', parameters('UniqueID'))]",
-    "envTag": "2020-Dec-29"
+    "envTag": "2020-Dec-07"
   },
   "resources": [
     {
