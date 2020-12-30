@@ -72,7 +72,7 @@ if [ -e $DATA_FILE ]; then
   rm -r -f $DATA_FILE
 fi
 
-url="https://github.com/microsoft/IoT-Plug-and-Play-Workshop-Deploy/raw/main/MapData/Drawing.zip"
+url="https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/main/MapData/Drawing.zip"
 echo "Data download  : Start downloading from $url"
 wget --quiet -O $DATA_FILE $url
 
