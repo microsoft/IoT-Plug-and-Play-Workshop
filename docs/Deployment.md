@@ -14,7 +14,15 @@ There are 2 major steps to deploy the sample IoT Solution.
     You must be an administrator or an owner of the subscription  
 - A PC with Web Browser
 - Azure Resource Providers
-    Please ensure Container Instance is enabled
+    Please ensure Container Instance and Azure Digital Twins are enabled
+
+    > [!IMPORTANT]  
+    > Enable Container Instance and Digital Twins providers, run following commands in **Cloud Shell**  
+    >
+    >```bash
+    >az provider register --namespace Microsoft.ContainerInstance  
+    >az provider register --namespace Microsoft.DigitalTwins  
+    >```
 
 ## 1. Start Deployment
 
