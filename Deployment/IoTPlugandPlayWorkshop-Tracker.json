@@ -63,12 +63,12 @@
       "condition" : "[not(empty(variables('trackerUrl')))]",
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2020-10-01",
-      "name": "startDeploy",
+      "name": "DeployStart",
       "location": "[resourceGroup().location]",
       "dependsOn": [],
       "kind": "AzureCLI",
       "properties": {
-        "forceUpdateTag": "startDeploy",
+        "forceUpdateTag": "DeployStart",
         "AzCliVersion": "2.0.80",
         "timeout": "PT5M",
         "arguments": "[concat(variables('trackerUrlFull'), '&progressMarker=1')]",
@@ -81,16 +81,15 @@
       "condition" : "[not(empty(variables('trackerUrl')))]",
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2020-10-01",
-      "name": "webAppDeployed",
+      "name": "DeployEnd",
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Authorization/roleAssignments', variables('adtRoleName'))]",
-        "[resourceId('Microsoft.EventGrid/systemTopics', variables('iothub').systemTopic)]",
-        "[resourceId('Microsoft.EventGrid/systemTopics/eventSubscriptions', concat(variables('iothub').systemTopic, '/', 'DeviceManagementEventSubscription'))]"
+        "[resourceId('Microsoft.EventGrid/systemTopics', variables('iothub').systemTopic)]"
       ],
       "kind": "AzureCLI",
       "properties": {
-        "forceUpdateTag": "webAppDeployed",
+        "forceUpdateTag": "DeployEnd",
         "AzCliVersion": "2.0.80",
         "timeout": "PT5M",
         "arguments": "[concat(variables('trackerUrlFull'), '&progressMarker=2')]",
@@ -735,7 +734,7 @@
     },
     "_Map_Data_Generate": {
       "type": "String",
-      "value": "[concat('Invoke-Webrequest ', variables('script-url-map'), ' -outfile ./Indoormap.ps1 ; ', './Indoormap.ps1 -mapSubscriptionKey ', listKeys(resourceId('Microsoft.Maps/accounts', variables('mapName')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' -resourceGroupName ', resourceGroup().name, ' -webAppName ', variables('webApp').webappName, ' -functionsAppName ', variables('webApp').functionsName)]"
+      "value": "[concat('wget -q ', variables('script-url-map'), ' -outfile ./Indoormap.sh && chmod +x ./Indoormap.sh; ', './Indoormap.sh ', listKeys(resourceId('Microsoft.Maps/accounts', variables('mapName')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' ', resourceGroup().name, ' ', parameters('UniqueID'), ' ', variables('trackerUrl'))]"
     },
     "_ADT_Host_Name": {
       "type": "String",
