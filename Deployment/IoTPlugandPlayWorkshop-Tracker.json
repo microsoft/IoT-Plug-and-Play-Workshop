@@ -12,7 +12,7 @@
     }
   },
   "variables": {
-    "script-url-map": "https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/daisuke-wip/Deployment/CreateIndoorMap.ps1",
+    "script-url-map": "https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/daisuke-wip/Deployment/CreateIndoorMap.sh",
     "script-url-tsi": "https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/daisuke-wip/Deployment/ConfigureTSI-Tracker.sh",
     "git-repo" : {
       "webapp" : "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-WebApp.git",
@@ -734,7 +734,7 @@
     },
     "_Map_Data_Generate": {
       "type": "String",
-      "value": "[concat('wget -q ', variables('script-url-map'), ' -outfile ./Indoormap.sh && chmod +x ./Indoormap.sh; ', './Indoormap.sh ', listKeys(resourceId('Microsoft.Maps/accounts', variables('mapName')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' ', resourceGroup().name, ' ', parameters('UniqueID'), ' ', variables('trackerUrl'))]"
+      "value": "[concat('wget -q ', variables('script-url-map'), ' -O ./Indoormap.sh && chmod +x ./Indoormap.sh; ', './Indoormap.sh ', listKeys(resourceId('Microsoft.Maps/accounts', variables('mapName')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' ', resourceGroup().name, ' ', parameters('UniqueID'), ' ', variables('trackerUrl'))]"
     },
     "_ADT_Host_Name": {
       "type": "String",
