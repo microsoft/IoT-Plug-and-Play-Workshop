@@ -368,7 +368,7 @@ url="https://us.atlas.microsoft.com/featureState/stateset?api-version=1.0&datase
 echo "${PHASE_HEADER}: URL=${url}"
 unset HTTP_HEADERS
 declare -A HTTP_HEADERS
-STATE_SET='{"styles":[{"keyname":"temperature","type":"number","rules":[{"range":{"exclusiveMaximum":20},"color":"#CCF7FF"},{"range":{"minimum":20,"exclusiveMaximum":30},"color":"#33FFFF"},{"range":{"minimum":30,"exclusiveMaximum":40},"color":"#00E600"},{"range":{"minimum":40,"exclusiveMaximum":50},"color":"#1966FF"},{"range":{"minimum":50,"exclusiveMaximum":60},"color":"#19FFD9"},{"range":{"minimum":60},"color":"#FF1919"}]}]}'
+STATE_SET='{"styles":[{"keyname":"temperature","type":"number","rules":[{"range":{"exclusiveMaximum":20},"color":"#CCF7FF"},{"range":{"minimum":20,"exclusiveMaximum":30},"color":"#33FFFF"},{"range":{"minimum":30,"exclusiveMaximum":40},"color":"#a4ff2e"},{"range":{"minimum":40,"exclusiveMaximum":50},"color":"#ff2eff"},{"range":{"minimum":50,"exclusiveMaximum":60},"color":"#ff6d2e"},{"range":{"minimum":60},"color":"#FF1919"}]}]}'
 # (echo "${STATE_SET}" | jq '.styles[]')
 
 REST_RESPONSE=`curl -s -X POST -H "Content-type: application/json" -d ${STATE_SET} "${url}"`

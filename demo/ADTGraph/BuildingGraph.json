@@ -1,0 +1,148 @@
+{
+  "digitalTwinsFileInfo": {
+    "fileVersion": "1.0.0"
+  },
+  "digitalTwinsGraph": {
+    "digitalTwins": [
+      {
+        "$dtId": "Floor1",
+        "$etag": "W/\"4e106b08-2d47-42dd-ba7d-950b92f3e7de\"",
+        "DisplayName": "Floor 1",
+        "$metadata": {
+          "$model": "dtmi:com:example:Floor;1"
+        }
+      },
+      {
+        "$dtId": "Room141",
+        "$etag": "W/\"5124b789-aacb-4055-98ab-ea95ea40efd8\"",
+        "DisplayName": "Room 141",
+        "RoomNumber": "141",
+        "Temperature": 0,
+        "$metadata": {
+          "$model": "dtmi:com:example:Room;1"
+        }
+      },
+      {
+        "$dtId": "Thermo141",
+        "$etag": "W/\"801be66e-c9ed-466a-b963-48675eef5494\"",
+        "DisplayName": "Thermostat 141",
+        "Temperature": 0,
+        "$metadata": {
+          "$model": "dtmi:com:example:Thermostat;1"
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "$relationshipId": "Floor->Room",
+        "$etag": "W/\"9dda1902-8633-445d-b013-1c099aa07465\"",
+        "$sourceId": "Floor1",
+        "$relationshipName": "contains",
+        "$targetId": "Room141",
+        "ownershipUser": "IoTPnPWorkshop"
+      }
+    ]
+  },
+  "digitalTwinsModels": [
+    {
+      "@id": "dtmi:com:example:Thermostat;1",
+      "@type": "Interface",
+      "displayName": "Thermostat",
+      "@context": [
+        "dtmi:dtdl:context;2"
+      ],
+      "contents": [
+        {
+          "@type": "Property",
+          "name": "DisplayName",
+          "schema": "string"
+        },
+        {
+          "@type": "Property",
+          "name": "Temperature",
+          "schema": "double"
+        },
+        {
+          "@type": [
+            "Telemetry",
+            "Temperature"
+          ],
+          "name": "temperature",
+          "displayName": "Temperature",
+          "description": "Temperature in degrees Celsius.",
+          "schema": "double",
+          "unit": "degreeCelsius"
+        }
+      ]
+    },
+    {
+      "@id": "dtmi:com:example:Floor;1",
+      "@type": "Interface",
+      "displayName": "Floor",
+      "@context": [
+        "dtmi:dtdl:context;2"
+      ],
+      "contents": [
+        {
+          "@type": "Property",
+          "name": "DisplayName",
+          "schema": "string"
+        },
+        {
+          "@type": "Relationship",
+          "name": "contains",
+          "displayName": "contains",
+          "properties": [
+            {
+              "name": "ownershipUser",
+              "@type": "Property",
+              "schema": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "dtmi:com:example:Room;1",
+      "@type": "Interface",
+      "displayName": "Room",
+      "@context": [
+        "dtmi:dtdl:context;2"
+      ],
+      "contents": [
+        {
+          "@type": "Property",
+          "name": "DisplayName",
+          "schema": "string"
+        },
+        {
+          "@type": "Property",
+          "name": "RoomNumber",
+          "schema": "string"
+        },
+        {
+          "@type": "Property",
+          "name": "UnitId",
+          "schema": "string"
+        },
+        {
+          "@type": "Property",
+          "name": "Temperature",
+          "schema": "double"
+        },
+        {
+          "@type": "Relationship",
+          "name": "contains",
+          "displayName": "contains",
+          "properties": [
+            {
+              "name": "ownershipUser",
+              "@type": "Property",
+              "schema": "string"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -24,4 +24,7 @@ This repo is prepared for contents sharing for Hands-on-Labs (HOLs) during IoT P
 1. Experience IoT Plug and Play with IoT Central
 1. Prepare an IoT Device  
     - If you have Seeed Wio Terminal, please follow this [instruction](demo/Seeed_Wio_Terminal/docs/README.md)
-    - If you do NOT have Seeed Wio Terminal, please use [Simple Thermostat simulator app](demo/SimpleThermostat/docs/README.md)
+    - If you do NOT have Seeed Wio Terminal, please use [Simple Thermostat simulator](docs/ConnectSimulator.md)
+1. [Create Azure Indoor Map data](docs/IndoorMap.md) and visualize in the sample IoT Solution
+1. [Create a building digital twin graph](docs/AzureDigitalTwins.md) with Azure Digital Twins
+1. Visualize digital twins with Azure Indoor Map

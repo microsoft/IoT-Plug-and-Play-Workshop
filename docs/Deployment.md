@@ -53,7 +53,7 @@ A resource group is a container that holds related resources for an Azure soluti
     Some services require global unique names.  This template will create resource with IoTPnPWS-**\<Unique ID\>**.  
     Rules :
     - Minimum 5 characters
-    - Maximum 10 characters
+    - Maximum 12 characters
     - Alphanumberic characters only (no special characters)
 
     > [!TIP]  
@@ -147,3 +147,13 @@ The sample portal site has 5 main sections.
     Displays indoor map to demonstrate Azure Digital Twin integration
 
 ![Deployment 15](media/Deployment-15.png)
+
+## Completed!
+
+You just deployed a sample IoT Solution with ARM template.  
+
+### Next Step
+
+[Connect a simulator to the sample IoT Solution](ConnectSimulator.md)
+
+[Return](../README.md) to the top page

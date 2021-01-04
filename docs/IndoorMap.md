@@ -18,11 +18,14 @@ Creating feature stateset requires following steps:
 1. Convert the drawing data into indoor map data (dataset)
 1. Provide styles based on properties or states, to create stateset
 
-You can find the above steps in [CreateIndoorMap.sh](../Deployment/CreateIndoorMap.sh)
+You can find the detailed steps in [CreateIndoorMap.sh](../Deployment/CreateIndoorMap.sh)
 
 ## Adding Indoor Map to the sample solution
 
 Take the command from the deployment output `_Map_Data_Generate` and run it in `Cloud Shell`
+
+> [!NOTE]  
+> To run the script, run `Bash` in `Cloud Shell`
 
 ![IndoorMap 01](media/IndoorMap-01.png)
 
@@ -61,3 +64,13 @@ Tracker        : Progress Marker 6
 After the script completes, the sample solutions displays indoor map
 
 ![IndoorMap 02](media/IndoorMap-02.png)
+
+## Completed
+
+You created an indoor map data, including tileset and feature set.  The sample IoT Solution uses the tileset and the feature set to display indoor map in the web portal.
+
+### Next Step
+
+[Enabling Azure Digital Twins](AzureDigitalTwins.md)
+
+[Return](../README.md) to the top page

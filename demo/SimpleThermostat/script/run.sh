@@ -30,7 +30,7 @@ export DPS_IDSCOPE=''
 
 # for Symmetric Key Provisioning
 # Get Device ID and Symmetric Key from the certification portal
-export DPS_DEVICE_ID='thermostat141'
+export DPS_DEVICE_ID='Thermo141'
 export DPS_SYMMETRIC_KEY=''
 
 cd ${DIR_CMAKE}
