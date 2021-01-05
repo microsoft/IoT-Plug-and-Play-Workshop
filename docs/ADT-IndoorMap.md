@@ -5,26 +5,6 @@ The sample IoT Solution is configured with Azure Digital Twins (ADT) and Azure I
 
 Feature stateset is configure with following states to show different background colors of rooms based on rooms' temperature property.
 
-<style>
-    .heatMap {
-        width: 70%;
-        text-align: center;
-    }
-    .heatMap th {
-    background: white;
-    word-wrap: break-word;
-    text-align: center;
-    }
-    .heatMap tr:nth-child(1) { background: #CCF7FF; }
-    .heatMap tr:nth-child(2) { background: #33FFFF; }
-    .heatMap tr:nth-child(3) { background: #00E600; }
-    .heatMap tr:nth-child(4) { background: #1966FF; }
-    .heatMap tr:nth-child(5) { background: #ff6d2e; }
-    .heatMap tr:nth-child(6) { background: #FF1919; }
-</style>
-
-
-
 ```json
 {
   "styles": [
@@ -156,18 +136,7 @@ By changing properties of room141's twin, ADT publishes Digital Twin update even
 Based on the temperature setting, the background color of the assigned room changes.  
 Change temperature value again to see how digital twin property data is reflacted in Indoor Map.
 
-<div class="heatMap">
-
-| Temperature | Color |
-| -- | -- |
-| < 20 |  #CCF7FF |
-| 20 < 30 |  #33FFFF |
-| 30 < 40 |  #a4ff2e |
-| 40 < 50 |  #ff2eff |
-| 50 < 60 |  #19FFD9 |
-| 60 <  |  #FF1919 |
-
-</div>
+![ADT Map 15](media/ADT-Map-15.png)
 
 ![ADT Map 07](media/ADT-Map-07.png)
 
