@@ -27,4 +27,4 @@ This repo is prepared for contents sharing for Hands-on-Labs (HOLs) during IoT P
     - If you do NOT have Seeed Wio Terminal, please use [Simple Thermostat simulator](docs/ConnectSimulator.md)
 1. [Create Azure Indoor Map data](docs/IndoorMap.md) and visualize in the sample IoT Solution
 1. [Create a building digital twin graph](docs/AzureDigitalTwins.md) with Azure Digital Twins
-1. Visualize digital twins with Azure Indoor Map
+1. [Visualize digital twins with Azure Indoor Map](docs/ADT-IndoorMap.md)
