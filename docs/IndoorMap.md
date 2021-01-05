@@ -32,7 +32,7 @@ Take the command from the deployment output `_Map_Data_Generate` and run it in `
 e.g.
 
 ```bash
-wget -q https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/main/Deployment/CreateIndoorMap.ps1 -outfile ./Indoormap.sh && chmod +x ./Indoormap.sh; ./Indoormap.sh 123456789abcdefghijklmnopqrstuvwxyz Tracker08 tracker08 https://iot-plug-and-play-workshop-tracker.azurewebsites.net/api/HOLProgressTracker
+wget -q https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/main/Deployment/CreateIndoorMap.ps1 -outfile ./Indoormap.sh && chmod +x ./Indoormap.sh; ./Indoormap.sh 123456789abcdefghijklmnopqrstuvwxyz Tracker08 tracker08 https://iot-plug-and-play-workshop-tracker.azurewebsites.net/api/HOLProgressMarker
 
 ```
 
@@ -41,7 +41,7 @@ The script creates Indoor Map dataset, stateset, and featureset.  In addition, t
 Example :
 
 ```bash
-yourname@Azure:~$ wget -q https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/main/Deployment/CreateIndoorMap.sh -O ./Indoormap.sh && chmod +x ./Indoormap.sh; ./Indoormap.sh 123456789abcdefghijklmnopqrstuvwxyz Tracker08 tracker08 https://iot-plug-and-play-workshop-tracker.azurewebsites.net/api/HOLProgressTracker
+yourname@Azure:~$ wget -q https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/main/Deployment/CreateIndoorMap.sh -O ./Indoormap.sh && chmod +x ./Indoormap.sh; ./Indoormap.sh 123456789abcdefghijklmnopqrstuvwxyz Tracker08 tracker08 https://iot-plug-and-play-workshop-tracker.azurewebsites.net/api/HOLProgressMarker
 Web App Name   : IoTPnPWS-Portal-demo01
 Functions Name : IoTPnPWS-Functions-demo01
 Tracker        : Progress Marker 5
@@ -61,7 +61,7 @@ App Settings   : Functions Stateset= 96eece57-2031-8e4e-7ee9-aab3d39b797e
 Tracker        : Progress Marker 6
 ```
 
-After the script completes, the sample solutions displays indoor map
+After the script completes, refresh the browser to see indoor map
 
 ![IndoorMap 02](media/IndoorMap-02.png)
 

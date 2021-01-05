@@ -11,8 +11,8 @@ tsiName="IoTPnPWS-TSI-${uniqueId}"
 trackerFullUrl="${trackerUrl}?resGroup=${resGroup}&uniqueId=${uniqueId}&progressMarker=3"
 curl -X GET $trackerFullUrl
 
-echo "Web App Name : ${webAppName}"
-echo "TSI Env Name : ${tsiName}"
+echo "Web App Name  : ${webAppName}"
+echo "TSI Env Name  : ${tsiName}"
 
 subscriptionId=$(az account show --query id -o tsv)
 adAppName='IoTPnPWS-TSI-AD-App'-"$subscriptionId"
@@ -25,16 +25,20 @@ if [ -z "$servicePrincipalObjectId" ]; then
 fi
 servicePrincipalSecret=$(az ad app credential reset --append --id $servicePrincipalAppId --credential-description "TSISecret" --query password -o tsv)
 servicePrincipalTenantId=$(az ad sp show --id $servicePrincipalAppId --query appOwnerTenantId -o tsv)
-echo "servicePrincipalSecret :   ${servicePrincipalSecret}"
-echo "servicePrincipalTenantId : ${servicePrincipalTenantId}"
 #json="{\"appId\":\"$servicePrincipalAppId\",\"spSecret\":\"$servicePrincipalSecret\",\"tenantId\":\"$servicePrincipalTenantId\",\"spObjectId\":\"$servicePrincipalObjectId\"}"
 
 az ad app update --id $servicePrincipalAppId --reply-urls "https://${webAppName}.azurewebsites.net/"
-az webapp config appsettings set --name $webAppName --resource-group $resGroup --settings Azure__TimeSeriesInsights__tenantId=$servicePrincipalTenantId
-az webapp config appsettings set --name $webAppName --resource-group $resGroup --settings Azure__TimeSeriesInsights__clientId=$servicePrincipalAppId
-az webapp config appsettings set --name $webAppName --resource-group $resGroup --settings Azure__TimeSeriesInsights__tsiSecret=$servicePrincipalSecret
-az webapp config appsettings set --name $webAppName --resource-group $resGroup --settings Azure__TimeSeriesInsights__clientId=$servicePrincipalAppId
-az timeseriesinsights access-policy create -g $resGroup --environment-name $tsiName -n "TSI-SP" --principal-object-id $servicePrincipalObjectId --roles Reader
+
+temp=$(az webapp config appsettings set --name $webAppName --resource-group $resGroup --settings Azure__TimeSeriesInsights__tenantId=$servicePrincipalTenantId --query "[?name=='Azure__TimeSeriesInsights__tenantId'].[value]" -o tsv)
+echo "TSI Tenant ID : ${temp}"
+
+temp=$(az webapp config appsettings set --name $webAppName --resource-group $resGroup --settings Azure__TimeSeriesInsights__clientId=$servicePrincipalAppId --query "[?name=='Azure__TimeSeriesInsights__clientId'].[value]" -o tsv)
+echo "TSI Client ID : ${temp}"
+
+temp=$(az webapp config appsettings set --name $webAppName --resource-group $resGroup --settings Azure__TimeSeriesInsights__tsiSecret=$servicePrincipalSecret --query "[?name=='Azure__TimeSeriesInsights__tsiSecret'].[value]" -o tsv)
+echo "TSI Secret    : ${temp}"
+
+temp=$(az timeseriesinsights access-policy create -g $resGroup --environment-name $tsiName -n "TSI-SP" --principal-object-id $servicePrincipalObjectId --roles Reader)
 
 trackerFullUrl="${trackerUrl}?resGroup=${resGroup}&uniqueId=${uniqueId}&progressMarker=4"
 curl -X GET $trackerFullUrl

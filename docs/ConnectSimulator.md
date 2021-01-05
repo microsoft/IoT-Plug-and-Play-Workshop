@@ -128,6 +128,8 @@ In order to provision a device, the device needs authentication information (Sym
 
     ![DPS 06-1](media/DPS-06-1.png)
 
+## Running the simulator
+
 1. Run the app with :  
 
     Example with the repo cloned to home directory (`~/`)

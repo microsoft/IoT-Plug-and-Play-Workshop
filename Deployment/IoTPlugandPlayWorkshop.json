@@ -18,7 +18,7 @@
       "webapp" : "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-WebApp.git",
       "webappBranch" : "main",
       "functions" : "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-Functions.git",
-      "functionsBranch" : "daisuken-wip"
+      "functionsBranch" : "main"
     },
     "iothub" : {
       "name" : "[concat('IoTPnPWS-Hub-', parameters('UniqueID'))]",
@@ -739,6 +739,14 @@
     "_ADT_Host_Name": {
       "type": "String",
       "value": "[concat('https://', reference(resourceId('Microsoft.DigitalTwins/digitalTwinsInstances', variables('adt').name)).hostName)]"
+    },
+    "_Resource_Group": {
+      "type": "String",
+      "value": "[resourceGroup().name]"
+    },
+    "_Unique_ID": {
+      "type": "String",
+      "value": "[parameters('UniqueID')]"
     }
   }
 }
