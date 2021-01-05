@@ -63,12 +63,12 @@
       "condition" : "[not(empty(variables('trackerUrl')))]",
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2020-10-01",
-      "name": "DeployStart",
+      "name": "[concat('DeployStart-', parameters('UniqueID'))]",
       "location": "[resourceGroup().location]",
       "dependsOn": [],
       "kind": "AzureCLI",
       "properties": {
-        "forceUpdateTag": "DeployStart",
+        "forceUpdateTag": "[concat('DeployStart-', parameters('UniqueID'))]",
         "AzCliVersion": "2.0.80",
         "timeout": "PT5M",
         "arguments": "[concat(variables('trackerUrlFull'), '&progressMarker=1')]",
@@ -81,7 +81,7 @@
       "condition" : "[not(empty(variables('trackerUrl')))]",
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2020-10-01",
-      "name": "DeployEnd",
+      "name": "[concat('DeployEnd-', parameters('UniqueID'))]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Authorization/roleAssignments', variables('adtRoleName'))]",
@@ -89,7 +89,7 @@
       ],
       "kind": "AzureCLI",
       "properties": {
-        "forceUpdateTag": "DeployEnd",
+        "forceUpdateTag": "[concat('DeployEnd-', parameters('UniqueID'))]",
         "AzCliVersion": "2.0.80",
         "timeout": "PT5M",
         "arguments": "[concat(variables('trackerUrlFull'), '&progressMarker=2')]",
