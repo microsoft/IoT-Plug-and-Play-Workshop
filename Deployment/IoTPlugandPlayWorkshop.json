@@ -54,7 +54,7 @@
       "roleId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'bcd981a7-7f74-457b-83e1-cceb9e632ffe')]"
     },
     "adtRoleName": "[guid(variables('adt').identity, variables('adt').roleId)]",
-    "trackerUrl" : "https://iot-plug-and-play-workshop-tracker.azurewebsites.net/api/HOLProgressTracker",
+    "trackerUrl" : "https://iotpnpworkshoptracker.azurewebsites.net/api/HOLProgressTracker",
     "trackerUrlFull" : "[concat(variables('trackerUrl'), '?resGroup=', resourceGroup().name, '&uniqueId=', parameters('UniqueID'))]",
     "envTag": "2021-Jan-04"
   },

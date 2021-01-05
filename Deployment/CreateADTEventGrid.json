@@ -25,7 +25,7 @@
       "name":"[concat('IoTPnPWS-ADT-', parameters('UniqueID'))]",
       "location": "westus2"
     },
-    "trackerUrl" : "https://iot-plug-and-play-workshop-tracker.azurewebsites.net/api/HOLProgressTracker",
+    "trackerUrl" : "https://iotpnpworkshoptracker.azurewebsites.net/api/HOLProgressTracker",
     "trackerUrlFull" : "[concat(variables('trackerUrl'), '?resGroup=', resourceGroup().name, '&uniqueId=', parameters('UniqueID'))]"
   },
   "resources": [
