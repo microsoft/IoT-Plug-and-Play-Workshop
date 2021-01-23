@@ -6,22 +6,27 @@
   "contents": [
     {
       "@type": "Property",
-      "name": "DisplayName",
+      "name": "displayName",
       "schema": "string"
     },
     {
       "@type": "Property",
-      "name": "RoomNumber",
+      "name": "roomNumber",
       "schema": "string"
     },
     {
       "@type": "Property",
-      "name": "UnitId",
+      "name": "unitId",
       "schema": "string"
     },
     {
       "@type": "Property",
-      "name": "Temperature",
+      "name": "temperature",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "light",
       "schema": "double"
     },
     {

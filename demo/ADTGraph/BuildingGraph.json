@@ -16,19 +16,9 @@
         "$dtId": "Room141",
         "$etag": "W/\"5124b789-aacb-4055-98ab-ea95ea40efd8\"",
         "DisplayName": "Room 141",
-        "RoomNumber": "141",
-        "Temperature": 0,
+        "roomNumber": "141",
         "$metadata": {
           "$model": "dtmi:com:example:Room;1"
-        }
-      },
-      {
-        "$dtId": "Thermo141",
-        "$etag": "W/\"801be66e-c9ed-466a-b963-48675eef5494\"",
-        "DisplayName": "Thermostat 141",
-        "Temperature": 0,
-        "$metadata": {
-          "$model": "dtmi:com:example:Thermostat;1"
         }
       }
     ],
@@ -44,37 +34,6 @@
     ]
   },
   "digitalTwinsModels": [
-    {
-      "@id": "dtmi:com:example:Thermostat;1",
-      "@type": "Interface",
-      "displayName": "Thermostat",
-      "@context": [
-        "dtmi:dtdl:context;2"
-      ],
-      "contents": [
-        {
-          "@type": "Property",
-          "name": "DisplayName",
-          "schema": "string"
-        },
-        {
-          "@type": "Property",
-          "name": "Temperature",
-          "schema": "double"
-        },
-        {
-          "@type": [
-            "Telemetry",
-            "Temperature"
-          ],
-          "name": "temperature",
-          "displayName": "Temperature",
-          "description": "Temperature in degrees Celsius.",
-          "schema": "double",
-          "unit": "degreeCelsius"
-        }
-      ]
-    },
     {
       "@id": "dtmi:com:example:Floor;1",
       "@type": "Interface",
@@ -117,22 +76,22 @@
         },
         {
           "@type": "Property",
-          "name": "RoomNumber",
+          "name": "roomNumber",
           "schema": "string"
         },
         {
           "@type": "Property",
-          "name": "UnitId",
+          "name": "unitId",
           "schema": "string"
         },
         {
           "@type": "Property",
-          "name": "Temperature",
+          "name": "temperature",
           "schema": "double"
         },
         {
           "@type": "Property",
-          "name": "Light",
+          "name": "light",
           "schema": "integer"
         },
         {

@@ -6,7 +6,7 @@
   "contents": [
     {
       "@type": "Property",
-      "name": "DisplayName",
+      "name": "displayName",
       "schema": "string"
     },
     {
