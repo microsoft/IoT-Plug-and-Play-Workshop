@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "UniqueID": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique ID.  E.g. your name.  Must be Alphanumeric (a~z, 0~9), and 5~12 characters"
+      },
+      "minLength": 5,
+      "maxLength": 12
+    },
+    "trackerUrl": {
+      "type": "string",
+      "defaultValue": "https://iotpnpworkshoptracker.azurewebsites.net/api/HOLProgressTracker"
+    },
+    "progressMarker": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "trackerUrlFull" : "[concat(parameters('trackerUrl'), '?resGroup=', resourceGroup().name, '&uniqueId=', parameters('UniqueID'))]"
+  },
+  "resources": [
+    {
+      "condition" : "[not(empty(parameters('trackerUrl')))]",
+      "name": "[concat('DeployStart-', parameters('UniqueID'))]",
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "location": "[resourceGroup().location]",
+      "kind": "AzureCLI",
+      "properties": {
+        "forceUpdateTag": "[concat('DeployStart-', parameters('UniqueID'))]",
+        "AzCliVersion": "2.0.80",
+        "timeout": "PT5M",
+        "arguments": "[concat(variables('trackerUrlFull'), '&progressMarker=', parameters('progressMarker'))]",
+        "scriptContent": "curl -X GET \"$1\"",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1M"
+      }
+    }
+  ]
+}
