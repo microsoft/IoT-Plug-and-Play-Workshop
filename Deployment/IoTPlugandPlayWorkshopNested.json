@@ -57,13 +57,89 @@
       "roleId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'bcd981a7-7f74-457b-83e1-cceb9e632ffe')]"
     },
     "adtRoleName": "[guid(variables('adt').identity, variables('adt').roleId)]",
-    "trackerUrl" : "https://iotpnpworkshoptracker.azurewebsites.net/api/HOLProgressTracker",
-    "trackerUrlFull" : "[concat(variables('trackerUrl'), '?resGroup=', resourceGroup().name, '&uniqueId=', parameters('UniqueID'))]",
-    "PrivateModelRepo" :  "https://raw.githubusercontent.com/daisukeiot/iot-plugandplay-models/",
-    "PrivateModelBranch" : "privatemodels",
+    "tracker": {
+      "url" : "https://iotpnpworkshoptracker.azurewebsites.net/api/HOLProgressTracker",
+      "urlFull" : "[concat(variables('tracker').url, '?resGroup=', resourceGroup().name, '&uniqueId=', parameters('UniqueID'))]",
+      "markerStart": "1",
+      "markerEnd": "2"
+    },
+    "PrivateModelRepo": {
+      "url": "https://raw.githubusercontent.com/daisukeiot/iot-plugandplay-models/",
+      "branch": "privatemodels"
+    },
     "envTag": "2021-Jan-25"
   },
   "resources": [
+    {
+      "name": "Deploy-Start",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup" : "[resourceGroup().name]",
+      "apiVersion": "2020-10-01",
+      "properties": {
+        "mode": "Incremental",
+        "expressionEvaluationOptions": {
+          "scope": "outer"
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-08-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+            {
+              "condition" : "[not(empty(variables('tracker').url))]",
+              "name": "[concat('DeployStart-', parameters('UniqueID'))]",
+              "type": "Microsoft.Resources/deploymentScripts",
+              "apiVersion": "2020-10-01",
+              "location": "[resourceGroup().location]",
+              "kind": "AzureCLI",
+              "properties": {
+                "forceUpdateTag": "[concat('DeployStart-', parameters('UniqueID'))]",
+                "AzCliVersion": "2.0.80",
+                "timeout": "PT5M",
+                "arguments": "[concat(variables('tracker').urlFull, '&progressMarker=', variables('tracker').markerStart)]",
+                "scriptContent": "curl -X GET \"$1\"",
+                "cleanupPreference": "OnSuccess",
+                "retentionInterval": "PT1H"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Deploy-End",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup" : "[resourceGroup().name]",
+      "apiVersion": "2020-10-01",
+      "properties": {
+        "mode": "Incremental",
+        "expressionEvaluationOptions": {
+          "scope": "outer"
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-08-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+            {
+              "condition" : "[not(empty(variables('tracker').url))]",
+              "name": "[concat('DeployStart-', parameters('UniqueID'))]",
+              "type": "Microsoft.Resources/deploymentScripts",
+              "apiVersion": "2020-10-01",
+              "location": "[resourceGroup().location]",
+              "kind": "AzureCLI",
+              "properties": {
+                "forceUpdateTag": "[concat('DeployStart-', parameters('UniqueID'))]",
+                "AzCliVersion": "2.0.80",
+                "timeout": "PT5M",
+                "arguments": "[concat(variables('tracker').urlFull, '&progressMarker=', variables('tracker').markerEnd)]",
+                "scriptContent": "curl -X GET \"$1\"",
+                "cleanupPreference": "OnSuccess",
+                "retentionInterval": "PT1H"
+              }
+            }
+          ]
+        }
+      }
+    },
     {
       "name": "Deploy-IoT",
       "type": "Microsoft.Resources/deployments",
@@ -324,9 +400,6 @@
       "name": "[variables('iothub').name]",
       "type": "Microsoft.Devices/IotHubs",
       "apiVersion": "2020-08-01",
-      "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy-IoT')]"
-      ],
       "location": "[resourceGroup().location]",
       "tags": {
         "ENV": "[variables('envTag')]"
@@ -340,6 +413,7 @@
         "type": "None"
       },
       "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy-IoT')]",
         "[concat('Microsoft.EventHub/namespaces/', variables('eventHubs').nameSpace, '/eventhubs/', variables('eventHubs').hubName)]",
         "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubs').nameSpace, 'GlobalSendOnlyRule')]",
         "[resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', variables('eventHubs').nameSpace, variables('eventHubs').hubName, variables('eventHubs').ruleSend)]"
@@ -456,14 +530,12 @@
       "name": "[variables('dpsName')]",
       "type": "Microsoft.Devices/provisioningServices",
       "apiVersion": "2020-03-01",
-      "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy-IoT')]"
-      ],
       "location": "[resourceGroup().location]",
       "tags": {
         "ENV": "[variables('envTag')]"
       },
       "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy-IoT')]",
         "[resourceId('Microsoft.Devices/IotHubs', variables('iothub').name)]"
       ],
       "sku": {
@@ -674,7 +746,7 @@
         "AzureSignalRConnectionString": "[concat('Endpoint=https://', toLower(variables('signalrName')), '.service.signalr.net;AccessKey=', listKeys(variables('signalrName'), providers('Microsoft.SignalRService', 'SignalR').apiVersions[0]).primaryKey)]",
         "ADT_HOST_URL": "[concat('https://', reference(resourceId('Microsoft.DigitalTwins/digitalTwinsInstances', variables('adt').name)).hostName)]",
         "MAP_KEY": "[listKeys(resourceId('Microsoft.Maps/accounts', variables('mapName')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey]",
-        "ModelRepository": "[concat(variables('PrivateModelRepo'), variables('PrivateModelBranch'))]"
+        "ModelRepository": "[concat(variables('PrivateModelRepo').url, variables('PrivateModelRepo').branch)]"
       }
     },
     // WebApp
@@ -778,7 +850,7 @@
         "Azure__Dps__IdScope": "[reference(resourceId('Microsoft.Devices/ProvisioningServices',variables('dpsName'))).idScope]",
         "Azure__Dps__ConnectionString": "[concat('HostName=', variables('dpsName'), '.azure-devices-provisioning.net;SharedAccessKeyName=provisioningserviceowner;SharedAccessKey=', listKeys(resourceId('Microsoft.Devices/provisioningServices', variables('dpsName')), providers('Microsoft.Devices', 'provisioningServices').apiVersions[0]).value[0].primaryKey)]",
         "Azure__Dps__WebHookUrl":"[listsecrets(resourceId('Microsoft.Web/sites/functions', variables('webApp').functionsName, 'Dps_Processor'), '2020-09-01').trigger_url]",
-        "Azure__ModelRepository__repoUrl":"[concat(variables('PrivateModelRepo'), variables('PrivateModelBranch'))]",
+        "Azure__ModelRepository__repoUrl":"[concat(variables('PrivateModelRepo').url, variables('PrivateModelRepo').branch)]",
         "Azure__GitHub__token":""
       }
     },
@@ -884,7 +956,7 @@
     },
     "_Post_Deployment_Script": {
       "type": "String",
-      "value": "[concat('wget -q ', variables('script-url-tsi'), ' -O ./tsi-setup.sh && chmod +x ./tsi-setup.sh && ./tsi-setup.sh ', parameters('UniqueID'), ' ', resourceGroup().name, ' ', variables('trackerUrl'), ' && rm -f ./tsi-setup.sh')]"
+      "value": "[concat('wget -q ', variables('script-url-tsi'), ' -O ./tsi-setup.sh && chmod +x ./tsi-setup.sh && ./tsi-setup.sh ', parameters('UniqueID'), ' ', resourceGroup().name, ' ', variables('tracker').url, ' && rm -f ./tsi-setup.sh')]"
     },
     "_Web_Site_Address": {
       "type": "String",
@@ -892,7 +964,7 @@
     },
     "_Map_Data_Generate": {
       "type": "String",
-      "value": "[concat('wget -q ', variables('script-url-map'), ' -O ./Indoormap.sh && chmod +x ./Indoormap.sh && ', './Indoormap.sh ', listKeys(resourceId('Microsoft.Maps/accounts', variables('mapName')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' ', resourceGroup().name, ' ', parameters('UniqueID'), ' ', variables('trackerUrl'))]"
+      "value": "[concat('wget -q ', variables('script-url-map'), ' -O ./Indoormap.sh && chmod +x ./Indoormap.sh && ', './Indoormap.sh ', listKeys(resourceId('Microsoft.Maps/accounts', variables('mapName')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' ', resourceGroup().name, ' ', parameters('UniqueID'), ' ', variables('tracker').url)]"
     },
     "_ADT_Host_Name": {
       "type": "String",

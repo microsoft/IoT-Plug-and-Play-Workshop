@@ -36,7 +36,7 @@
         "arguments": "[concat(variables('trackerUrlFull'), '&progressMarker=', parameters('progressMarker'))]",
         "scriptContent": "curl -X GET \"$1\"",
         "cleanupPreference": "OnSuccess",
-        "retentionInterval": "P1M"
+        "retentionInterval": "PT1H"
       }
     }
   ]
