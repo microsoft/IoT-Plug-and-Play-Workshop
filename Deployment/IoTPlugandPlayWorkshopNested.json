@@ -59,7 +59,6 @@
     "adtRoleName": "[guid(variables('adt').identity, variables('adt').roleId)]",
     "tracker": {
       "url" : "https://iotpnpworkshoptracker.azurewebsites.net/api/HOLProgressTracker",
-      "urlFull" : "[concat(variables('tracker').url, '?resGroup=', resourceGroup().name, '&uniqueId=', parameters('UniqueID'))]",
       "markerStart": "1",
       "markerEnd": "2"
     },
@@ -95,7 +94,7 @@
                 "forceUpdateTag": "[concat('DeployStart-', parameters('UniqueID'))]",
                 "AzCliVersion": "2.0.80",
                 "timeout": "PT5M",
-                "arguments": "[concat(variables('tracker').urlFull, '&progressMarker=', variables('tracker').markerStart)]",
+                "arguments": "[concat(variables('tracker').url, '?resGroup=', resourceGroup().name, '&uniqueId=', parameters('UniqueID'),'&progressMarker=', variables('tracker').markerStart)]",
                 "scriptContent": "curl -X GET \"$1\"",
                 "cleanupPreference": "OnSuccess",
                 "retentionInterval": "PT1H"
@@ -110,6 +109,9 @@
       "type": "Microsoft.Resources/deployments",
       "resourceGroup" : "[resourceGroup().name]",
       "apiVersion": "2020-10-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventGrid/systemTopics/eventSubscriptions', variables('iothub').systemTopic, 'DeviceManagementEventSubscription')]"
+      ],
       "properties": {
         "mode": "Incremental",
         "expressionEvaluationOptions": {
@@ -121,16 +123,16 @@
           "resources": [
             {
               "condition" : "[not(empty(variables('tracker').url))]",
-              "name": "[concat('DeployStart-', parameters('UniqueID'))]",
+              "name": "[concat('DeployEnd-', parameters('UniqueID'))]",
               "type": "Microsoft.Resources/deploymentScripts",
               "apiVersion": "2020-10-01",
               "location": "[resourceGroup().location]",
               "kind": "AzureCLI",
               "properties": {
-                "forceUpdateTag": "[concat('DeployStart-', parameters('UniqueID'))]",
+                "forceUpdateTag": "[concat('DeployEnd-', parameters('UniqueID'))]",
                 "AzCliVersion": "2.0.80",
                 "timeout": "PT5M",
-                "arguments": "[concat(variables('tracker').urlFull, '&progressMarker=', variables('tracker').markerEnd)]",
+                "arguments": "[concat(variables('tracker').url, '?resGroup=', resourceGroup().name, '&uniqueId=', parameters('UniqueID'),'&progressMarker=', variables('tracker').markerEnd)]",
                 "scriptContent": "curl -X GET \"$1\"",
                 "cleanupPreference": "OnSuccess",
                 "retentionInterval": "PT1H"
@@ -645,8 +647,7 @@
       "apiVersion": "2020-10-01",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
-        "[resourceId('Microsoft.Web/serverfarms', variables('webApp').hostingPlan)]",
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy-Functions')]"
+        "[resourceId('Microsoft.Web/serverfarms', variables('webApp').hostingPlan)]"
       ],
       "properties": {
         "mode": "Incremental",
