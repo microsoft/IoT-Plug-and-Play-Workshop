@@ -64,13 +64,13 @@ Import graph data located in `\demo\ADTGraph` with ADT Explorer.
 
     ![ADTExplorer 02](media/ADTExplorer-02.png)
 
-1. ADT Explorer should show a preview with `Floor1`, `Room141`, and `Thermo141`  
+1. ADT Explorer should show a preview with `Floor1` and `Room141`, and `Room141` is contained in `Floor1`  
 
     Click `Save` button to import the graph  
 
     ![ADTExplorer 03](media/ADTExplorer-03.png)
 
-1. Ensure 3 models, 3 twins, and 1 relationship are imported successfully  
+1. Ensure 2 models, 2 twins, and 1 relationship are imported successfully  
 
     ![ADTExplorer 04](media/ADTExplorer-04.png)
 
@@ -115,7 +115,9 @@ You can visualize followings with ADT Explorer
 
     ![ADTExplorer 06](media/ADTExplorer-06.png)
 
-1. Select `Thermo141` to display properties of `Thermo141` twin
+1. If you have a device(s) connected to the solution, you should also see a corresponding twin for each IoT device.  
+
+    e.g. Select `Thermo141` to display properties of `Thermo141` twin
 
     ![ADTExplorer 07](media/ADTExplorer-07.png)
 

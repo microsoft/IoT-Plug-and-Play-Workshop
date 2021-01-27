@@ -31,8 +31,7 @@ Click **Deploy to Azure** button below
 > [!TIP]  
 > Right click the button below and select **Open link in new tab** or **Open lin in new window**
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FIoT-Plug-and-Play-Workshop%2Fmain%2FDeployment%2FIoTPlugandPlayWorkshop.json" target="_blank"><img src="./media/deploy-to-azure.svg"/></a>
-
+[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FIoT-Plug-and-Play-Workshop%2Fmain%2FDeployment%2FIoTPlugandPlayWorkshopNested.json)
 
 ## 2. Create a new resource group
 
@@ -77,7 +76,7 @@ A resource group is a container that holds related resources for an Azure soluti
 
     ![Deployment 06](media/Deployment-06.png)
 
-1. Make sure deployment completed successfuly
+1. Make sure deployment completed successfully
 
     ![Deployment 07](media/Deployment-07.png)
 
@@ -86,7 +85,7 @@ A resource group is a container that holds related resources for an Azure soluti
 Some services require additional settings, such as permission which cannot cover with ARM template.
 We will complete deployment by running a script in **Cloud Shell**.
 
-[Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/overview) is an interactive, authenticated, browser-accessible shell for managing Azure resources. It provides the flexibility of choosing the shell experience that best suits the way you work, either Bash or PowerShell.
+[Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview) is an interactive, authenticated, browser-accessible shell for managing Azure resources. It provides the flexibility of choosing the shell experience that best suits the way you work, either Bash or PowerShell.
 
 1. Switch to **Outputs** pane  
 
@@ -100,7 +99,7 @@ We will complete deployment by running a script in **Cloud Shell**.
 
 1. Launch Cloud Shell  
 
-    Open a new browser tab or window, then navigate to https://shell.azure.com 
+    Open a new browser tab or window, then navigate to <https://shell.azure.com>
 
     <a href="https://shell.azure.com" target="_blank"><img src="./media/launchcloudshell.png"/></a>
 

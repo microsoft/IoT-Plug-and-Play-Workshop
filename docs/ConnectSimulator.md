@@ -90,7 +90,7 @@ Example with WSL Ubuntu 18.04 LTS :
 
 1. Enter a new Registration ID  
 
-    The Registration ID becomes a device name in the solution.  Please use `Thermo141`
+    The Registration ID becomes a device name in the solution.  
 
     ![DPS 02](media/DPS-02.png)
 
@@ -110,6 +110,10 @@ In order to provision a device, the device needs authentication information (Sym
 1. Switch to `Simple Thermostat` and open `run.sh` file in `/demo/SimpleThermostat/script` folder  
 
     ![DPS 04](media/DPS-04.png)
+
+1. Change `DPS_DEVICE_ID` at line #29 to the name you used in the enrollment  
+
+    e.g. Thermo141
 
 1. Copy `ID Scope` from the sample IoT Solution, then paste to line #29 for `DPS_IDSCOPE` in `run.sh` file  
 

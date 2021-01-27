@@ -3,11 +3,49 @@
 
 The sample IoT Solution is configured with Azure Digital Twins (ADT) and Azure Indoor Map.  With Indoor Map Data and feature state, you can visualize digital twin's properties in the indoor map.
 
-Feature stateset is configure with following states to show different background colors of rooms based on rooms' temperature property.
+Feature stateset is configure with following states to show different background colors of rooms based on rooms' `temperature` and `light` properties.
+
+> [!TIP]  
+> Please see the complete list in [the appendix](#complete-state-set)
 
 ```json
 {
   "styles": [
+    {
+      "keyname": "light",
+      "type": "number",
+      "rules": [
+        {
+          "range": {
+            "exclusiveMaximum": 10
+          },
+          "color": "#000000"
+        },
+        {
+          "range": {
+            "minimum": 10,
+            "exclusiveMaximum": 20
+          },
+          "color": "#242424"
+        },
+
+            :
+
+        {
+          "range": {
+            "minimum": 80,
+            "exclusiveMaximum": 90
+          },
+          "color": "#c8c8c8"
+        },
+        {
+          "range": {
+            "minimum": 90
+          },
+          "color": "#FFFFFF"
+        }
+      ]
+    },
     {
       "keyname": "temperature",
       "type": "number",
@@ -25,20 +63,9 @@ Feature stateset is configure with following states to show different background
           },
           "color": "#33FFFF"
         },
-        {
-          "range": {
-            "minimum": 30,
-            "exclusiveMaximum": 40
-          },
-          "color": "#a4ff2e"
-        },
-        {
-          "range": {
-            "minimum": 40,
-            "exclusiveMaximum": 50
-          },
-          "color": "#ff2eff"
-        },
+
+                :
+
         {
           "range": {
             "minimum": 50,
@@ -61,6 +88,18 @@ Feature stateset is configure with following states to show different background
 ## Sending Digital Twin property changes to Azure Indoor Map
 
 In order for the feature set style to reflect property changes to Azure indoor map, we can forward `Twin Change` events to Azure Functions.  Azure Functions then sets state of map data (or room, in this case).
+
+### Flow
+
+Using Digital Twin change/update Event as a trigger, the sample solution updates Indoor Maps' `Unit` through Azure Functions.
+
+1. `temperature` or `light` property of `Room` twin changes
+1. Azure Digital Twins triggers a `Twin Update` event
+1. Using Azure Event Grid, `Twin Update` event is published to Azure Functions
+1. Azure Functions receives the event
+1. Azure Functions then updates Indoor Maps' `Unit` with `temperature`/`light` property value
+1. Indoor Maps dynamically sets background color of the room
+1. WebUI shows dynamic styling
 
 ### Creating a new `Event Endpoint`  
 
@@ -96,6 +135,8 @@ With a new endpoint, we need to configure how to route events.  This is called *
 1. Click `Save` to save the new event route
 
   ![ADT Map 03](media/ADT-Map-03.png)
+
+With `Event Route`, any changes to twin causes an event to be published.  Azure Functions, in return, subscribes to the event then updates Indoor Maps.
 
 ## Updating digital twin to send twin update event
 
@@ -134,7 +175,10 @@ By changing properties of room141's twin, ADT publishes Digital Twin update even
   Wait for a few seconds, or click `Reload` button to refresh browser view
 
 Based on the temperature setting, the background color of the assigned room changes.  
-Change temperature value again to see how digital twin property data is reflacted in Indoor Map.
+Change temperature value again to see how digital twin property data is reflected in Indoor Map.
+
+> [!TIP]  
+> With Seeed WIO Terminal, you may send `light sensor` telemetry.
 
 ![ADT Map 15](media/ADT-Map-15.png)
 
@@ -157,7 +201,9 @@ The sample IoT Solution is configured to :
   The function name is `Telemetry_Processor`
 - Telemetry_Processor function receives device telemetry
 - Telemetry_Processor looks for a digital twin with `Device ID` = `Digital Twin ID`
-- Telemetry_Processor resolves the IoT Plug and Play model, and looks for telemetry with Semantic Type = `Temperature`
+- Telemetry_Processor resolves the IoT Plug and Play model, and looks for telemetry with Semantic Type = `Temperature` (or light)
+- Telemetry_Processor looks for `Parent Twin`, or **a room**
+- Telemetry_Processor updates `temperature` or `light` property of **the parent room**
 
   Example of Device Model with Semantic Type = Temperature (@type)
 
@@ -259,5 +305,136 @@ You completed :
 - Visualize digital twin property with Azure Indoor Map
 
 Congratulations.  You completed IoT Plug and Play hands on lab!
+
+## Appendix
+
+### Complete State Set
+
+```json
+{
+  "styles": [
+    {
+      "keyname": "light",
+      "type": "number",
+      "rules": [
+        {
+          "range": {
+            "exclusiveMaximum": 10
+          },
+          "color": "#000000"
+        },
+        {
+          "range": {
+            "minimum": 10,
+            "exclusiveMaximum": 20
+          },
+          "color": "#242424"
+        },
+        {
+          "range": {
+            "minimum": 20,
+            "exclusiveMaximum": 30
+          },
+          "color": "#3a3a3a"
+        },
+        {
+          "range": {
+            "minimum": 30,
+            "exclusiveMaximum": 40
+          },
+          "color": "#4f4f4f"
+        },
+        {
+          "range": {
+            "minimum": 40,
+            "exclusiveMaximum": 50
+          },
+          "color": "#646464"
+        },
+        {
+          "range": {
+            "minimum": 50,
+            "exclusiveMaximum": 60
+          },
+          "color": "#797979"
+        },
+        {
+          "range": {
+            "minimum": 60,
+            "exclusiveMaximum": 70
+          },
+          "color": "#919191"
+        },
+        {
+          "range": {
+            "minimum": 70,
+            "exclusiveMaximum": 80
+          },
+          "color": "#ababab"
+        },
+        {
+          "range": {
+            "minimum": 80,
+            "exclusiveMaximum": 90
+          },
+          "color": "#c8c8c8"
+        },
+        {
+          "range": {
+            "minimum": 90
+          },
+          "color": "#FFFFFF"
+        }
+      ]
+    },
+    {
+      "keyname": "temperature",
+      "type": "number",
+      "rules": [
+        {
+          "range": {
+            "exclusiveMaximum": 20
+          },
+          "color": "#CCF7FF"
+        },
+        {
+          "range": {
+            "minimum": 20,
+            "exclusiveMaximum": 30
+          },
+          "color": "#33FFFF"
+        },
+        {
+          "range": {
+            "minimum": 30,
+            "exclusiveMaximum": 40
+          },
+          "color": "#a4ff2e"
+        },
+        {
+          "range": {
+            "minimum": 40,
+            "exclusiveMaximum": 50
+          },
+          "color": "#ff2eff"
+        },
+        {
+          "range": {
+            "minimum": 50,
+            "exclusiveMaximum": 60
+          },
+          "color": "#ff6d2e"
+        },
+        {
+          "range": {
+            "minimum": 60
+          },
+          "color": "#FF1919"
+        }
+      ]
+    }
+  ]
+}
+```
 
 [Return](../README.md) to the top page
