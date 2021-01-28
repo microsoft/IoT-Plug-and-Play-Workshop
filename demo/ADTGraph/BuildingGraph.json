@@ -96,7 +96,7 @@
         },
         {
           "@type": "Property",
-          "name": "c02",
+          "name": "co2",
           "schema": "double"
         },
         {
