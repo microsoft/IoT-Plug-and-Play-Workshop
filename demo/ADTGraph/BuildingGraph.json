@@ -95,6 +95,11 @@
           "schema": "integer"
         },
         {
+          "@type": "Property",
+          "name": "c02",
+          "schema": "double"
+        },
+        {
           "@type": "Relationship",
           "name": "contains",
           "displayName": "contains",
