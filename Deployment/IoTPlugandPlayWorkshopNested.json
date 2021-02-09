@@ -951,6 +951,10 @@
     "_Unique_ID": {
       "type": "String",
       "value": "[parameters('UniqueID')]"
+    },
+    "_ADT_Event_Endpoint": {
+      "type": "String",
+      "value": "https://github.com/microsoft/IoT-Plug-and-Play-Workshop/blob/main/docs/ADT-IndoorMap.md#creating-a-new-event-endpoint"
     }
   }
 }
