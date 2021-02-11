@@ -1,0 +1,21 @@
+--2021-02-11 10:06:16--  https://github.com/SeeedJP/wioterminal-aziot-example/releases/download/0.9/wioterminal-aziot-example.uf2
+Resolving github.com (github.com)... 192.30.255.113
+Connecting to github.com (github.com)|192.30.255.113|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://github-releases.githubusercontent.com/291179937/fc851400-5595-11eb-9c1f-116eab6b299f?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20210211%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210211T180617Z&X-Amz-Expires=300&X-Amz-Signature=97e33fb83d41a1a54ef83d5f79b972d8b7e38b2adf5b73d5e0f2e72ab609b0b1&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=291179937&response-content-disposition=attachment%3B%20filename%3Dwioterminal-aziot-example.uf2&response-content-type=application%2Foctet-stream [following]
+--2021-02-11 10:06:17--  https://github-releases.githubusercontent.com/291179937/fc851400-5595-11eb-9c1f-116eab6b299f?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20210211%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210211T180617Z&X-Amz-Expires=300&X-Amz-Signature=97e33fb83d41a1a54ef83d5f79b972d8b7e38b2adf5b73d5e0f2e72ab609b0b1&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=291179937&response-content-disposition=attachment%3B%20filename%3Dwioterminal-aziot-example.uf2&response-content-type=application%2Foctet-stream
+Resolving github-releases.githubusercontent.com (github-releases.githubusercontent.com)... 185.199.108.154, 185.199.111.154, 185.199.109.154, ...
+Connecting to github-releases.githubusercontent.com (github-releases.githubusercontent.com)|185.199.108.154|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 301056 (294K) [application/octet-stream]
+Saving to: ‘wioterminal-aziot-example.uf2’
+
+     0K .......... .......... .......... .......... .......... 17% 1.63M 0s
+    50K .......... .......... .......... .......... .......... 34% 1.41M 0s
+   100K .......... .......... .......... .......... .......... 51% 1.64M 0s
+   150K .......... .......... .......... .......... .......... 68% 1.55M 0s
+   200K .......... .......... .......... .......... .......... 85% 7.23M 0s
+   250K .......... .......... .......... .......... ....      100% 10.1M=0.1s
+
+2021-02-11 10:06:17 (2.10 MB/s) - ‘wioterminal-aziot-example.uf2’ saved [301056/301056]
+
