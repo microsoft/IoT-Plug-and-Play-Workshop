@@ -24,10 +24,11 @@ struct console_command
 };
 
 static void help_command(int argc, char** argv);
+static void burn_rtl8720_command(int argc, char** argv);
 static void reset_factory_settings_command(int argc, char** argv);
 static void display_settings_command(int argc, char** argv);
 static void wifissid_command(int argc, char** argv);
-static void wifipwd_Command(int argc, char** argv);
+static void wifipwd_command(int argc, char** argv);
 static void az_idscope_command(int argc, char** argv);
 static void az_regid_command(int argc, char** argv);
 static void az_symkey_command(int argc, char** argv);
@@ -36,10 +37,11 @@ static void az_iotc_command(int argc, char** argv);
 static const struct console_command cmds[] = 
 {
   {"help"                  , "Help document"                                  , help_command                   },
+  {"burn_rtl8720"          , "Enter the Burn RTL8720 Firmware mode"           , burn_rtl8720_command           },
   {"reset_factory_settings", "Reset factory settings"                         , reset_factory_settings_command },
   {"show_settings"         , "Display settings"                               , display_settings_command       },
   {"set_wifissid"          , "Set Wi-Fi SSID"                                 , wifissid_command               },
-  {"set_wifipwd"           , "Set Wi-Fi password"                             , wifipwd_Command                },
+  {"set_wifipwd"           , "Set Wi-Fi password"                             , wifipwd_command                },
   {"set_az_idscope"        , "Set id scope of Azure IoT DPS"                  , az_idscope_command             },
   {"set_az_regid"          , "Set registration id of Azure IoT DPS"           , az_regid_command               },
   {"set_az_symkey"         , "Set symmetric key of Azure IoT DPS"             , az_symkey_command              },
@@ -48,19 +50,69 @@ static const struct console_command cmds[] =
 
 static const int cmd_count = sizeof(cmds) / sizeof(cmds[0]);
 
+static void EnterBurnRTL8720Mode()
+{
+    // Switch mode of RTL8720
+    pinMode(PIN_SERIAL2_RX, OUTPUT);
+    pinMode(RTL8720D_CHIP_PU, OUTPUT);
+    digitalWrite(PIN_SERIAL2_RX, LOW);
+    digitalWrite(RTL8720D_CHIP_PU, LOW);
+    delay(500);
+    pinMode(RTL8720D_CHIP_PU, INPUT);
+    delay(500);
+    pinMode(PIN_SERIAL2_RX, INPUT);
+
+    // Initialize UART
+    Serial.beginWithoutDTR(115200);
+    auto oldBaud = Serial.baud();
+    RTL8720D.begin(oldBaud);
+    delay(500);
+
+    while (true)
+    {
+        // Change baud
+        const auto baud = Serial.baud();
+        if (baud != oldBaud)
+        {
+            RTL8720D.begin(baud);
+            oldBaud = baud;
+        }
+
+        // USB -> RTL
+        while (Serial.available()) RTL8720D.write(Serial.read());
+
+        // RTL -> USB
+        while (RTL8720D.available()) Serial.write(RTL8720D.read());
+    }
+}
+
 static void print_help()
 {
     Serial.print("Configuration console:" DLM);
     
     for (int i = 0; i < cmd_count; i++)
     {
-        Serial.printf(" - %s: %s." DLM, cmds[i].name, cmds[i].help);
+        Serial.print(String::format(" - %s: %s." DLM, cmds[i].name, cmds[i].help));
     }
 }
 
 static void help_command(int argc, char** argv)
 {
     print_help();
+}
+
+static void burn_rtl8720_command(int argc, char** argv)
+{
+    Serial.print("Enter the Burn RTL8720 Firmware mode." DLM);
+    Serial.print("[Windows]" DLM);
+    Serial.print("  ambd_flash_tool.exe erase" DLM);
+    Serial.print("  ambd_flash_tool.exe flash -d [RTL8720-firmware-path]" DLM);
+    Serial.print("[macOS/Linux]" DLM);
+    Serial.print("  python3 ambd_flash_tool.py erase" DLM);
+    Serial.print("  python3 ambd_flash_tool.py flash -d [RTL8720-firmware-path]" DLM);
+    delay(1000);
+
+    EnterBurnRTL8720Mode();
 }
 
 static void reset_factory_settings_command(int argc, char** argv)
@@ -73,18 +125,18 @@ static void reset_factory_settings_command(int argc, char** argv)
 
 static void display_settings_command(int argc, char** argv)
 {
-    Serial.printf("Wi-Fi SSID = %s" DLM, Storage::WiFiSSID.c_str());
-    Serial.printf("Wi-Fi password = %s" DLM, Storage::WiFiPassword.c_str());
-    Serial.printf("Id scope of Azure IoT DPS = %s" DLM, Storage::IdScope.c_str());
-    Serial.printf("Registration id of Azure IoT DPS = %s" DLM, Storage::RegistrationId.c_str());
-    Serial.printf("Symmetric key of Azure IoT DPS = %s" DLM, Storage::SymmetricKey.c_str());
+    Serial.print(String::format("Wi-Fi SSID = %s" DLM, Storage::WiFiSSID.c_str()));
+    Serial.print(String::format("Wi-Fi password = %s" DLM, Storage::WiFiPassword.c_str()));
+    Serial.print(String::format("Id scope of Azure IoT DPS = %s" DLM, Storage::IdScope.c_str()));
+    Serial.print(String::format("Registration id of Azure IoT DPS = %s" DLM, Storage::RegistrationId.c_str()));
+    Serial.print(String::format("Symmetric key of Azure IoT DPS = %s" DLM, Storage::SymmetricKey.c_str()));
 }
 
 static void wifissid_command(int argc, char** argv)
 {
     if (argc != 2) 
     {
-        Serial.printf("ERROR: Usage: %s <SSID>. Please provide the SSID of the Wi-Fi." DLM, argv[0]);
+        Serial.print(String::format("ERROR: Usage: %s <SSID>. Please provide the SSID of the Wi-Fi." DLM, argv[0]));
         return;
     }
 
@@ -94,11 +146,11 @@ static void wifissid_command(int argc, char** argv)
     Serial.print("Set Wi-Fi SSID successfully." DLM);
 }
 
-static void wifipwd_Command(int argc, char** argv)
+static void wifipwd_command(int argc, char** argv)
 {
     if (argc != 2) 
     {
-        Serial.printf("ERROR: Usage: %s <Password>. Please provide the password of the Wi-Fi." DLM, argv[0]);
+        Serial.print(String::format("ERROR: Usage: %s <Password>. Please provide the password of the Wi-Fi." DLM, argv[0]));
         return;
     }
 
@@ -112,7 +164,7 @@ static void az_idscope_command(int argc, char** argv)
 {
     if (argc != 2) 
     {
-        Serial.printf("ERROR: Usage: %s <Id scope>. Please provide the id scope of the Azure IoT DPS." DLM, argv[0]);
+        Serial.print(String::format("ERROR: Usage: %s <Id scope>. Please provide the id scope of the Azure IoT DPS." DLM, argv[0]));
         return;
     }
 
@@ -126,7 +178,7 @@ static void az_regid_command(int argc, char** argv)
 {
     if (argc != 2) 
     {
-        Serial.printf("ERROR: Usage: %s <Registration id>. Please provide the registraion id of the Azure IoT DPS." DLM, argv[0]);
+        Serial.print(String::format("ERROR: Usage: %s <Registration id>. Please provide the registraion id of the Azure IoT DPS." DLM, argv[0]));
         return;
     }
 
@@ -140,7 +192,7 @@ static void az_symkey_command(int argc, char** argv)
 {
     if (argc != 2) 
     {
-        Serial.printf("ERROR: Usage: %s <Symmetric key>. Please provide the symmetric key of the Azure IoT DPS." DLM, argv[0]);
+        Serial.print(String::format("ERROR: Usage: %s <Symmetric key>. Please provide the symmetric key of the Azure IoT DPS." DLM, argv[0]));
         return;
     }
 
@@ -152,26 +204,15 @@ static void az_symkey_command(int argc, char** argv)
 
 static void az_iotc_command(int argc, char** argv)
 {
-    if (argc < 3) 
+    if (argc != 4) 
     {
-        Serial.printf("ERROR: Usage: %s <Id scope> <SAS key> [Device id]." DLM, argv[0]);
+        Serial.print(String::format("ERROR: Usage: %s <Id scope> <SAS key> <Device id>." DLM, argv[0]));
         return;
     }
 
     Storage::IdScope = argv[1];
-
-    if (argc == 4)
-    {
-        Storage::RegistrationId = argv[3];
-        Storage::SymmetricKey = ComputeDerivedSymmetricKey(argv[2],  argv[3]);
-    } else {
-        Storage::RegistrationId = "WIOTerminal-NonPnP";
-#ifdef PNPDEMO
-        Storage::SymmetricKey = ComputeDerivedSymmetricKey(argv[2], "WIOTerminal-PnP");
-#else
-        Storage::SymmetricKey = ComputeDerivedSymmetricKey(argv[2], "WIOTerminal-NonPnP");
-#endif
-    }
+    Storage::RegistrationId = argv[3];
+    Storage::SymmetricKey = ComputeDerivedSymmetricKey(argv[2], argv[3]);
     Storage::Save();
 
     Serial.print("Set connection information of Azure IoT Central successfully." DLM);
@@ -326,7 +367,7 @@ static bool CliHandleInput(char* inbuf)
         }
     }
     
-    Serial.printf("ERROR: Invalid command: %s" DLM, argv[0]);
+    Serial.print(String::format("ERROR: Invalid command: %s" DLM, argv[0]));
     return true;
 }
 

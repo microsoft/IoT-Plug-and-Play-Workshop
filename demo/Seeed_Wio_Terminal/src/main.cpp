@@ -4,6 +4,8 @@
 #include "Signature.h"
 #include "AzureDpsClient.h"
 #include "CliMode.h"
+#include <TinyGPS++.h>
+#include <wiring_private.h>
 
 #include <LIS3DHTR.h>
 
@@ -13,24 +15,23 @@
 #include <WiFiUdp.h>
 #include <NTP.h>
 
-#include <az_json.h>
-#include <az_result.h>
-#include <az_span.h>
-#include <az_iot_hub_client.h>
+#include <azure/core/az_json.h>
+#include <azure/core/az_result.h>
+#include <azure/core/az_span.h>
+#include <azure/iot/az_iot_hub_client.h>
 
 #define MQTT_PACKET_SIZE 1024
 
-#ifdef USE_LOGO
-#define IMAGE_SIZE 155648
-static auto WallpaperSeeed  = reinterpret_cast<const uint8_t* const>(0x04200004 + (IMAGE_SIZE * 0));
-#ifndef PNP_DEMO
-static auto WallpaperAzure  = reinterpret_cast<const uint8_t* const>(0x04200004 + (IMAGE_SIZE * 1));
-#else
-static auto WallpaperIoTPnP = reinterpret_cast<const uint8_t* const>(0x04200004 + (IMAGE_SIZE * 2));
-#endif
-#endif
-
 LIS3DHTR<TwoWire> AccelSensor;
+
+static const uint32_t GPSBaud = 9600;
+static Uart GpsOnSerial(&sercom3, PIN_WIRE_SCL, PIN_WIRE_SDA, SERCOM_RX_PAD_1, UART_TX_PAD_0);
+TinyGPSPlus gps;
+TinyGPSCustom ggaLat(gps, "GPGGA", 2);
+TinyGPSCustom ggaLng(gps, "GPGGA", 4);
+double lastLat = 0.0;
+double lastLng = 0.0;
+
 
 const char* ROOT_CA_BALTIMORE =
 "-----BEGIN CERTIFICATE-----\n"
@@ -94,7 +95,7 @@ static void Abort(const char* format, ...)
     String str{ StringVFormat(format, arg) };
     va_end(arg);
 
-    Serial.printf("ABORT: %s" DLM, str.c_str());
+    Serial.print(String::format("ABORT: %s" DLM, str.c_str()));
 
     while (true) {}
 }
@@ -125,6 +126,68 @@ static void DisplayPrintf(const char* format, ...)
 
     Log("%s\n", str.c_str());
     tft.printf("%s\n", str.c_str());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Button
+
+#include <AceButton.h>
+using namespace ace_button;
+
+enum class ButtonId
+{
+    RIGHT = 0,
+    CENTER,
+    LEFT,
+};
+static const int ButtonNumber = 3;
+static AceButton Buttons[ButtonNumber];
+static bool ButtonsClicked[ButtonNumber];
+
+static void ButtonEventHandler(AceButton* button, uint8_t eventType, uint8_t buttonState)
+{
+    const uint8_t id = button->getId();
+    if (ButtonNumber <= id) return;
+
+    switch (eventType)
+    {
+    case AceButton::kEventClicked:
+        switch (static_cast<ButtonId>(id))
+        {
+        case ButtonId::RIGHT:
+            DisplayPrintf("Right button was clicked");
+            break;
+        case ButtonId::CENTER:
+            DisplayPrintf("Center button was clicked");
+            break;
+        case ButtonId::LEFT:
+            DisplayPrintf("Left button was clicked");
+            break;
+        }
+        ButtonsClicked[id] = true;
+        break;
+    }
+}
+
+static void ButtonInit()
+{
+    Buttons[static_cast<int>(ButtonId::RIGHT)].init(WIO_KEY_A, HIGH, static_cast<uint8_t>(ButtonId::RIGHT));
+    Buttons[static_cast<int>(ButtonId::CENTER)].init(WIO_KEY_B, HIGH, static_cast<uint8_t>(ButtonId::CENTER));
+    Buttons[static_cast<int>(ButtonId::LEFT)].init(WIO_KEY_C, HIGH, static_cast<uint8_t>(ButtonId::LEFT));
+
+    ButtonConfig* buttonConfig = ButtonConfig::getSystemButtonConfig();
+    buttonConfig->setEventHandler(ButtonEventHandler);
+    buttonConfig->setFeature(ButtonConfig::kFeatureClick);
+
+    for (int i = 0; i < ButtonNumber; ++i) ButtonsClicked[i] = false;
+}
+
+static void ButtonDoWork()
+{
+    for (int i = 0; static_cast<size_t>(i) < std::extent<decltype(Buttons)>::value; ++i)
+    {
+        Buttons[i].check();
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -165,19 +228,11 @@ static int RegisterDeviceToDPS(const std::string& endpoint, const std::string& i
     mqtt_client.setBufferSize(MQTT_PACKET_SIZE);
     mqtt_client.setServer(endpoint.c_str(), 8883);
     mqtt_client.setCallback(MqttSubscribeCallbackDPS);
-
-#ifndef USE_LOGO
     DisplayPrintf("Connecting to Azure IoT Hub DPS...");
-#endif
     if (!mqtt_client.connect(mqttClientId.c_str(), mqttUsername.c_str(), mqttPassword.c_str())) return -2;
 
     mqtt_client.subscribe(registerSubscribeTopic.c_str());
-
-#if defined(PNP_DEMO)
     mqtt_client.publish(registerPublishTopic.c_str(), "{payload:{\"modelId\":\"" IOT_CONFIG_MODEL_ID "\"}}");
-#else
-    mqtt_client.publish(registerPublishTopic.c_str(), "");
-#endif
 
     while (!DpsClient.IsRegisterOperationCompleted())
     {
@@ -284,9 +339,53 @@ static az_result SendTelemetry()
     float accelX;
     float accelY;
     float accelZ;
+    double lat = 0.0;
+    double lng = 0.0;
+
+    // Example NMEA messages
+    // $GPGGA,181520.000,4741.5452,N,12207.3874,W,2,8,1.14,80.1,M,-17.2,M,0000,0000*50
+    // $GPGSA,A,3,09,22,06,01,26,04,03,16,,,,,1.40,1.14,0.82*03
+    // $GPGSV,3,1,11,03,74,197,33,04,66,295,36,22,51,168,28,26,39,100,27*70
+    // $GPGSV,3,2,11,51,33,160,35,31,30,053,,09,28,28Sent telemetry 1
+
+    while (GpsOnSerial.available() > 0)
+    {
+        unsigned char cc = GpsOnSerial.read();
+        if (gps.encode(cc))
+        {
+            if (ggaLng.isValid() && ggaLng.isUpdated())
+            {
+                ggaLng.value();
+                lng = gps.location.lng();
+                lat = gps.location.lat();
+
+                if (lng != lastLng)
+                {
+                    lastLng = lng;
+                }
+                // else
+                // {
+                //     lng = 0.0;
+                // }
+
+                if (lat != lastLat)
+                {
+                    lastLat = lat;
+                }
+                // else
+                // {
+                //     lat = 0.0;
+                // }                
+            }
+        }
+    }
+
     AccelSensor.getAcceleration(&accelX, &accelY, &accelZ);
 
-    char telemetry_topic[128];
+    int light;
+    light = analogRead(WIO_LIGHT) * 100 / 1023;
+
+    char telemetry_topic[192];
     if (az_result_failed(az_iot_hub_client_telemetry_get_publish_topic(&HubClient, NULL, telemetry_topic, sizeof(telemetry_topic), NULL)))
     {
         Log("Failed az_iot_hub_client_telemetry_get_publish_topic" DLM);
@@ -294,18 +393,36 @@ static az_result SendTelemetry()
     }
 
     az_json_writer json_builder;
-    char telemetry_payload[80];
+    char telemetry_payload[192];
     AZ_RETURN_IF_FAILED(az_json_writer_init(&json_builder, AZ_SPAN_FROM_BUFFER(telemetry_payload), NULL));
     AZ_RETURN_IF_FAILED(az_json_writer_append_begin_object(&json_builder));
+
     AZ_RETURN_IF_FAILED(az_json_writer_append_property_name(&json_builder, AZ_SPAN_LITERAL_FROM_STR(TELEMETRY_ACCEL_X)));
     AZ_RETURN_IF_FAILED(az_json_writer_append_double(&json_builder, accelX, 3));
     AZ_RETURN_IF_FAILED(az_json_writer_append_property_name(&json_builder, AZ_SPAN_LITERAL_FROM_STR(TELEMETRY_ACCEL_Y)));
     AZ_RETURN_IF_FAILED(az_json_writer_append_double(&json_builder, accelY, 3));
     AZ_RETURN_IF_FAILED(az_json_writer_append_property_name(&json_builder, AZ_SPAN_LITERAL_FROM_STR(TELEMETRY_ACCEL_Z)));
     AZ_RETURN_IF_FAILED(az_json_writer_append_double(&json_builder, accelZ, 3));
-    AZ_RETURN_IF_FAILED(az_json_writer_append_end_object(&json_builder));
-    const az_span out_payload{ az_json_writer_get_bytes_used_in_destination(&json_builder) };
+    AZ_RETURN_IF_FAILED(az_json_writer_append_property_name(&json_builder, AZ_SPAN_LITERAL_FROM_STR(TELEMETRY_LIGHT)));
+    AZ_RETURN_IF_FAILED(az_json_writer_append_int32(&json_builder, light));
 
+    if (lat != 0.0)
+    {
+        AZ_RETURN_IF_FAILED(az_json_writer_append_property_name(&json_builder, AZ_SPAN_LITERAL_FROM_STR(TELEMETRY_GPS_LOCATION)));
+        AZ_RETURN_IF_FAILED(az_json_writer_append_begin_object(&json_builder));
+        AZ_RETURN_IF_FAILED(az_json_writer_append_property_name(&json_builder, AZ_SPAN_LITERAL_FROM_STR(TELEMETRY_GPS_TYPE)));
+        AZ_RETURN_IF_FAILED(az_json_writer_append_string(&json_builder, AZ_SPAN_LITERAL_FROM_STR(TELEMETRY_GPS_POINT)));
+        AZ_RETURN_IF_FAILED(az_json_writer_append_property_name(&json_builder, AZ_SPAN_LITERAL_FROM_STR(TELEMETRY_GPS_COORDINATE)));
+        AZ_RETURN_IF_FAILED(az_json_writer_append_begin_array(&json_builder));
+        AZ_RETURN_IF_FAILED(az_json_writer_append_double(&json_builder, lng, 6));
+        AZ_RETURN_IF_FAILED(az_json_writer_append_double(&json_builder, lat, 6));
+        AZ_RETURN_IF_FAILED(az_json_writer_append_end_array(&json_builder));
+        AZ_RETURN_IF_FAILED(az_json_writer_append_end_object(&json_builder));
+    }
+
+    AZ_RETURN_IF_FAILED(az_json_writer_append_end_object(&json_builder));
+
+    const az_span out_payload{ az_json_writer_get_bytes_used_in_destination(&json_builder) };
     static int sendCount = 0;
     if (!mqtt_client.publish(telemetry_topic, az_span_ptr(out_payload), az_span_size(out_payload), false))
     {
@@ -314,9 +431,52 @@ static az_result SendTelemetry()
     else
     {
         ++sendCount;
-#ifndef USE_LOGO
         DisplayPrintf("Sent telemetry %d", sendCount);
-#endif
+    }
+
+    return AZ_OK;
+}
+
+static az_result SendButtonTelemetry(ButtonId id)
+{
+    char telemetry_topic[128];
+    if (az_result_failed(az_iot_hub_client_telemetry_get_publish_topic(&HubClient, NULL, telemetry_topic, sizeof(telemetry_topic), NULL)))
+    {
+        Log("Failed az_iot_hub_client_telemetry_get_publish_topic" DLM);
+        return AZ_ERROR_NOT_SUPPORTED;
+    }
+
+    az_json_writer json_builder;
+    char telemetry_payload[200];
+    AZ_RETURN_IF_FAILED(az_json_writer_init(&json_builder, AZ_SPAN_FROM_BUFFER(telemetry_payload), NULL));
+    AZ_RETURN_IF_FAILED(az_json_writer_append_begin_object(&json_builder));
+    switch (id)
+    {
+    case ButtonId::RIGHT:
+        AZ_RETURN_IF_FAILED(az_json_writer_append_property_name(&json_builder, AZ_SPAN_LITERAL_FROM_STR(TELEMETRY_RIGHT_BUTTON)));
+        AZ_RETURN_IF_FAILED(az_json_writer_append_string(&json_builder, AZ_SPAN_LITERAL_FROM_STR("click")));
+        break;
+    case ButtonId::CENTER:
+        AZ_RETURN_IF_FAILED(az_json_writer_append_property_name(&json_builder, AZ_SPAN_LITERAL_FROM_STR(TELEMETRY_CENTER_BUTTON)));
+        AZ_RETURN_IF_FAILED(az_json_writer_append_string(&json_builder, AZ_SPAN_LITERAL_FROM_STR("click")));
+        break;
+    case ButtonId::LEFT:
+        AZ_RETURN_IF_FAILED(az_json_writer_append_property_name(&json_builder, AZ_SPAN_LITERAL_FROM_STR(TELEMETRY_LEFT_BUTTON)));
+        AZ_RETURN_IF_FAILED(az_json_writer_append_string(&json_builder, AZ_SPAN_LITERAL_FROM_STR("click")));
+        break;
+    default:
+        return AZ_ERROR_ARG;
+    }
+    AZ_RETURN_IF_FAILED(az_json_writer_append_end_object(&json_builder));
+    const az_span out_payload{ az_json_writer_get_bytes_used_in_destination(&json_builder) };
+
+    if (!mqtt_client.publish(telemetry_topic, az_span_ptr(out_payload), az_span_size(out_payload), false))
+    {
+        DisplayPrintf("ERROR: Send button telemetry");
+    }
+    else
+    {
+        DisplayPrintf("Sent button telemetry");
     }
 
     return AZ_OK;
@@ -423,6 +583,26 @@ static void MqttSubscribeCallbackHub(char* topic, byte* payload, unsigned int le
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// For GPS connected to left side Grove connector
+
+void SERCOM3_0_Handler()
+{
+  GpsOnSerial.IrqHandler();
+}
+void SERCOM3_1_Handler()
+{
+  GpsOnSerial.IrqHandler();
+}
+void SERCOM3_2_Handler()
+{
+  GpsOnSerial.IrqHandler();
+}
+void SERCOM3_3_Handler()
+{
+  GpsOnSerial.IrqHandler();
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // setup and loop
 
 void setup()
@@ -438,33 +618,23 @@ void setup()
     Serial.begin(115200);
 
     pinMode(WIO_BUZZER, OUTPUT);
-    pinMode(WIO_KEY_A, INPUT_PULLUP);
-    pinMode(WIO_KEY_B, INPUT_PULLUP);
-    pinMode(WIO_KEY_C, INPUT_PULLUP);
 
     ////////////////////
     // Init display
 
     tft.begin();
-    tft.setTextScroll(true);
-    tft.setFont(&fonts::Font2);
-    tft.setTextSize(1.5);
-
-#ifdef USE_LOGO
-#ifdef ADJUST_BACKLIGHT
-    backLight.initialize();
-    std::uint8_t maxBrightness = backLight.getMaxBrightness();
-    backLight.setBrightness(4);
-#endif
-    tft.fillScreen(TFT_WHITE);
-    tft.setTextColor(TFT_BLACK);
-#else
     tft.fillScreen(TFT_BLACK);
+    tft.setTextScroll(true);
     tft.setTextColor(TFT_WHITE);
-#endif
+    tft.setFont(&fonts::Font2);
 
     ////////////////////
     // Enter configuration mode
+
+    pinMode(WIO_KEY_A, INPUT_PULLUP);
+    pinMode(WIO_KEY_B, INPUT_PULLUP);
+    pinMode(WIO_KEY_C, INPUT_PULLUP);
+    delay(100);
 
     if (digitalRead(WIO_KEY_A) == LOW &&
         digitalRead(WIO_KEY_B) == LOW &&
@@ -474,16 +644,17 @@ void setup()
         CliMode();
     }
 
-#ifdef USE_LOGO
-    tft.pushImage(0, 0, 320, 240, (const uint16_t*)(WallpaperSeeed));
-#endif
-
     ////////////////////
     // Init sensor
 
     AccelSensor.begin(Wire1);
     AccelSensor.setOutputDataRate(LIS3DHTR_DATARATE_25HZ);
     AccelSensor.setFullScaleRange(LIS3DHTR_RANGE_2G);
+    GpsOnSerial.begin(GPSBaud);
+    pinPeripheral(PIN_WIRE_SCL, PIO_SERCOM_ALT);
+    pinPeripheral(PIN_WIRE_SCL, PIO_SERCOM_ALT);
+
+    ButtonInit();
 
     ////////////////////
     // Connect Wi-Fi
@@ -519,30 +690,13 @@ void setup()
     DeviceId = IOT_CONFIG_DEVICE_ID;
 
 #endif // USE_CLI || USE_DPS
-
-#ifdef USE_LOGO
-    ////////////////////
-    // Hub
-    if (ConnectToHub(&HubClient, HubHost, DeviceId, IOT_CONFIG_SYMMETRIC_KEY, ntp.epoch() + TOKEN_LIFESPAN) != 0)
-    {
-        Abort("Failed to connect Hub");
-    }
-
-    tft.setCursor(0, 0);
-    tft.setTextColor(TFT_WHITE);
-    tft.fillScreen(TFT_BLACK);
-#if defined(PNP_DEMO)
-    tft.pushImage(0, 0, 320, 240, (const uint16_t*)(WallpaperIoTPnP));
-#else
-    tft.pushImage(0, 0, 320, 240, (const uint16_t*)(WallpaperAzure));
-#endif
-#endif
 }
 
 void loop()
 {
-    static uint64_t reconnectTime;
+    ButtonDoWork();
 
+    static uint64_t reconnectTime;
     if (!mqtt_client.connected())
     {
         DisplayPrintf("Connecting to Azure IoT Hub...");
@@ -574,6 +728,15 @@ void loop()
         {
             SendTelemetry();
             nextTelemetrySendTime = millis() + TELEMETRY_FREQUENCY_MILLISECS;
+        }
+
+        for (int i = 0; i < ButtonNumber; ++i)
+        {
+            if (ButtonsClicked[i])
+            {
+                SendButtonTelemetry(static_cast<ButtonId>(i));
+                ButtonsClicked[i] = false;
+            }
         }
     }
 }
