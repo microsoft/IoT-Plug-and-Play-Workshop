@@ -408,12 +408,10 @@
       "name": "[variables('webApp').functionsName]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Devices/IotHubs', variables('iothub').name)]",
         "[resourceId('Microsoft.Web/serverfarms', variables('webApp').hostingPlan)]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
         "[resourceId('Microsoft.SignalRService/SignalR', variables('signalrName'))]",
         "[resourceId('Microsoft.EventHub/Namespaces/EventHubs/AuthorizationRules', variables('eventHubs').nameSpace, variables('eventHubs').hubName, variables('eventHubs').ruleListen)]",
-        "[resourceId('Microsoft.Devices/provisioningServices', variables('dpsName'))]",
         "[resourceId('Microsoft.DigitalTwins/digitalTwinsInstances', variables('adt').name)]"
       ],
       "tags": {
@@ -442,11 +440,11 @@
             },
             {
               "name": "AzureWebJobsStorage",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2019-06-01').keys[0].value,';')]"
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2019-06-01').keys[0].value)]"
             },
             {
               "name": "AzureWebJobsDashboard",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2019-06-01').keys[0].value,';')]"
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2019-06-01').keys[0].value)]"
             },
             {
               "name": "EVENTHUB_CS",

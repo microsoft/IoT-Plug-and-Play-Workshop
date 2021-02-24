@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <title>Indoor Maps App</title>
+    
+    <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/indoor/0.1/atlas-indoor.min.css" type="text/css"/>
+
+    <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
+    <script src="https://atlas.microsoft.com/sdk/javascript/indoor/0.1/atlas-indoor.min.js"></script>
+      
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      #map-id {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="map-id"></div>
+    <script>
+      const subscriptionKey = "jbXoXFaj_VhKY1iXu9rXVmKPJnN-vgHmzfDjdwDqTR8";
+      const tilesetId = "5be82c83-88da-e9f3-2eb7-2b63c7c39ff9";
+      const statesetId = "e7cd3af8-0a8a-6023-7333-03d47a9ed66d";
+
+      if (!atlas.isSupported()) {
+          alert('Your browser is not supported by Azure Maps');
+      } else if (!atlas.isSupported(true)) {
+          alert('Your browser is supported by Azure Maps, but may have major performance caveats.');
+      } else {
+          // Your browser is supported. Add your map code here.
+      }
+
+      const map = new atlas.Map("map-id", {
+        //use your facility's location
+        center:  [-122.13232049931281, 47.636340913020078],
+        //or, you can use bounds: [# west, # south, # east, # north] and replace # with your Map bounds
+        // style: "blank",
+        view: 'Auto',
+        authOptions: { 
+            authType: 'subscriptionKey',
+            subscriptionKey: subscriptionKey
+        },
+        zoom: 19,
+      });
+
+      const levelControl = new atlas.control.LevelControl({
+        position: "top-right",
+      });
+
+      const indoorManager = new atlas.indoor.IndoorManager(map, {
+        statesetId, //optional
+        tilesetId,
+      });
+
+      console.log(indoorManager.getOptions());
+
+      if (statesetId.length > 0) {
+        console.log("Dynamic Styling");
+        console.log(indoorManager.getStyleDefinition());
+        indoorManager.setDynamicStyling(true);
+      }
+
+      map.events.add("levelchanged", indoorManager, (eventData) => {
+        //put code that runs after a level has been changed
+        console.log("The level has changed:", eventData);
+      });
+
+      map.events.add("facilitychanged", indoorManager, (eventData) => {
+        //put code that runs after a facility has been changed
+        console.log("The facility has changed:", eventData);
+      });
+
+      map.events.add("click", function(e){
+        console.log("Click")
+        var features = map.layers.getRenderedShapes(e.position, "indoor");
+
+        var result = features.reduce(function (ids, feature) {
+            if (feature.layer.id == "indoor_unit_office") {
+                console.log(feature);
+            }
+        }, []);
+      });
+</script>
+  </body>
+</html>

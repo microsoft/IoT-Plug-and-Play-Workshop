@@ -1,0 +1,206 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "UniqueID": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique ID.  E.g. your name.  Must be Alphanumeric (a~z, 0~9), and 5~12 characters"
+      },
+      "minLength": 5,
+      "maxLength": 12
+    }
+  },
+  "variables": {
+    "git-repo" : {
+      "webapp" : "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-WebApp.git",
+      "webappBranch" : "main",
+      "functions" : "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-Functions.git",
+      "functionsBranch" : "main"
+    },
+    "webApp" : {
+      "hostingPlan": "[concat('IoTPnPWS-HostingPlan-', parameters('UniqueID'))]",
+      "functionsName": "[concat('IoTPnPWS-Functions-', parameters('UniqueID'))]",
+      "webappName": "[concat('IoTPnPWS-Portal-', parameters('UniqueID'))]",
+      "webappUrl" : "[toLower(concat('https://', 'IoTPnPWS-Portal-', parameters('UniqueID'), '.azurewebsites.net'))]"
+    },
+    "storageName": "[toLower(concat('iotpnpwsstor', parameters('UniqueID')))]",
+    "dpsName": "[concat('IoTPnPWS-DPS-', parameters('UniqueID'))]",
+    "envTag": "2021-Jan-04"
+  },
+  "resources": [
+  {
+      "type": "Microsoft.Devices/provisioningServices",
+      "apiVersion": "2020-01-01",
+      "name": "[variables('dpsName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+      ],
+      "tags": {
+        "ENV": "[variables('envTag')]"
+      },
+      "sku": {
+        "name": "S1",
+        "tier": "Standard",
+        "capacity": 1
+      },
+      "properties": {
+        "iotHubs": [
+        ],
+        "allocationPolicy": "Hashed"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('storageName')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "ENV": "[variables('envTag')]"
+      },
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2"
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('webApp').hostingPlan]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "ENV": "[variables('envTag')]"
+      },
+      "sku": {
+        "name": "S1"
+      },
+      "kind": "app",
+      "properties": {
+        "workerSize": 0,
+        "numberOfWorkers": 1
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2020-09-01",
+      "name": "[variables('webApp').functionsName]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('webApp').hostingPlan)]"
+      ],
+      "tags": {
+        "ENV": "[variables('envTag')]"
+      },
+      "kind": "functionapp",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "name": "[variables('webApp').functionsName]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('webApp').hostingPlan)]",
+        "clientAffinityEnabled": false,
+        "enabled": true,
+        "siteConfig": {
+          "alwaysOn": false,
+          "cors": {
+            "allowedOrigins": [
+              "*"
+            ]
+          },
+          "appSettings": [
+            {
+                "name": "FUNCTIONS_EXTENSION_VERSION",
+                "value": "~3"
+            }
+          ]
+        }
+      },
+      "resources": [
+        {
+          "apiVersion": "2020-09-01",
+          "name": "appsettings",
+          "type": "config",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', variables('webApp').functionsName)]",
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
+            "[resourceId('Microsoft.Web/Sites/sourcecontrols', variables('webApp').functionsName, 'web')]"
+          ],
+          "properties": {
+            "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2020-09-01').keys[0].value)]",
+            "AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2020-09-01').keys[0].value)]",
+            "FUNCTIONS_EXTENSION_VERSION" : "~3",
+            "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+          }
+        },
+        {
+          "type": "sourcecontrols",
+          "apiVersion": "2020-09-01",
+          "name": "web",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', variables('webApp').functionsName)]"
+          ],
+          "properties": {
+            "RepoUrl": "[variables('git-repo').functions]",
+            "branch": "[variables('git-repo').functionsBranch]",
+            "IsManualIntegration": true
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2020-09-01",
+      "name": "[variables('webApp').webappName]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('webApp').hostingPlan)]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
+      ],
+      "tags": {
+        "ENV": "[variables('envTag')]"
+      },
+      "properties": {
+        "serverFarmId": "[variables('webApp').hostingPlan]",
+        "siteConfig": {
+          "webSocketsEnabled": true,
+          "appSettings": [
+          ]
+        }
+      },
+      "resources": [
+        {
+          "apiVersion": "2020-09-01",
+          "name": "appsettings",
+          "type": "config",
+          "dependsOn": [
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
+            "[resourceId('Microsoft.Devices/provisioningServices', variables('dpsName'))]",
+            "[resourceId('Microsoft.Web/Sites', variables('webApp').webappName)]",
+            "[resourceId('Microsoft.Web/Sites/sourcecontrols', variables('webApp').webappName, 'web')]"
+          ],
+          "properties": {
+            "Azure__Dps__IdScope":"[reference(resourceId('Microsoft.Devices/ProvisioningServices',variables('dpsName'))).idScope]",
+            "Azure__Dps__ConnectionString":"[concat('HostName=', variables('dpsName'), '.azure-devices-provisioning.net;SharedAccessKeyName=provisioningserviceowner;SharedAccessKey=', listKeys(resourceId('Microsoft.Devices/provisioningServices', variables('dpsName')), providers('Microsoft.Devices', 'provisioningServices').apiVersions[0]).value[0].primaryKey)]",
+            "Azure__Dps__WebHookUrl":""
+          }
+        },
+        {
+          "type": "sourcecontrols",
+          "apiVersion": "2020-09-01",
+          "name": "web",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', variables('webApp').webappName)]"
+          ],
+          "properties": {
+            "repoUrl": "[variables('git-repo').webapp]",
+            "branch": "[variables('git-repo').webappBranch]",
+            "IsManualIntegration": true
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": {
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "UniqueID": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique ID.  E.g. your name.  Must be Alphanumeric (a~z, 0~9), and 5~12 characters"
+      },
+      "minLength": 5,
+      "maxLength": 12
+    },
+    "GitHubURL" : {
+      "type": "string",
+      "defaultValue": "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-Functions.git"
+    },
+    "GitHubBranch" : {
+      "type": "string",
+      "defaultValue": "main"
+    },
+    "PrivateModelRepo" : {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/daisukeiot/iot-plugandplay-models/"
+    },
+    "PrivateModelBranch" : {
+      "type": "string",
+      "defaultValue": "privatemodels"
+    },
+    "ResourcePrefix" : {
+        "type": "string",
+      "defaultValue": "IoTPnPWS"
+    },
+    "envTag" : {
+      "type": "string",
+      "defaultValue": "Functions App Template"
+    }
+  },
+  "variables": {
+    "webApp" : {
+      "hostingPlan": "[concat(parameters('ResourcePrefix'), '-HostingPlan-', parameters('UniqueID'))]",
+      "functionsName": "[concat(parameters('ResourcePrefix'), '-Functions-', parameters('UniqueID'))]",
+      "webappName": "[concat(parameters('ResourcePrefix'), '-Portal-', parameters('UniqueID'))]",
+      "webappUrl" : "[toLower(concat('https://', parameters('ResourcePrefix'), '-Portal-', parameters('UniqueID'), '.azurewebsites.net'))]"
+    },
+    "eventHubs" : {
+      "nameSpace": "[concat(parameters('ResourcePrefix'), '-EventHubs-', parameters('UniqueID'))]",
+      "hubName": "devicetelemetryhub",
+      "cgFunctions": "telemetry-functions-cg",
+      "cgTsi": "telemetry-tsi-cg",
+      "ruleListen": "TelemetryListenRule",
+      "ruleSend": "TelemetrySendRule"
+    },
+    "adt" : {
+      "name": "[concat(parameters('ResourcePrefix'), '-ADT-', parameters('UniqueID'))]",
+      "location": "westus2",
+      "identity": "functionsidentity",
+      "roleId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'bcd981a7-7f74-457b-83e1-cceb9e632ffe')]"
+    },
+    "signalrName": "[concat(parameters('ResourcePrefix'), '-SignalR-', parameters('UniqueID'))]",
+    "mapName": "[concat(parameters('ResourcePrefix'), '-MAP-', parameters('UniqueID'))]",
+    "storageName": "[toLower(concat('iotpnpwsstor', parameters('UniqueID')))]",
+    "envTag": "[parameters('envTag')]"
+  },
+  "resources": [
+    // SignalR
+    {
+      "name": "[variables('signalrName')]",
+      "type": "Microsoft.SignalRService/SignalR",
+      "apiVersion": "2020-05-01",
+      "location": "[resourceGroup().location]",
+      "properties": {}
+    },    // Maps
+    {
+      "name": "[variables('mapName')]",
+      "type": "Microsoft.Maps/accounts",
+      "apiVersion": "2018-05-01",
+      "location": "global",
+      "sku": {
+        "name": "S1"
+      }
+    },
+    // ADT
+    {
+      "name": "[variables('adt').name]",
+      "type": "Microsoft.DigitalTwins/digitalTwinsInstances",
+      "apiVersion": "2020-10-31",
+      "location": "[variables('adt').location]",
+      "properties": {}
+    },
+    // Event Hubs
+    {
+      "name": "[variables('eventHubs').nameSpace]",
+      "type": "Microsoft.EventHub/namespaces",
+      "apiVersion": "2018-01-01-preview",
+      "location": "[resourceGroup().location]",
+      "properties": {}
+    },
+    // Storage Account
+    {
+      "name": "[variables('storageName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2019-06-01",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2",
+      "properties": {}
+    },
+    // Server Farms
+    {
+      "name": "[variables('webApp').hostingPlan]",
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2020-09-01",
+      "location": "[resourceGroup().location]",
+      "properties": {}
+    },
+    // Functions App
+    {
+      "name": "[variables('webApp').functionsName]",
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2020-09-01",
+      "kind": "functionapp",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "ENV": "[variables('envTag')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('webApp').hostingPlan)]"
+      ],
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "name": "[variables('webApp').functionsName]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('webApp').hostingPlan)]",
+        "clientAffinityEnabled": false,
+        "enabled": true,
+        "siteConfig": {
+          "alwaysOn": false,
+          "cors": {
+            "allowedOrigins": [
+              "*"
+            ]
+          },
+          "appSettings": [
+            {
+                "name": "FUNCTIONS_EXTENSION_VERSION",
+                "value": "~3"
+            }
+          ]
+        }
+      },
+      "resources": [
+        {
+          "name": "appsettings",
+          "type": "config",
+          "apiVersion": "2020-09-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubs').nameSpace)]",
+            "[resourceId('Microsoft.SignalRService/SignalR', variables('signalrName'))]",
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
+            "[resourceId('Microsoft.Web/Sites', variables('webApp').functionsName)]",
+            "[resourceId('Microsoft.Web/Sites/sourcecontrols', variables('webApp').functionsName, 'web')]"
+          ],
+          "properties": {
+            "FUNCTIONS_EXTENSION_VERSION": "~3",
+            "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2019-06-01').keys[0].value)]",
+            "AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2019-06-01').keys[0].value)]",
+            "EVENTHUB_CS":"[listKeys(resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', variables('eventHubs').nameSpace,variables('eventHubs').hubName,variables('eventHubs').ruleListen),'2017-04-01').primaryConnectionString]",
+            "AzureSignalRConnectionString": "[concat('Endpoint=https://', toLower(variables('signalrName')), '.service.signalr.net;AccessKey=', listKeys(variables('signalrName'), providers('Microsoft.SignalRService', 'SignalR').apiVersions[0]).primaryKey)]",
+            "ADT_HOST_URL": "[concat('https://', reference(resourceId('Microsoft.DigitalTwins/digitalTwinsInstances', variables('adt').name)).hostName)]",
+            "MAP_KEY": "[listKeys(resourceId('Microsoft.Maps/accounts', variables('mapName')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey]",
+            "ModelRepository": "[concat(parameters('PrivateModelRepo'), parameters('PrivateModelBranch'))]"
+          }
+        },
+        {
+          "type": "sourcecontrols",
+          "apiVersion": "2020-09-01",
+          "name": "web",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', variables('webApp').functionsName)]"
+          ],
+          "properties": {
+            "repoUrl": "[parameters('GitHubURL')]",
+            "branch": "[parameters('GitHubBranch')]",
+            "IsManualIntegration": true
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": {
+    "DpsWebHookUrl": {
+      "type": "String",
+      "value": "listsecrets(resourceId('Microsoft.Web/sites/functions', variables('webApp').functionsName, 'Dps_Processor'), '2020-09-01').trigger_url"
+    }
+  }
+}
