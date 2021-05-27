@@ -895,7 +895,7 @@
       "name": "[concat(variables('mapName'), '/', variables('mapName'), '-Creator')]",
       "type": "Microsoft.Maps/accounts/creators",
       "apiVersion": "2021-02-01",
-      "location": "[parameters('MapLocation)]",
+      "location": "[parameters('MapLocation')]",
       "dependsOn": [
         "[resourceId('Microsoft.Maps/accounts', variables('mapName'))]"
       ],
