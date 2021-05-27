@@ -31,7 +31,7 @@ Click **Deploy to Azure** button below
 > [!TIP]  
 > Right click the button below and select **Open link in new tab** or **Open lin in new window**
 
-[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FIoT-Plug-and-Play-Workshop%2Fmain%2FDeployment%2FIoTPlugandPlayWorkshopNested.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FIoT-Plug-and-Play-Workshop%2Fmain%2FDeployment%2FIoTPlugandPlayWorkshopNested.json)
 
 ## 2. Create a new resource group
 

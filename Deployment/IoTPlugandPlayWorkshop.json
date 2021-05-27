@@ -9,23 +9,33 @@
       },
       "minLength": 5,
       "maxLength": 12
+    },
+    "MapLocation": {
+      "type": "string",
+      "allowedValues": [
+        "West US 2",
+        "East US 2",
+        "North Europe",
+        "West Europe"
+      ],
+      "defaultValue": "West US 2"
     }
   },
   "variables": {
     "script-url-map": "https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/main/Deployment/CreateIndoorMap.sh",
     "script-url-tsi": "https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/main/Deployment/ConfigureTSI.sh",
-    "git-repo" : {
-      "webapp" : "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-WebApp.git",
-      "webappBranch" : "main",
-      "functions" : "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-Functions.git",
-      "functionsBranch" : "main"
+    "git-repo": {
+      "webapp": "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-WebApp.git",
+      "webappBranch": "main",
+      "functions": "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-Functions.git",
+      "functionsBranch": "main"
     },
-    "iothub" : {
-      "name" : "[concat('IoTPnPWS-Hub-', parameters('UniqueID'))]",
-      "eventHubsCG" : "[concat('IoTPnPWS-Hub-', parameters('UniqueID'), '/events/eventhubs-cg')]",
+    "iothub": {
+      "name": "[concat('IoTPnPWS-Hub-', parameters('UniqueID'))]",
+      "eventHubsCG": "[concat('IoTPnPWS-Hub-', parameters('UniqueID'), '/events/eventhubs-cg')]",
       "systemTopic": "IoTHubSystemTopic"
     },
-    "eventHubs" : {
+    "eventHubs": {
       "nameSpace": "[concat('IoTPnPWS-EventHubs-', parameters('UniqueID'))]",
       "hubName": "devicetelemetryhub",
       "cgFunctions": "telemetry-functions-cg",
@@ -33,7 +43,7 @@
       "ruleListen": "TelemetryListenRule",
       "ruleSend": "TelemetrySendRule"
     },
-    "webApp" : {
+    "webApp": {
       "hostingPlan": "[concat('IoTPnPWS-HostingPlan-', parameters('UniqueID'))]",
       "functionsName": "[concat('IoTPnPWS-Functions-', parameters('UniqueID'))]",
       "webappName": "[concat('IoTPnPWS-Portal-', parameters('UniqueID'))]"
@@ -41,26 +51,26 @@
     "storageName": "[toLower(concat('iotpnpwsstor', parameters('UniqueID')))]",
     "signalrName": "[concat('IoTPnPWS-SignalR-', parameters('UniqueID'))]",
     "dpsName": "[concat('IoTPnPWS-DPS-', parameters('UniqueID'))]",
-    "tsi" : {
+    "tsi": {
       "environment": "[concat('IoTPnPWS-TSI-', parameters('UniqueID'))]",
       "location": "eastasia",
       "eventSource": "IoTPnPWS-TSI-EventHubs"
     },
     "mapName": "[concat('IoTPnPWS-MAP-', parameters('UniqueID'))]",
-    "adt" : {
+    "adt": {
       "name": "[concat('IoTPnPWS-ADT-', parameters('UniqueID'))]",
       "location": "westus2",
       "identity": "functionsidentity",
       "roleId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'bcd981a7-7f74-457b-83e1-cceb9e632ffe')]"
     },
     "adtRoleName": "[guid(variables('adt').identity, variables('adt').roleId)]",
-    "trackerUrl" : "https://iotpnpworkshoptracker.azurewebsites.net/api/HOLProgressTracker",
-    "trackerUrlFull" : "[concat(variables('trackerUrl'), '?resGroup=', resourceGroup().name, '&uniqueId=', parameters('UniqueID'))]",
-    "envTag": "2021-Jan-04"
+    "trackerUrl": "https://iotpnpworkshoptracker.azurewebsites.net/api/HOLProgressTracker",
+    "trackerUrlFull": "[concat(variables('trackerUrl'), '?resGroup=', resourceGroup().name, '&uniqueId=', parameters('UniqueID'))]",
+    "envTag": "2021-May-27"
   },
   "resources": [
     {
-      "condition" : "[not(empty(variables('trackerUrl')))]",
+      "condition": "[not(empty(variables('trackerUrl')))]",
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2020-10-01",
       "name": "[concat('DeployStart-', parameters('UniqueID'))]",
@@ -78,7 +88,7 @@
       }
     },
     {
-      "condition" : "[not(empty(variables('trackerUrl')))]",
+      "condition": "[not(empty(variables('trackerUrl')))]",
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2020-10-01",
       "name": "[concat('DeployEnd-', parameters('UniqueID'))]",
@@ -700,21 +710,29 @@
     },
     {
       "type": "Microsoft.Maps/accounts",
-      "apiVersion": "2018-05-01",
+      "apiVersion": "2021-02-01",
       "name": "[variables('mapName')]",
       "location": "global",
       "sku": {
-        "name": "S1"
+        "name": "G2",
+        "tier": "Standard"
+      },
+      "kind": "Gen2",
+      "properties": {
+        "disableLocalAuth": false
       }
     },
     {
-      "type": "Microsoft.Maps/accounts/privateAtlases",
-      "apiVersion": "2020-02-01-preview",
+      "type": "Microsoft.Maps/accounts/creators",
+      "apiVersion": "2021-02-01",
       "name": "[concat(variables('mapName'), '/', variables('mapName'), '-Creator')]",
-      "location": "United States",
+      "location": "[parameters('MapLocation')]",
       "dependsOn": [
         "[resourceId('Microsoft.Maps/accounts', variables('mapName'))]"
-      ]
+      ],
+      "properties": {
+        "storageUnits": 1
+      }
     }
   ],
   "outputs": {
