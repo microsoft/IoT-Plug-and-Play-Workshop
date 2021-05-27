@@ -58,6 +58,10 @@
       "location": "westus2",
       "eventSource": "IoTPnPWS-TSI-EventHubs"
     },
+    "maps": {
+      "name" : "[concat('IoTPnPWS-MAP-', parameters('UniqueID'))]",
+      "location" : "West US 2"
+    },
     "mapName": "[concat('IoTPnPWS-MAP-', parameters('UniqueID'))]",
     "adt": {
       "name": "[concat('IoTPnPWS-ADT-', parameters('UniqueID'))]",
@@ -700,7 +704,7 @@
         "[resourceId('Microsoft.EventHub/Namespaces/EventHubs/AuthorizationRules', variables('eventHubs').nameSpace, variables('eventHubs').name, variables('eventHubs').ruleListen)]",
         "[resourceId('Microsoft.SignalRService/SignalR', variables('signalrName'))]",
         "[resourceId('Microsoft.DigitalTwins/digitalTwinsInstances', variables('adt').name)]",
-        "[resourceId('Microsoft.Maps/accounts', variables('mapName'))]",
+        "[resourceId('Microsoft.Maps/accounts', variables('maps').name)]",
         "[resourceId('Microsoft.Resources/deployments', 'Deploy-IoT')]",
         "[resourceId('Microsoft.Resources/deployments', 'Deploy-Functions')]"
       ],
@@ -712,7 +716,7 @@
         "EVENTHUB_CS": "[listKeys(resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', variables('eventHubs').nameSpace,variables('eventHubs').name,variables('eventHubs').ruleListen),'2017-04-01').primaryConnectionString]",
         "AzureSignalRConnectionString": "[concat('Endpoint=https://', toLower(variables('signalrName')), '.service.signalr.net;AccessKey=', listKeys(variables('signalrName'), providers('Microsoft.SignalRService', 'SignalR').apiVersions[0]).primaryKey)]",
         "ADT_HOST_URL": "[concat('https://', reference(resourceId('Microsoft.DigitalTwins/digitalTwinsInstances', variables('adt').name)).hostName)]",
-        "MAP_KEY": "[listKeys(resourceId('Microsoft.Maps/accounts', variables('mapName')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey]",
+        "MAP_KEY": "[listKeys(resourceId('Microsoft.Maps/accounts', variables('maps').name), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey]",
         "ModelRepository": "[concat(variables('PrivateModelRepo').url, variables('PrivateModelRepo').branch)]"
       }
     },
@@ -798,7 +802,7 @@
       "dependsOn": [
         "[resourceId('Microsoft.SignalRService/SignalR', variables('signalrName'))]",
         "[resourceId('Microsoft.Devices/IotHubs', variables('iothub').name)]",
-        "[resourceId('Microsoft.Maps/accounts', variables('mapName'))]",
+        "[resourceId('Microsoft.Maps/accounts', variables('maps').name)]",
         "[resourceId('Microsoft.TimeSeriesInsights/environments', variables('tsi').environment)]",
         "[resourceId('Microsoft.Devices/provisioningServices', variables('dpsName'))]",
         "[resourceId('Microsoft.Resources/deployments', 'Deploy-Webapp')]",
@@ -807,7 +811,7 @@
       "properties": {
         "Azure__SignalR__ConnectionString": "[concat('Endpoint=https://', toLower(variables('signalrName')), '.service.signalr.net;AccessKey=', listKeys(variables('signalrName'), providers('Microsoft.SignalRService', 'SignalR').apiVersions[0]).primaryKey)]",
         "Azure__IoTHub__ConnectionString": "[concat('HostName=', reference(resourceId('Microsoft.Devices/IoTHubs', variables('iothub').name), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).hostName, ';SharedAccessKeyName=iothubowner;SharedAccessKey=', listKeys(resourceId('Microsoft.Devices/IotHubs', variables('iothub').name), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).value[0].primaryKey)]",
-        "Azure__AzureMap__MapKey": "[listKeys(resourceId('Microsoft.Maps/accounts', variables('mapName')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey]",
+        "Azure__AzureMap__MapKey": "[listKeys(resourceId('Microsoft.Maps/accounts', variables('maps').name), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey]",
         "Azure__TimeSeriesInsights__tsiUri": "[reference(resourceId('Microsoft.TimeSeriesInsights/environments', variables('tsi').environment)).dataAccessFQDN]",
         "Azure__TimeSeriesInsights__clientId": "",
         "Azure__TimeSeriesInsights__tenantId": "",
@@ -877,7 +881,7 @@
     },
     // Deploy and configure Azure Maps
     {
-      "name": "[variables('mapName')]",
+      "name": "[variables('maps').name]",
       "type": "Microsoft.Maps/accounts",
       "apiVersion": "2021-02-01",
       "location": "global",
@@ -892,12 +896,12 @@
     },
     // Deploy Indoor Maps
     {
-      "name": "[concat(variables('mapName'), '/', variables('mapName'), '-Creator')]",
+      "name": "[concat(variables('maps').name, '/', variables('maps').name, '-Creator')]",
       "type": "Microsoft.Maps/accounts/creators",
       "apiVersion": "2021-02-01",
-      "location": "[parameters('MapLocation')]",
+      "location": "variables('maps').location",
       "dependsOn": [
-        "[resourceId('Microsoft.Maps/accounts', variables('mapName'))]"
+        "[resourceId('Microsoft.Maps/accounts', variables('maps').name)]"
       ],
       "properties": {
         "storageUnits": 1
@@ -941,7 +945,7 @@
     },
     "_Map_Data_Generate": {
       "type": "String",
-      "value": "[concat('wget -q ', variables('script-url-map'), ' -O ./Indoormap.sh && chmod +x ./Indoormap.sh && ', './Indoormap.sh ', listKeys(resourceId('Microsoft.Maps/accounts', variables('mapName')), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' ', resourceGroup().name, ' ', parameters('UniqueID'), ' ', variables('tracker').url)]"
+      "value": "[concat('wget -q ', variables('script-url-map'), ' -O ./Indoormap.sh && chmod +x ./Indoormap.sh && ', './Indoormap.sh ', listKeys(resourceId('Microsoft.Maps/accounts', variables('maps').name), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey, ' ', resourceGroup().name, ' ', parameters('UniqueID'), ' ', variables('tracker').url)]"
     },
     "_ADT_Host_Name": {
       "type": "String",
