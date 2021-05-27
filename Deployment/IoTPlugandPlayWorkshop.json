@@ -66,7 +66,7 @@
     "adtRoleName": "[guid(variables('adt').identity, variables('adt').roleId)]",
     "trackerUrl": "https://iotpnpworkshoptracker.azurewebsites.net/api/HOLProgressTracker",
     "trackerUrlFull": "[concat(variables('trackerUrl'), '?resGroup=', resourceGroup().name, '&uniqueId=', parameters('UniqueID'))]",
-    "envTag": "2021-Jan-04"
+    "envTag": "2021-May-27"
   },
   "resources": [
     {
