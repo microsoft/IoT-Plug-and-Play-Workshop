@@ -60,9 +60,8 @@
     },
     "maps": {
       "name" : "[concat('IoTPnPWS-MAP-', parameters('UniqueID'))]",
-      "location" : "West US 2"
+      "location" : "[parameters('MapLocation')]"
     },
-    "mapName": "[concat('IoTPnPWS-MAP-', parameters('UniqueID'))]",
     "adt": {
       "name": "[concat('IoTPnPWS-ADT-', parameters('UniqueID'))]",
       "location": "westus2",
