@@ -13,12 +13,12 @@
     "MapLocation": {
       "type": "string",
       "allowedValues": [
-        "West US 2",
-        "East US 2",
-        "North Europe",
-        "West Europe"
+        "westus2",
+        "eastus2",
+        "northeurope",
+        "westeurope"
       ],
-      "defaultValue": "West US 2"
+      "defaultValue": "westus2"
     }
   },
   "variables": {
