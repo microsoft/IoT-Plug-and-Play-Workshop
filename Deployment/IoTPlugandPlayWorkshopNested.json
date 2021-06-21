@@ -898,7 +898,7 @@
       "name": "[concat(variables('maps').name, '/', variables('maps').name, '-Creator')]",
       "type": "Microsoft.Maps/accounts/creators",
       "apiVersion": "2021-02-01",
-      "location": "variables('maps').location",
+      "location": "[variables('maps').location]",
       "dependsOn": [
         "[resourceId('Microsoft.Maps/accounts', variables('maps').name)]"
       ],
