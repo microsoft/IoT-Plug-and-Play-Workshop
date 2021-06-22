@@ -25,8 +25,8 @@
     "script-url-map": "https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/main/Deployment/CreateIndoorMap.sh",
     "script-url-tsi": "https://raw.githubusercontent.com/microsoft/IoT-Plug-and-Play-Workshop/main/Deployment/ConfigureTSI.sh",
     "git-repo": {
-      "webapp": "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-WebApp.git",
-      "webappBranch": "main",
+      "webapp": "https://github.com/microsoft/project15-openplatform-webapp.git",
+      "webappBranch": "IoTPnPWS06212021",
       "functions": "https://github.com/microsoft/IoT-Plug-and-Play-Workshop-Functions.git",
       "functionsBranch": "main"
     },
