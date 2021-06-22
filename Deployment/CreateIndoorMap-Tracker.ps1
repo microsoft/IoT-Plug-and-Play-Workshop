@@ -376,9 +376,8 @@ ForEach ($item in $functionAppSettings) {
     $newFunctionAppSettings[$item.Name] = $item.Value
 }
 
-$newFunctionAppSettings['UnitId'] = $unitId
-$newFunctionAppSettings['StatesetId'] = $stateSetId
-$newFunctionAppSettings['DatasetId'] = $dataSetId
+$newFunctionAppSettings['MAP_STATESET_ID'] = $stateSetId
+$newFunctionAppSettings['MAP_DATASET_ID'] = $dataSetId
 
 Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $functionsAppName  -AppSettings $newFunctionAppSettings
 

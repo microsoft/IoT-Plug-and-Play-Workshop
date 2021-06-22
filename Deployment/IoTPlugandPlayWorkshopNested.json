@@ -716,7 +716,8 @@
         "AzureSignalRConnectionString": "[concat('Endpoint=https://', toLower(variables('signalrName')), '.service.signalr.net;AccessKey=', listKeys(variables('signalrName'), providers('Microsoft.SignalRService', 'SignalR').apiVersions[0]).primaryKey)]",
         "ADT_HOST_URL": "[concat('https://', reference(resourceId('Microsoft.DigitalTwins/digitalTwinsInstances', variables('adt').name)).hostName)]",
         "MAP_KEY": "[listKeys(resourceId('Microsoft.Maps/accounts', variables('maps').name), providers('Microsoft.Maps', 'accounts').apiVersions[0]).primaryKey]",
-        "ModelRepository": "[concat(variables('PrivateModelRepo').url, variables('PrivateModelRepo').branch)]"
+        "PRIVATE_MODEL_REPOSIROTY_URL": "[concat(variables('PrivateModelRepo').url, variables('PrivateModelRepo').branch)]",
+        "PRIVATE_MODEL_REPOSIROTY_TOKEN": ""
       }
     },
     // Deploy WebApp

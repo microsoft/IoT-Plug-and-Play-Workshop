@@ -409,10 +409,10 @@ echo "${PHASE_HEADER}: WebApp Tileset=     ${temp}"
 temp=$(az webapp config appsettings set --resource-group ${resGroup} --name ${webAppName} --settings Azure__AzureMap__StatesetId=${STATESET_ID:?} --query "[?name=='Azure__AzureMap__StatesetId'].[value]" -o tsv)
 echo "${PHASE_HEADER}: WebApp Stateset=    ${temp}"
 
-temp=$(az webapp config appsettings set --resource-group ${resGroup} --name ${functionsName} --settings DatasetId=${DATASET_ID:?} --query "[?name=='DatasetId'].[value]" -o tsv)
+temp=$(az webapp config appsettings set --resource-group ${resGroup} --name ${functionsName} --settings MAP_DATASET_ID=${DATASET_ID:?} --query "[?name=='DatasetId'].[value]" -o tsv)
 echo "${PHASE_HEADER}: Functions Dataset=  ${temp}"
 
-temp=$(az webapp config appsettings set --resource-group ${resGroup} --name ${functionsName} --settings StatesetId=${STATESET_ID:?} --query "[?name=='StatesetId'].[value]" -o tsv)
+temp=$(az webapp config appsettings set --resource-group ${resGroup} --name ${functionsName} --settings MAP_STATESET_ID=${STATESET_ID:?} --query "[?name=='StatesetId'].[value]" -o tsv)
 echo "${PHASE_HEADER}: Functions Stateset= ${temp}"
 
 # Send Tracker
