@@ -10,7 +10,6 @@ unset STATESET_ID
 mapSubscriptionKey=${1:?}
 resGroup=${2:?}
 uniqueId=${3:?}
-trackerUrl=$4
 apiVersion=2.0
 
 functionsName="IoTPnPWS-Functions-${uniqueId:?}"
@@ -57,13 +56,6 @@ parse_header() {
     header["$k"]="$v"
   done
 }
-
-# Send Tracker
-if [ ! -z ${trackerUrl} ];then
-  echo "Tracker        : Progress Marker 5"
-  trackerFullUrl="${trackerUrl}?resGroup=${resGroup}&uniqueId=${uniqueId}&progressMarker=5"
-  curl -X GET $trackerFullUrl
-fi
 
 ##################################################
 # Step 1 : Download sample Drawing data
@@ -437,10 +429,3 @@ echo "${PHASE_HEADER}: Functions Dataset=  ${temp}"
 
 temp=$(az webapp config appsettings set --resource-group ${resGroup} --name ${functionsName} --settings MAP_STATESET_ID=${STATESET_ID:?} --query "[?name=='StatesetId'].[value]" -o tsv)
 echo "${PHASE_HEADER}: Functions Stateset= ${temp}"
-
-# Send Tracker
-if [ ! -z ${trackerUrl} ];then
-  echo "Tracker        : Progress Marker 6"
-  trackerFullUrl="${trackerUrl}?resGroup=${resGroup}&uniqueId=${uniqueId}&progressMarker=6"
-  curl -X GET $trackerFullUrl
-fi
