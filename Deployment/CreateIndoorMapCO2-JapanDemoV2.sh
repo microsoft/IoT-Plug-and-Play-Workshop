@@ -11,6 +11,7 @@ mapSubscriptionKey=${1:?}
 resGroup=${2:?}
 uniqueId=${3:?}
 trackerUrl=$4
+apiVersion=2.0
 
 functionsName="IoTPnPWS-Functions-${uniqueId:?}"
 webAppName="IoTPnPWS-Portal-${uniqueId:?}"
@@ -27,7 +28,7 @@ parse_header() {
       printf \
       'Variable %s with attributes %s is not a suitable associative array\n' \
       "${!header}" "${header@a}" >&2
-      return 1
+      #return 1
       ;;
   esac
   header=() # Clear the associative array
@@ -87,7 +88,7 @@ fi
 ##################################################
 declare -A HTTP_HEADERS
 PHASE_HEADER="Data Upload    "
-url=$"https://us.atlas.microsoft.com/mapData/upload?api-version=2.0&dataFormat=zip&subscription-key=${mapSubscriptionKey}"
+url=$"https://us.atlas.microsoft.com/mapData?api-version=${apiVersion}&dataFormat=dwgzippackage&subscription-key=${mapSubscriptionKey}"
 echo "${PHASE_HEADER}: URL=$url"
 parse_header HTTP_HEADERS < <(
   curl -is -X POST -H "Content-Type: application/octet-stream" --data-binary @"$DATA_FILE" "$url"
@@ -103,9 +104,9 @@ else
   exit 1
 fi
 
-RESP_LOCATION=`echo ${HTTP_HEADERS[location]} | sed 's+https://atlas.microsoft.com+https://us.atlas.microsoft.com+g'`
+OPERATION_LOCATION=${HTTP_HEADERS[operation-location]}
 
-echo "${PHASE_HEADER}: Location ${RESP_LOCATION}"
+echo "${PHASE_HEADER}: Location ${OPERATION_LOCATION}"
 
 # for k in "${!HTTP_HEADERS[@]}"; do
 #   printf '[%q]=%q\n' "$k" "${HTTP_HEADERS[$k]}"
@@ -113,15 +114,15 @@ echo "${PHASE_HEADER}: Location ${RESP_LOCATION}"
 # typeset -p HTTP_HEADERS
 
 # Make sure the drawing was uploaded.
-url=$"$RESP_LOCATION&subscription-key=$mapSubscriptionKey"
+url=$"$OPERATION_LOCATION&subscription-key=$mapSubscriptionKey"
 #echo "${PHASE_HEADER}: Checking status @ $url"
 
 unset HTTP_HEADERS
 
 printf "${PHASE_HEADER}: Uploading"
 while true; do
-  REST_REPONSE=`curl -s -X GET "$url"`
-  REST_STATUS=`echo $REST_REPONSE | jq -r .status`
+  REST_RESPONSE=`curl -s -X GET "$url"`
+  REST_STATUS=`echo $REST_RESPONSE | jq -r .status`
   if [[ "$REST_STATUS" == "NotStarted" ]]; then
     # echo "${PHASE_HEADER}: Waiting for Start"
     printf "."
@@ -133,10 +134,16 @@ while true; do
     sleep 1
     continue
   elif [ "$REST_STATUS" = "Succeeded" ]; then
-    # echo "$REST_REPONSE"
+    # echo "$REST_RESPONSE"
     printf ".\n"
-    OPERATION_ID=`echo $REST_REPONSE | jq -r .operationId`
-    RESOURCE_LOCATION=`echo $REST_REPONSE | jq -r .resourceLocation`
+    OPERATION_ID=`echo $REST_RESPONSE | jq -r .operationId`
+
+    read RESOURCE_LOCATION < <(
+      curl -sI -X GET "${url}" | 
+      awk '/^resource-location/ { RESOURCE_LOCATION = $2 } 
+          END { printf("%s\n",RESOURCE_LOCATION) }'
+    )
+    # RESOURCE_LOCATION=`echo $REST_RESPONSE | jq -r .resourceLocation`
     arrayUrl=(${RESOURCE_LOCATION//\// })
     # echo "Array Count ${#arrayUrl[@]}"
     arrayUrl=(${arrayUrl[@]//[=?]/ })
@@ -153,26 +160,26 @@ while true; do
   fi
 done
 
+unset url
 # Double check uploaded data status
-RESOURCE_LOCATION=`echo ${RESOURCE_LOCATION} | sed 's+https://atlas.microsoft.com+https://us.atlas.microsoft.com+g'`
-url=$"${RESOURCE_LOCATION}&subscription-key=${mapSubscriptionKey}"
-#echo "${PHASE_HEADER}: Checking status @ $url"
-REST_REPONSE=`curl -s -X GET "$url"`
-REST_STATUS=`echo $REST_REPONSE | jq -r .uploadStatus`
+url=$"https://us.atlas.microsoft.com/mapData/metadata/${UDID}?api-version=${apiVersion}&subscription-key=${mapSubscriptionKey}"
+# echo "${PHASE_HEADER}: URL=${url}"
+REST_RESPONSE=`curl -s -X GET "$url"`
+REST_STATUS=`echo $REST_RESPONSE | jq -r .uploadStatus`
 
 if [ "$REST_STATUS" != "Completed" ]; then
-  echo "${PHASE_HEADER}: Error $REST_STATUS"
+  echo "${PHASE_HEADER}: Error 2 $REST_STATUS"
   exit 1
 fi
 
-UDID=`echo $REST_REPONSE | jq -r .udid`
+UDID=`echo $REST_RESPONSE | jq -r .udid`
 
 ##################################################
 # Step 3 : Convert a Drawing package
 # https://docs.microsoft.com/en-us/rest/api/maps/conversion/convertpreview
 ##################################################
 PHASE_HEADER="Conversion     "
-url="https://us.atlas.microsoft.com/conversion/convert?subscription-key=${mapSubscriptionKey}&api-version=2.0&udid=${UDID}&inputType=DWG"
+url="https://us.atlas.microsoft.com/conversions?subscription-key=${mapSubscriptionKey}&api-version=${apiVersion}&udid=${UDID}&inputType=DWG&&outputOntology=facility-2.0"
 echo "${PHASE_HEADER}: URL=${url}"
 unset HTTP_HEADERS
 declare -A HTTP_HEADERS
@@ -190,7 +197,7 @@ else
   exit 1
 fi
 
-RESP_LOCATION=`echo ${HTTP_HEADERS[location]} | sed 's+https://atlas.microsoft.com+https://us.atlas.microsoft.com+g'`
+RESP_LOCATION=${HTTP_HEADERS[operation-location]}
 
 url=$"$RESP_LOCATION&subscription-key=$mapSubscriptionKey"
 #echo "${PHASE_HEADER}: Checking status @ $url"
@@ -214,7 +221,11 @@ while true; do
     printf ".\n"
     # echo "$REST_RESPONSE"
     OPERATION_ID=`echo $REST_RESPONSE | jq -r .operationId`
-    RESOURCE_LOCATION=`echo $REST_RESPONSE | jq -r .resourceLocation`
+    read RESOURCE_LOCATION < <(
+      curl -sI -X GET "${url}" | 
+      awk '/^resource-location/ { RESOURCE_LOCATION = $2 } 
+          END { printf("%s\n",RESOURCE_LOCATION) }'
+    )
     arrayUrl=(${RESOURCE_LOCATION//\// })
     arrayUrl=(${arrayUrl[@]//[=?]/ })
     # echo "Array Count ${#arrayUrl[@]}"
@@ -236,7 +247,7 @@ done
 # Step 4 : Create a dataset
 ##################################################
 PHASE_HEADER="Dataset Create "
-url="https://us.atlas.microsoft.com/dataset/create?api-version=2.0&conversionID=${CONVERSION_ID}&type=facility&subscription-key=${mapSubscriptionKey}"
+url="https://us.atlas.microsoft.com/datasets?api-version=${apiVersion}&conversionId=${CONVERSION_ID}&subscription-key=${mapSubscriptionKey}"
 echo "${PHASE_HEADER}: URL=${url}"
 unset HTTP_HEADERS
 declare -A HTTP_HEADERS
@@ -254,7 +265,7 @@ else
   exit 1
 fi
 
-RESP_LOCATION=`echo ${HTTP_HEADERS[location]} | sed 's+https://atlas.microsoft.com+https://us.atlas.microsoft.com+g'`
+RESP_LOCATION=${HTTP_HEADERS[operation-location]}
 
 url=$"$RESP_LOCATION&subscription-key=$mapSubscriptionKey"
 #echo "${PHASE_HEADER}: Checking status @ $url"
@@ -278,7 +289,13 @@ while true; do
     printf ".\n"
     # echo "$REST_RESPONSE"
     OPERATION_ID=`echo $REST_RESPONSE | jq -r .operationId`
-    RESOURCE_LOCATION=`echo $REST_RESPONSE | jq -r .resourceLocation`
+
+    read RESOURCE_LOCATION < <(
+      curl -sI -X GET "${url}" | 
+      awk '/^resource-location/ { RESOURCE_LOCATION = $2 } 
+          END { printf("%s\n",RESOURCE_LOCATION) }'
+    )
+
     arrayUrl=(${RESOURCE_LOCATION//\// })
     arrayUrl=(${arrayUrl[@]//[=?]/ })
     # echo "Array Count ${#arrayUrl[@]}"
@@ -300,7 +317,7 @@ done
 # Step 5 : Create a tileset
 ##################################################
 PHASE_HEADER="Tileset Create "
-url="https://us.atlas.microsoft.com/tileset/create/vector?api-version=2.0&datasetID=${DATASET_ID}&subscription-key=${mapSubscriptionKey}"
+url="https://us.atlas.microsoft.com/tilesets?api-version=${apiVersion}&datasetID=${DATASET_ID}&subscription-key=${mapSubscriptionKey}"
 echo "${PHASE_HEADER}: URL=${url}"
 unset HTTP_HEADERS
 declare -A HTTP_HEADERS
@@ -318,7 +335,7 @@ else
   exit 1
 fi
 
-RESP_LOCATION=`echo ${HTTP_HEADERS[location]} | sed 's+https://atlas.microsoft.com+https://us.atlas.microsoft.com+g'`
+RESP_LOCATION=${HTTP_HEADERS[operation-location]}
 
 url=$"$RESP_LOCATION&subscription-key=$mapSubscriptionKey"
 echo "${PHASE_HEADER}: Checking convetsion status @ $url"
@@ -342,7 +359,13 @@ while true; do
     printf ".\n"
     # echo "$REST_RESPONSE"
     OPERATION_ID=`echo $REST_RESPONSE | jq -r .operationId`
-    RESOURCE_LOCATION=`echo $REST_RESPONSE | jq -r .resourceLocation`
+
+    read RESOURCE_LOCATION < <(
+      curl -sI -X GET "${url}" | 
+      awk '/^resource-location/ { RESOURCE_LOCATION = $2 } 
+          END { printf("%s\n",RESOURCE_LOCATION) }'
+    )
+
     arrayUrl=(${RESOURCE_LOCATION//\// })
     arrayUrl=(${arrayUrl[@]//[=?]/ })
     # echo "Array Count ${#arrayUrl[@]}"
@@ -364,11 +387,11 @@ done
 # Step 6 : Create a feature stateset
 ##################################################
 PHASE_HEADER="Feature State  "
-url="https://us.atlas.microsoft.com/featureState/stateset?api-version=2.0&datasetId=${DATASET_ID}&subscription-key=${mapSubscriptionKey}"
+url="https://us.atlas.microsoft.com/featurestatesets?api-version=${apiVersion}&datasetId=${DATASET_ID}&subscription-key=${mapSubscriptionKey}"
 echo "${PHASE_HEADER}: URL=${url}"
 unset HTTP_HEADERS
 declare -A HTTP_HEADERS
-STATE_SET='{"styles":[{"keyname":"co2","type":"number","rules":[{"range":{"exclusiveMaximum":1000},"color":"#007E16"},{"range":{"minimum":1000,"exclusiveMaximum":1500},"color":"#FFF83E"},{"range":{"minimum":1500},"color":"#FF001A"}]}]}'
+STATE_SET='{"styles":[{"keyname":"occupied","type":"boolean","rules":[{"true":"#FF0000","false":"#00FF00"}]},{"keyname":"co2","type":"number","rules":[{"range":{"exclusiveMaximum":1000},"color":"#007E16"},{"range":{"minimum":1000,"exclusiveMaximum":1500},"color":"#FFF83E"},{"range":{"minimum":1500},"color":"#FF001A"}]}]}'
 # (echo "${STATE_SET}" | jq '.styles[]')
 
 REST_RESPONSE=`curl -s -X POST -H "Content-type: application/json" -d ${STATE_SET} "${url}"`
@@ -380,7 +403,7 @@ echo "${PHASE_HEADER}: Stateset ID ${STATESET_ID}"
 # Step 7 : Delete Maps Data
 ##################################################
 PHASE_HEADER="Cleanup        "
-url="https://us.atlas.microsoft.com/mapData?subscription-key=${mapSubscriptionKey}&api-version=2.0"
+url="https://us.atlas.microsoft.com/mapData?subscription-key=${mapSubscriptionKey}&api-version=${apiVersion}"
 LIST_RESP=`curl -s -X GET "${url}"`
 
 #DELETE_LIST=$(echo ${LIST_RESP} | jq -c '[.mapDataList[]| {udid: .udid, location: .location}]')
