@@ -1,0 +1,248 @@
+{
+  "digitalTwinsFileInfo": {
+    "fileVersion": "1.0.0"
+  },
+  "digitalTwinsGraph": {
+    "digitalTwins": [
+      {
+        "$dtId": "Building",
+        "$etag": "W/\"4e106b08-2d47-42dd-ba7d-950b92f3e7db\"",
+        "DisplayName": "Building123",
+        "$metadata": {
+          "$model": "dtmi:com:example:Building;1"
+        }
+      },
+      {
+        "$dtId": "Floor0",
+        "$etag": "W/\"4e106b08-2d47-42dd-ba7d-950b92f3e7dc\"",
+        "DisplayName": "Floor 0",
+        "$metadata": {
+          "$model": "dtmi:com:example:Floor;1"
+        }
+      },
+      {
+        "$dtId": "Floor1",
+        "$etag": "W/\"4e106b08-2d47-42dd-ba7d-950b92f3e7dd\"",
+        "DisplayName": "Floor 1",
+        "$metadata": {
+          "$model": "dtmi:com:example:Floor;1"
+        }
+      },
+      {
+        "$dtId": "Floor2",
+        "$etag": "W/\"4e106b08-2d47-42dd-ba7d-950b92f3e7de\"",
+        "DisplayName": "Floor 2",
+        "$metadata": {
+          "$model": "dtmi:com:example:Floor;1"
+        }
+      },
+      {
+        "$dtId": "R117",
+        "$etag": "W/\"5124b789-aacb-4055-98ab-ea95ea40efd7\"",
+        "DisplayName": "R117",
+        "roomNumber": "117",
+        "$metadata": {
+          "$model": "dtmi:com:example:Room;2"
+        }
+      },
+      {
+        "$dtId": "R140",
+        "$etag": "W/\"5124b789-aacb-4055-98ab-ea95ea40efd8\"",
+        "DisplayName": "Room 140",
+        "roomNumber": "140",
+        "$metadata": {
+          "$model": "dtmi:com:example:Room;2"
+        }
+      },
+      {
+        "$dtId": "R141",
+        "$etag": "W/\"5124b789-aacb-4055-98ab-ea95ea40efd9\"",
+        "DisplayName": "Room 141",
+        "roomNumber": "141",
+        "$metadata": {
+          "$model": "dtmi:com:example:Room;2"
+        }
+      },
+      {
+        "$dtId": "R152",
+        "$etag": "W/\"5124b789-aacb-4055-98ab-ea95ea40efda\"",
+        "DisplayName": "Room 152",
+        "roomNumber": "152",
+        "$metadata": {
+          "$model": "dtmi:com:example:Room;2"
+        }
+      },
+      {
+        "$dtId": "R153",
+        "$etag": "W/\"5124b789-aacb-4055-98ab-ea95ea40efdb\"",
+        "DisplayName": "Room 153",
+        "roomNumber": "153",
+        "$metadata": {
+          "$model": "dtmi:com:example:Room;2"
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "$relationshipId": "B_F0",
+        "$etag": "W/\"9dda1902-8633-445d-b013-1c099aa07462\"",
+        "$sourceId": "Building",
+        "$relationshipName": "contains",
+        "$targetId": "Floor0"
+      },
+      {
+        "$relationshipId": "B_F1",
+        "$etag": "W/\"9dda1902-8633-445d-b013-1c099aa07463\"",
+        "$sourceId": "Building",
+        "$relationshipName": "contains",
+        "$targetId": "Floor1"
+      },
+      {
+        "$relationshipId": "B_F2",
+        "$etag": "W/\"9dda1902-8633-445d-b013-1c099aa07464\"",
+        "$sourceId": "Building",
+        "$relationshipName": "contains",
+        "$targetId": "Floor2"
+      },
+      {
+        "$relationshipId": "F1_R117",
+        "$etag": "W/\"9dda1902-8633-445d-b013-1c099aa07465\"",
+        "$sourceId": "Floor1",
+        "$relationshipName": "contains",
+        "$targetId": "R117"
+      },
+      {
+        "$relationshipId": "F1_R140",
+        "$etag": "W/\"9dda1902-8633-445d-b013-1c099aa07466\"",
+        "$sourceId": "Floor1",
+        "$relationshipName": "contains",
+        "$targetId": "R140"
+      },
+      {
+        "$relationshipId": "F1_R141",
+        "$etag": "W/\"9dda1902-8633-445d-b013-1c099aa07467\"",
+        "$sourceId": "Floor1",
+        "$relationshipName": "contains",
+        "$targetId": "R141"
+      },
+      {
+        "$relationshipId": "F1_R152",
+        "$etag": "W/\"9dda1902-8633-445d-b013-1c099aa07468\"",
+        "$sourceId": "Floor1",
+        "$relationshipName": "contains",
+        "$targetId": "R152"
+      },
+      {
+        "$relationshipId": "F1_R153",
+        "$etag": "W/\"9dda1902-8633-445d-b013-1c099aa07469\"",
+        "$sourceId": "Floor1",
+        "$relationshipName": "contains",
+        "$targetId": "R153"
+      }
+    ]
+  },
+  "digitalTwinsModels": [
+    {
+      "@id": "dtmi:com:example:Building;1",
+      "@type": "Interface",
+      "displayName": "Building Model",
+      "@context": [
+        "dtmi:dtdl:context;2"
+      ],
+      "contents": [
+        {
+          "@type": "Property",
+          "name": "DisplayName",
+          "schema": "string"
+        },
+        {
+          "name": "address",
+          "@type": "Property",
+          "schema": "string"
+        },
+        {
+          "name": "location",
+          "@type": "Telemetry",
+          "schema": "point"
+        },            
+        {
+          "@type": "Relationship",
+          "name": "contains",
+          "displayName": "Building to Floor Relationship",
+          "target": "dtmi:com:example:Floor;1"
+        }
+      ]
+    },
+    {
+      "@id": "dtmi:com:example:Floor;1",
+      "@type": "Interface",
+      "displayName": "Floor Model",
+      "@context": [
+        "dtmi:dtdl:context;2"
+      ],
+      "contents": [
+        {
+          "@type": "Property",
+          "name": "DisplayName",
+          "schema": "string"
+        },
+        {
+          "@type": "Relationship",
+          "name": "contains",
+          "displayName": "Floor to Room Relationship",
+          "target": "dtmi:com:example:Room;2"
+        }
+      ]
+    },
+    {
+      "@id": "dtmi:com:example:Room;2",
+      "@type": "Interface",
+      "displayName": "Room Model",
+      "@context": [
+        "dtmi:dtdl:context;2"
+      ],
+      "contents": [
+        {
+          "@type": "Property",
+          "name": "DisplayName",
+          "schema": "string"
+        },
+        {
+          "@type": "Property",
+          "name": "roomNumber",
+          "schema": "string"
+        },
+        {
+          "@type": "Property",
+          "name": "unitId",
+          "schema": "string"
+        },
+        {
+          "@type": "Property",
+          "name": "temperature",
+          "schema": "double"
+        },
+        {
+          "@type": "Property",
+          "name": "light",
+          "schema": "integer"
+        },
+        {
+          "@type": "Property",
+          "name": "co2",
+          "schema": "integer"
+        },
+        {
+          "@type": "Property",
+          "name": "occupied",
+          "schema": "boolean"
+        },
+        {
+          "@type": "Relationship",
+          "name": "contains",
+          "displayName": "contains"
+        }
+      ]
+    }
+  ]
+}
