@@ -229,6 +229,11 @@
         },
         {
           "@type": "Property",
+          "name": "battery",
+          "schema": "integer"
+        },
+        {
+          "@type": "Property",
           "name": "co2",
           "schema": "integer"
         },
